@@ -16,7 +16,7 @@ const fs=require('fs'),path=require('path'),os=require('os'),assert=require('ass
      if(holdSecond)await secondGate;
      data={status:'ok',users:[{pk:'3',username:'ucuncu',full_name:'Üçüncü'}],has_more:false};
     }else data={status:'ok',users:[{pk:'1',username:'birinci',full_name:'Birinci'},{pk:'2',username:'ikinci',full_name:'İkinci'}],has_more:true,next_max_id:'next'};
-   }else if(url.includes('/destroy/'))data={status:'ok',friendship_status:{following:false}};
+   }else if(url.includes('/destroy/')||url.includes('/unfollow/'))data={status:'ok',friendship_status:{following:false}};
    else if(url.includes('/followers/'))data={status:'ok',users:[{pk:'2',username:'ikinci'}],has_more:false};
    else if(url.includes('/show/'))data={status:'ok',following:false};
    if(data)return route.fulfill({contentType:'application/json',body:JSON.stringify(data)});
