@@ -57,7 +57,7 @@ jobs:
           path: takip-paneli-webstore.zip
 
       - name: Chrome Web Store API ile Yükle & Yayınla
-        uses: mnao305/chrome-extension-upload@v7
+        uses: mnao305/chrome-extension-upload@v7.0.0
         with:
           file-path: takip-paneli-webstore.zip
           extension-id: ${{ secrets.CWS_EXTENSION_ID }}
