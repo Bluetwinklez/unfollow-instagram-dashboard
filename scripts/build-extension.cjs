@@ -111,17 +111,17 @@ source=source.replace('fail: state.log.filter((e) => !e.ok).length });','fail: s
 source=source.replace('const persisted = loadStored();',`Object.assign(I18N.tr,{otherOperation:"Başka bir Instagram sekmesinde işlem sürüyor. Önce o işlemi durdur veya bitmesini bekle.",lockLost:"Eklenti bağlantısı veya işlem izni kayboldu. Sayfayı yenileyip yeniden aç.",downloadReport:"Raporu indir",unfollowDoneBody:"{ok} doğrulandı · {fail} doğrulanamadı · {remaining} işlenmedi"});
 Object.assign(I18N.en,{otherOperation:"Another Instagram tab is busy. Stop that operation or wait for it to finish.",lockLost:"Extension connection or operation ownership was lost. Reload the page and reopen the tool.",downloadReport:"Download report",unfollowDoneBody:"{ok} confirmed · {fail} unconfirmed · {remaining} not processed"});
 const persisted = loadStored();`);
-source=source.replace(/const VERSION = "[^"]+";/,'const VERSION = "2.8.4-extension";');
+source=source.replace(/const VERSION = "[^"]+";/,'const VERSION = "2.8.5-extension";');
 // Settings are a draft until Save, and success is shown only after storage flush.
-const restore='Object.assign(state.timings, DEFAULT_TIMINGS); dialog.querySelectorAll("[data-setting]").forEach((input) => { const key = input.getAttribute("data-setting"); input.value = state.timings[key]; });';
+const restore='Object.assign(state.timings, DEFAULT_TIMINGS); dialog.querySelectorAll("[data-setting]").forEach((input) => { const key = input.getAttribute("data-setting"); if (input.type === "checkbox") input.checked = Boolean(state.timings[key]); else input.value = state.timings[key]; });';
 if(!source.includes(restore))throw new Error('Settings restore boundary missing');
-source=source.replace(restore,'dialog.querySelectorAll("[data-setting]").forEach((input) => { const key = input.getAttribute("data-setting"); input.value = DEFAULT_TIMINGS[key]; });');
+source=source.replace(restore,'dialog.querySelectorAll("[data-setting]").forEach((input) => { const key = input.getAttribute("data-setting"); if (input.type === "checkbox") input.checked = Boolean(DEFAULT_TIMINGS[key]); else input.value = DEFAULT_TIMINGS[key]; });');
 source=source.replace('step="${step}" data-setting=', 'required step="1" data-setting=');
-const settingsSave='dialog.querySelectorAll("[data-setting]").forEach((input) => { const key = input.getAttribute("data-setting"); const val = Number(input.value); const min = Number(input.min || 0); const max = input.max ? Number(input.max) : Infinity; if (Number.isFinite(val) && val >= min && val <= max) state.timings[key] = val; }); persist(); toast(t("saved"));';
+const settingsSave='dialog.querySelectorAll("[data-setting]").forEach((input) => { const key = input.getAttribute("data-setting"); const val = Number(input.value); const min = Number(input.min || 0); const max = input.max ? Number(input.max) : Infinity; if (input.type === "checkbox") state.timings[key] = input.checked; else if (Number.isFinite(val) && val >= min && val <= max) state.timings[key] = val; }); persist(); toast(t("saved"));';
 if(!source.includes(settingsSave))throw new Error('Settings save boundary missing');
 source=source.replace(settingsSave,`const inputs=[...dialog.querySelectorAll("[data-setting]")];
 const draft={...state.timings};
-for(const input of inputs){input.setCustomValidity("");const value=Number(input.value);if(!Number.isSafeInteger(value)||value>2147483647)input.setCustomValidity(state.language==="tr"?"0–2147483647 arasında bir tam sayı gir.":"Enter an integer from 0 to 2147483647.");if(!input.reportValidity())return false;draft[input.getAttribute("data-setting")]=value;}
+for(const input of inputs){if(input.type==="checkbox"){draft[input.getAttribute("data-setting")]=input.checked;continue;}input.setCustomValidity("");const value=Number(input.value);if(!Number.isSafeInteger(value)||value>2147483647)input.setCustomValidity(state.language==="tr"?"0–2147483647 arasında bir tam sayı gir.":"Enter an integer from 0 to 2147483647.");if(!input.reportValidity())return false;draft[input.getAttribute("data-setting")]=value;}
 for(const [minKey,maxKey] of [["scanDelayMin","scanDelayMax"],["unfollowDelayMin","unfollowDelayMax"]]){
  if(draft[minKey]>draft[maxKey]){const input=inputs.find(el=>el.getAttribute("data-setting")===maxKey);input.setCustomValidity(state.language==="tr"?"Maksimum süre minimum süreden küçük olamaz.":"Maximum delay cannot be less than minimum delay.");input.reportValidity();return false;}
 }
@@ -169,4 +169,4 @@ const wrapper=`// Bundled local script. Runs only after an explicit extension ac
 })();
 `;
 fs.writeFileSync(path.join(dir,'content.js'),wrapper);
-console.log('Bundled v2.8.4 with redacted live diagnostics and optional authenticated loopback file logging.');
+console.log('Bundled v2.8.5 with redacted live diagnostics and optional authenticated loopback file logging.');

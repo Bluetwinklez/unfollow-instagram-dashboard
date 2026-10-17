@@ -27,7 +27,7 @@ async function scenario(verification, expectedOK, status = 200, targetCount = 1)
   api.state.users.push({id:'43',username:'second',follows_viewer:false});
   api.state.selected.add('43');
  }
- await api.startUnfollow();
+ api.state.timings.continueOnFailure=false; await api.startUnfollow();
  assert.equal(api.state.log[0].ok,expectedOK,'POST success must not override verification');
  assert.equal(api.state.users.length,expectedOK?0:targetCount,'Keep unverified accounts in results');
  assert.equal(api.state.log.length,1,'Stop before processing more accounts on uncertain outcome');
