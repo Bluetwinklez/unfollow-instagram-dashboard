@@ -11,6 +11,7 @@ assert.equal(manifest.action.default_popup,undefined);
 for(const f of [manifest.background.service_worker,'platform.js',...Object.values(manifest.icons)])assert.ok(fs.existsSync(path.join(dir,f)),f);
 for(const [size,file] of Object.entries(manifest.icons)){const b=fs.readFileSync(path.join(dir,file));assert.equal(b.readUInt32BE(16),Number(size));assert.equal(b.readUInt32BE(20),Number(size));}
 const content=fs.readFileSync(path.join(dir,'content.js'),'utf8');
+assert.ok(!/\b(?:krea|cobanov|claude|codex)\b/i.test(content),'Runtime bundle must not contain personal signatures or generator branding');
 assert.ok(!/\bonerror=/.test(content));
 assert.ok(!content.includes('__IU_TEST__'));
 assert.ok(!/\beval\s*\(|new Function\s*\(/.test(content));

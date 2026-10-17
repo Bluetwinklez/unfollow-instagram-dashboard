@@ -1,6 +1,6 @@
-# Tüm özellik testleri — 2.8.1
+# Tüm özellik testleri — 2.8.2
 
-Tarih: 2026-10-17T21:20:15.165Z
+Tarih: 2026-10-17T21:24:26.521Z
 
 16/16 test paketi geçti.
 
@@ -19,9 +19,9 @@ Tarih: 2026-10-17T21:20:15.165Z
 | instagram-live-log.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-log-view.test.cjs | GEÇTİ | 0.1 sn |
 | Optional local helper: authentication, redaction and writing | GEÇTİ | 0.8 sn |
-| MV3 store build integration | GEÇTİ | 15.6 sn |
-| MV3 private build integration | GEÇTİ | 16.0 sn |
-| Browser feature matrix | GEÇTİ | 21.7 sn |
+| MV3 store build integration | GEÇTİ | 15.8 sn |
+| MV3 private build integration | GEÇTİ | 16.1 sn |
+| Browser feature matrix | GEÇTİ | 22.3 sn |
 
 ## Gerçek Chromium içindeki özellik grupları
 
