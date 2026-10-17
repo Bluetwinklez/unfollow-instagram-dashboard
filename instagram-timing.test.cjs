@@ -1,0 +1,11 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
+(async()=>{let api;const waits=[];const calls=[];
+ vm.runInNewContext(fs.readFileSync('instagram-tum-takipleri-birak.js','utf8'),{location:{hostname:'www.instagram.com'},navigator:{language:'tr'},document:{cookie:'ds_user_id=99; csrftoken=fake',getElementById(){return null},querySelector(){return null}},localStorage:{getItem(){return null},setItem(){},removeItem(){}},console:{error(){},warn(){}},AbortController,setTimeout(fn,ms){if(ms===30000)return 1;waits.push({ms,posts:calls.filter(m=>m==='POST').length});queueMicrotask(fn);return 1},clearTimeout(){},async fetch(_url,init={}){calls.push(init.method||'GET');return {ok:true,status:200,text:async()=>JSON.stringify(init.method==='POST'?{status:'ok',friendship_status:{following:false}}:{status:'ok',following:false})}},__IU_TEST__(x){api=x}});
+ api.state.viewerId='99';api.state.users=Array.from({length:6},(_,i)=>({id:String(i+1),username:'user'+i,follows_viewer:false}));api.state.users.forEach(u=>api.state.selected.add(u.id));
+ await api.startUnfollow();
+ assert.equal(calls.filter(m=>m==='POST').length,6);assert.equal(calls.filter(m=>m==='GET').length,6);assert.equal(api.state.log.filter(x=>x.ok).length,6);
+ const cooldown=waits.filter(x=>x.ms===300000);assert.equal(cooldown.length,1);assert.equal(cooldown[0].posts,5);
+ assert.equal(waits.filter(x=>x.ms>=4000&&x.ms<=4800).length,5);assert.equal(waits.filter(x=>x.ms===1000).length,6);
+ assert.equal(api.state.unfollowOutcome,'complete');assert.equal(api.state.selected.size,0);
+ console.log('PASS: six mocked unfollows; five 4–4.8s delays, one 5-minute cooldown after fifth POST, six independent verification waits; production defaults unchanged. Virtual timers, no real network.');
+})().catch(e=>{console.error(e);process.exit(1)});

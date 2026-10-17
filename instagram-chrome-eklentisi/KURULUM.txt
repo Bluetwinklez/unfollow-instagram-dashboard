@@ -1,0 +1,78 @@
+CHROME EKLENTİSİ KURULUMU — 2.8.0
+
+1. ZIP dosyasını diğer bilgisayara aktar ve klasöre çıkart.
+2. Chrome adres çubuğuna chrome://extensions yaz.
+3. Sağ üstte Geliştirici modu seçeneğini aç.
+4. Paketlenmemiş öğe yükle düğmesine bas.
+5. manifest.json dosyasının bulunduğu instagram-chrome-eklentisi klasörünü seç.
+6. Chrome'un sağ üstündeki yapboz simgesinden Instagram Takip Yönetimi eklentisini sabitle.
+7. www.instagram.com adresinde hesabına giriş yap ve eklenti simgesine tıkla.
+
+Konsola kod yapıştırman gerekmez. Eklenti simgesine basmak takip bırakmayı başlatmaz.
+Önce taramayı başlat, hesapları seç ve Takibi bırak düğmesinden onayla.
+Geri takip edenler dahil seçili hesapların takibi bırakılır. İşlemler geri alınmaz.
+Önce tek hesapta dene. Instagram toplu işlemleri kısıtlayabilir.
+
+Sekme kapanırsa veya sayfa yenilenirse işlem durur. Eklenti kaldırılınca yerel kayıtları silinir.
+Bir sekmede işlem sürerken ikinci sekmede yeni işlem başlatılması engellenir. İşlem sırasında hesap değiştirme.
+Kısayol: Ctrl+Shift+Y. Chrome'da çakışırsa chrome://extensions/shortcuts üzerinden değiştir.
+
+Bu paket Chrome Web Mağazası'na yüklenmiş değildir; ZIP veya JS dosyasına çift tıklayarak kurulmaz.
+Eklenti klasörünü taşırsan Chrome'dan kaldırıp yeni konumdan yeniden yüklemen gerekebilir.
+
+AYARLAR
+Kişiler arası 4–4,8 saniye, her 5 işlemde 5 dakika mola korunmuştur.
+Olumlu takip bırakma yanıtı ayrıca kontrol edilir; bu kontrol yaklaşık 1 saniye ek bekleme ve bir okuma isteği gerektirir.
+
+GİZLİLİK
+Instagram'ın açık oturumu kullanılır. Tanı kayıtları yalnızca bu bilgisayardaki 127.0.0.1 yardımcısına gönderilir; yardımcı isteğe bağlıdır.
+Ayarlar ve tarama kontrol noktası eklentinin yerel depolamasındadır; paket hesap verisi içermez.
+İzinler: activeTab, scripting, storage ve http://127.0.0.1/* (yerel günlük yardımcısı).
+
+2.4.0 GÜNCELLEMESİ
+- Aynı anda iki Instagram sekmesinde tarama/takip bırakma başlatılamaz.
+- Açık sekmenin kapanması veya yenilenmesi sonrasında kalan kilit otomatik kontrol edilip temizlenir.
+- Chrome arka planı yeniden başlasa da devam eden işlem sahipliği kontrol edilir.
+- Yerel kayıtlar sıralı yazılır; kayıt hatası artık görünür bir uyarıyla bildirilir.
+- Ayarlarda Varsayılana dön ve İptal artık mevcut değerleri değiştirmez; değişiklikler Kaydet ile uygulanır.
+- Maksimum süre minimumdan küçük veya alanlar geçersizse kaydetme kabul edilmez.
+- İşlem sonunda Raporu indir düğmesinden JSON raporu kaydedilebilir.
+- Rapor doğrulanan, doğrulanamayan ve işlenmeyen hesapları ayrı gösterir. Sonuçlara dönmeden önce indir.
+- Raporda hesap kullanıcı adları/ID'leri vardır; oturum çerezi veya şifre bulunmaz.
+- Bekleme ayarları değiştirilmedi. Gereken doğrulama ve sekmeler arası iletişim ek süre alabilir.
+
+ESKİ SÜRÜMDEN GÜNCELLEME
+1. Devam eden işlemi durdur. Instagram sekmesini yenile.
+2. Yeni ZIP'i çıkart.
+3. Aynı eklenti klasörünü kullanıyorsan içeriği yeni dosyalarla değiştir.
+4. chrome://extensions sayfasında eklentinin Yeniden yükle (dairesel ok) düğmesine bas.
+5. Instagram sekmesini yenileyip eklenti simgesine tıkla. Sürüm 2.8.0 görünmeli.
+Farklı bir klasöre çıkarttıysan eski eklentiyi kaldırıp yeni klasörü Paketlenmemiş öğe yükle ile seç.
+Aynı anda eski ve yeni eklentiyi kurulu/etkin bırakma.
+2.4.2 UYUMLULUK DÜZELTMESİ
+- Orijinal Cobanov kodunda olmayan /users/.../info/ sorgusu kaldırıldı.
+- Tarama doğrudan /friendships/.../following/ listesinden başlar.
+- Ayrı profil toplamı okunmadığından sonuçlar profil sayısıyla ayrıca doğrulanmış sayılmaz; sonuç ekranında bu durum belirtilir.
+- Bilinen bir toplam sayı varsa liste uzunluğu kontrolü korunur; kısıtlanmış liste işaretleri ve bozuk/tekrarlanan sayfalama hâlâ reddedilir.
+- HTML sayfalarındaki çeviri metinleri kısıtlama yanıtı gibi yorumlanmaz.
+- Gerçek HTTP 429 yanıtında tarama yine durur; hata ekranında HTTP durumu görünür.
+- Hesap değişikliği, takip bırakma doğrulaması, iki sekme kilidi ve bekleme ayarları korunmuştur.
+2.4.2: Gönderilen 2.3.4 paketle karşılaştırıldı. has_more:false son sayfa işareti, yanıtta imleç kalsa bile orijinal kodla aynı şekilde kabul edilir. Daha fazla sayfa vaat edilip imleç verilmemesi ve döngüler hâlâ engellenir.
+
+2.8.0 CANLI GÜNLÜK
+- Üst çubuktaki ≡ düğmesi Canlı günlük ekranını açar.
+- HTTP durumu, süre, JSON/HTML/boş yanıt ayrımı, yönlendirme ve işlem ilerlemesi kaydedilir.
+- Şifre, çerez, kullanıcı adı ve ham yanıt gövdesi tanı günlüğüne yazılmaz.
+- Tarayıcı günlüğü son 500 olayla sınırlıdır; Chrome oturumu kapanınca silinir. Günlüğü indir ile saklanabilir.
+- İşlem sonundaki sonuç raporu farklıdır; o raporda hesap adları bulunur.
+
+ASİSTANIN DOSYADAN OKUYABİLMESİ İÇİN
+1. Python 3 kurulu olmalı (yalnızca bu isteğe bağlı özellik için).
+2. Eklenti klasöründeki CANLI-LOG-BASLAT.cmd dosyasını bir kez çalıştır.
+3. Yeni bir işlem sonrasında Canlı günlük ekranındaki bağlantı durumunu kontrol et.
+4. Dosya, eklenti klasörünün bir üstündeki instagram-canli-log.jsonl yoluna yazılır.
+5. Aynı bilgisayara erişimi olan asistan dosyayı okuyabilir; başka bilgisayarda dosyayı paylaşman gerekir.
+- Yardımcı yalnızca 127.0.0.1:18765 üzerinde pakete özel anahtarla bağlantı kabul eder.
+- Yaklaşık 2 MB sonrasında önceki dosya instagram-canli-log.previous.jsonl olarak tutulur.
+- Tarayıcı günlüğünü temizlemek veya eklentiyi kaldırmak diskteki günlük dosyalarını silmez.
+- Yardımcı çalışmasa bile eklenti ve tarayıcı günlüğü çalışır. Sürekli asistan takibi kendiliğinden başlamaz.

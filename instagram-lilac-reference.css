@@ -1,0 +1,99 @@
+
+/* Light lilac reference layout: functional account dashboard, not financial data. */
+#${APP_ID}{--iu-bg:#e8e2ff;--iu-bg-2:#f5f1ff;--iu-bg-3:#ece5fc;--iu-line:#8e77b626;--iu-line-strong:#8e77b64a;--iu-text:#25232d;--iu-muted:#7d748e;--iu-accent:#9863d6;--iu-accent-2:#ab76e8;--iu-gradient:linear-gradient(130deg,#d4b2fa,#a677e3);color-scheme:light;background:#f1eeff}
+#${APP_ID} .iu-panel{inset:26px!important;left:26px!important;top:26px!important;width:calc(100vw - 52px)!important;height:calc(100vh - 52px)!important;grid-template-columns:72px minmax(0,1fr) 280px;grid-template-rows:72px minmax(0,1fr);border:2px solid #cbbbeb;border-radius:30px;background:#e4ddfb;box-shadow:0 18px 80px #b6a2d52b;overflow:hidden}
+#${APP_ID} .iu-sidebar{grid-column:1;grid-row:1/3;padding:18px 12px;background:linear-gradient(170deg,#e6ddfe 25%,#d4b0f8 65%,#cabdf1);gap:14px;border:0;align-items:center;overflow:hidden}
+#${APP_ID} .iu-side-mark{width:39px;height:39px;flex:none;color:#292731;border:3px solid #292731;border-radius:14px;background:none;font-size:26px;box-shadow:inset 0 0 0 3px #e6ddfe}
+#${APP_ID} .iu-sidebar>strong{writing-mode:vertical-rl;font-size:15px;letter-spacing:-.3px;height:116px;margin:0 0 18px;color:#292731;font-weight:700}
+#${APP_ID} .iu-side-caption,#${APP_ID} .iu-side-footer{display:none}
+#${APP_ID} .iu-side-active,#${APP_ID} .iu-sidebar>button{width:38px;height:38px;padding:0;display:grid;place-items:center;flex:none;border-radius:50%;font-size:0;background:#f8f4ffb0;box-shadow:none;color:#28252f}
+#${APP_ID} .iu-side-active{background:#292731;color:#fff}
+#${APP_ID} .iu-side-active:before{content:'⌂';font-size:24px}
+#${APP_ID} [data-nav-log]:before{content:'▤';font-size:20px}
+#${APP_ID} [data-nav-settings]:before{content:'⚙';font-size:21px}
+#${APP_ID} .iu-sidebar>button:hover{background:#fff;color:#72529a}
+#${APP_ID} .iu-header{grid-column:2;grid-row:1;padding:16px 24px;background:transparent;border:0;gap:10px}
+#${APP_ID} .iu-brand-text strong{font-size:17px;font-weight:650;letter-spacing:-.6px}
+#${APP_ID} .iu-brand-text span{font-size:10px;color:#796b90}
+#${APP_ID} .iu-brand-dot{background:#332d3c;box-shadow:none;width:9px;height:9px}
+#${APP_ID} .iu-header-actions{gap:5px}
+#${APP_ID} .iu-header-actions button{background:#f8f4ffb0;border:0;border-radius:50%;width:30px;height:30px;color:#514660}
+#${APP_ID} .iu-body{grid-column:2;grid-row:2;min-width:0;overflow:auto;background:none}
+#${APP_ID} .iu-inspector{grid-column:3;grid-row:1/3;display:flex;flex-direction:column;padding:25px 22px;background:linear-gradient(165deg,#ce9afa 0%,#b28be5 48%,#9388bc 100%);color:#fff;border-radius:0 26px 26px 0;min-height:0;overflow:auto;gap:18px}
+#${APP_ID} .iu-inspector-tabs{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;color:#ffffffa8;margin-bottom:2px}
+#${APP_ID} .iu-inspector-tabs strong{font-size:14px;color:white;font-weight:600}
+#${APP_ID} .iu-gauge{position:relative;width:214px;height:214px;flex:none;align-self:center;margin:8px 0 6px;background:repeating-conic-gradient(from -135deg,#fff9 0deg 1deg,transparent 1deg 6deg);border-radius:50%;display:grid;place-items:center}
+#${APP_ID} .iu-gauge:before{content:'';position:absolute;inset:22px;border-radius:50%;background:linear-gradient(165deg,#c697f0,#b18be0)}
+#${APP_ID} .iu-gauge-text{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px}
+#${APP_ID} .iu-gauge-text strong{font-size:42px;font-weight:300;line-height:1.1;letter-spacing:-2px;color:white}
+#${APP_ID} .iu-gauge-text span{font-size:11px;color:#ffffffe0}
+#${APP_ID} .iu-inspector label,#${APP_ID} .iu-inspector h3{font-size:12px;font-weight:500;margin:0;color:white}
+#${APP_ID} .iu-inspector-info{padding-top:15px;border-top:1px solid #ffffff30;display:flex;flex-direction:column;gap:10px}
+#${APP_ID} .iu-inspector-value{font-size:12px;padding:12px;border:1px solid #ffffff75;border-radius:20px;color:white;background:#ffffff08}
+#${APP_ID} .iu-inspector-row{display:flex;justify-content:space-between;gap:10px;font-size:10px;padding:11px 0;border-bottom:1px solid #ffffff2c;color:#ffffffd9}
+#${APP_ID} .iu-inspector-row strong{font-size:10px;font-weight:500;color:white}
+#${APP_ID} .iu-inspector .iu-inspector-primary{margin-top:auto;border:0;border-radius:25px;background:#25252c;color:white;padding:14px 15px;font-size:12px;font-weight:550;min-height:44px}
+#${APP_ID} .iu-inspector .iu-inspector-primary:disabled{opacity:.4;cursor:not-allowed}
+#${APP_ID} .iu-inspector-secondary{display:flex;gap:8px}
+#${APP_ID} .iu-inspector-secondary button{flex:1;background:transparent;border:1px solid #ffffff80;color:white;padding:9px 5px;border-radius:18px;font-size:10px}
+#${APP_ID} .iu-welcome{padding:8px 24px 30px;gap:13px;max-width:none;margin:0;justify-content:flex-start;min-height:0}
+#${APP_ID} .iu-welcome:after{display:none!important}
+#${APP_ID} .iu-welcome-top{padding:0;margin:0;border:0}
+#${APP_ID} .iu-welcome-top>span{color:#7d6c95;font-size:9px;letter-spacing:1px}
+#${APP_ID} .iu-welcome-top>small{background:#ffffff8a;border:0;color:#7f62a5;font-size:9px;padding:5px 9px}
+#${APP_ID} .iu-welcome h2{font-size:30px;line-height:1.15;letter-spacing:-1.2px;font-weight:600;margin-top:4px;max-width:540px}
+#${APP_ID} .iu-welcome p{font-size:11px;line-height:1.65;color:#7a6c8c;max-width:620px}
+#${APP_ID} .iu-idle-metrics{width:100%;margin:5px 0 8px}
+#${APP_ID} .iu-stats{gap:10px;margin:0 0 16px;grid-template-columns:repeat(3,minmax(0,1fr))}
+#${APP_ID} .iu-stats>div{position:relative;overflow:hidden;min-height:145px;padding:22px 17px;border:1px solid #ffffff28;border-radius:22px;background:linear-gradient(155deg,#dfbcfa 0%,#bf8df1 52%,#a18acf 100%);box-shadow:inset 0 1px 0 #ffffff50}
+#${APP_ID} .iu-stats>div:nth-child(2){background:linear-gradient(155deg,#dcb5f7,#bc8dee 57%,#a58bcf)}
+#${APP_ID} .iu-stats>div:after{position:absolute;right:-6px;bottom:-24px;content:'◉';color:#f5e8ff65;font-size:115px;line-height:1;transform:rotate(-18deg);text-shadow:3px 3px 0 #8f60bd33}
+#${APP_ID} .iu-stats>div:nth-child(2):after{content:'◔';font-size:130px;right:0;bottom:-30px;transform:rotate(-35deg)}
+#${APP_ID} .iu-stats>div:nth-child(3):after{content:'↗';font-size:122px;right:2px;bottom:-23px;transform:rotate(-8deg);color:#fff7}
+#${APP_ID} .iu-stats small{position:relative;z-index:1;color:#ffffffde;font-size:10px;letter-spacing:0;margin:0}
+#${APP_ID} .iu-stats strong{position:relative;z-index:1;display:block;margin:12px 0 0;color:#fff;font-weight:300;font-size:39px;letter-spacing:-1.5px;line-height:1}
+#${APP_ID} .iu-scope{margin:8px 0 0;gap:9px}
+#${APP_ID} .iu-scope legend{color:#7d6c95;font-size:9px;letter-spacing:1px;margin-bottom:10px}
+#${APP_ID} .iu-scope-card{background:#f7f3ffb8;border:1px solid #c3aedc;box-shadow:none;min-height:109px;padding:16px 12px;border-radius:19px;gap:8px}
+#${APP_ID} .iu-scope-card.is-active{background:#fdfaff;border-color:#ab7adc;box-shadow:inset 0 0 0 1px #ab7adc}
+#${APP_ID} .iu-scope-card:hover{background:#fff;border-color:#ad83d6}
+#${APP_ID} .iu-scope-card strong{font-size:12px;color:#352b44;letter-spacing:-.2px}
+#${APP_ID} .iu-scope-card small{color:#8a7b9b;font-size:10px;line-height:1.5}
+#${APP_ID} .iu-scope-card input{width:13px;height:13px;accent-color:#9e6ecf;margin-top:2px}
+#${APP_ID} .iu-btn{background:#f9f5ff;border-color:#cbb9e1;color:#473554;border-radius:20px;font-size:11px}
+#${APP_ID} .iu-btn--primary{background:#29252f;border-color:#29252f;color:white;box-shadow:none}
+#${APP_ID} .iu-btn--primary:hover:not(:disabled){background:#4b385e;border-color:#4b385e}
+#${APP_ID} .iu-btn--danger{background:#9d4968;border-color:#9d4968;color:#fff}
+#${APP_ID} .iu-btn--lg{margin-top:5px;padding:11px 20px;min-width:175px}
+#${APP_ID} .iu-results{padding:7px 22px 0;min-height:0}
+#${APP_ID} .iu-results-summary{color:#7c6a90;font-size:10px;gap:5px;margin-bottom:7px}
+#${APP_ID} .iu-results-summary>span{color:#5e427f}
+#${APP_ID} .iu-notice{padding:8px 11px;margin:0 0 12px;background:#f7f2ff80;border:1px solid #bba2d345;border-radius:13px}
+#${APP_ID} .iu-notice p{font-size:9px;color:#8c789d}
+#${APP_ID} .iu-search-row{padding:4px 0 10px}
+#${APP_ID} .iu-search{height:36px;background:#f9f5ffb0;border:1px solid #ccbae0;border-radius:18px;color:#4c3d5e;font-size:11px;padding:0 14px}
+#${APP_ID} .iu-list{background:#f7f3ff;border:0;border-radius:22px 22px 0 0;min-height:115px}
+#${APP_ID} .iu-row{padding:12px 15px;border-color:#c6b9d640;gap:8px;grid-template-columns:18px 32px minmax(0,1fr) auto}
+#${APP_ID} .iu-row:hover{background:#eee5fb}
+#${APP_ID} .iu-row--selected,#${APP_ID} .iu-row--selected:hover{background:#e9ddf9;box-shadow:inset 3px 0 #a777d6}
+#${APP_ID} .iu-row-name{font-size:12px}
+#${APP_ID} .iu-row-name>a{color:#342741}
+#${APP_ID} .iu-row-sub{color:#8c7d9b;font-size:10px}
+#${APP_ID} .iu-avatar{width:32px;height:32px;background:linear-gradient(140deg,#dec8f8,#bc9add)}
+#${APP_ID} .iu-row-check{accent-color:#9863cf;width:14px;height:14px}
+#${APP_ID} .iu-actionbar{background:#f7f3ff;border:0;border-top:1px solid #c6b9d640;border-radius:0 0 22px 22px;padding:12px 14px;margin-bottom:20px;gap:8px}
+#${APP_ID} .iu-actionbar-left,#${APP_ID} .iu-actionbar-right{gap:7px}
+#${APP_ID} .iu-muted{color:#8d7a9b;font-size:10px}
+#${APP_ID} .iu-progress{background:#f8f4ff;width:calc(100% - 44px);padding:28px;border:0;border-radius:24px;box-shadow:none;margin:28px auto}
+#${APP_ID} .iu-progress-head h2{font-size:23px;color:#392c45}
+#${APP_ID} .iu-progress-head p{color:#887396}
+#${APP_ID} .iu-current{background:#ede4fa;color:#47334e}
+#${APP_ID} .iu-bar{background:#e2d2f2}
+#${APP_ID} .iu-dialog{background:#fbf8ff;border:1px solid #cbb6e4;color:#352940;border-radius:23px;box-shadow:0 20px 80px #4c316c33}
+#${APP_ID} .iu-dialog h3{color:#352940}
+#${APP_ID} .iu-dialog p,#${APP_ID} .iu-field{color:#887496}
+#${APP_ID} .iu-field input{background:#f2eafa;color:#473452;border-color:#cebae0}
+#${APP_ID} .iu-toast{background:#29242f;color:#fff;border:0;box-shadow:0 6px 24px #5b3b7a22}
+#${APP_ID} .iu-pill{background:#f5edff;color:#654280;border-color:#c4a8de}
+@media(max-width:1080px){#${APP_ID} .iu-panel{grid-template-columns:64px minmax(0,1fr)}#${APP_ID} .iu-inspector{display:none}#${APP_ID} .iu-welcome{padding:12px 26px 30px}#${APP_ID} .iu-stats>div{min-height:125px}}
+@media(max-width:700px){#${APP_ID} .iu-panel{inset:8px!important;left:8px!important;top:8px!important;width:calc(100vw - 16px)!important;height:calc(100vh - 16px)!important;border-radius:22px;display:flex!important}#${APP_ID} .iu-sidebar{display:none}#${APP_ID} .iu-inspector{display:none}#${APP_ID} .iu-header{padding:14px;min-height:68px}#${APP_ID} .iu-header-actions button{width:27px;height:27px}#${APP_ID} .iu-welcome{padding:8px 15px 24px;gap:12px}#${APP_ID} .iu-welcome h2{font-size:28px;letter-spacing:-1px}#${APP_ID} .iu-welcome-top{gap:6px;flex-direction:row;align-items:center}#${APP_ID} .iu-welcome-top>span{font-size:8px}#${APP_ID} .iu-welcome-top>small{font-size:8px;padding:4px 6px}#${APP_ID} .iu-stats{gap:6px}#${APP_ID} .iu-stats>div{padding:14px 10px;min-height:112px;border-radius:17px}#${APP_ID} .iu-stats small{font-size:8px}#${APP_ID} .iu-stats strong{font-size:29px}#${APP_ID} .iu-scope{grid-template-columns:1fr;gap:8px}#${APP_ID} .iu-scope-card{min-height:88px;border-radius:17px}#${APP_ID} .iu-results{padding:7px 13px 0}#${APP_ID} .iu-actionbar{padding:10px 11px}#${APP_ID} .iu-progress{width:calc(100% - 26px);padding:22px}}

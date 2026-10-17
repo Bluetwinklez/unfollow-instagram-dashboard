@@ -1,0 +1,25 @@
+# Instagram Takip Yönetimi — Gizlilik Politikası
+
+Son güncelleme: 18 Ekim 2026. Kapsam: 2.8.0 mağaza sürümü.
+
+## İşlenen bilgiler ve amaç
+Eklenti, kullanıcı başlattığında Instagram'da takip edilen ve isteğe bağlı olarak takipçi hesaplarının kimliklerini, kullanıcı adlarını, görünen adlarını, profil fotoğrafı adreslerini ve takip durumlarını işler. Bu bilgiler listeleme, arama, seçim ve onaylanan takip bırakma işlemleri için kullanılır. Başka sekmelerin geçmişini, mesajları, konum, sağlık veya finans bilgilerini okumaz.
+
+## Oturum ve bağlantılar
+Şifrenizi istemez veya kaydetmez. Açık Instagram oturumu kullanılır. Hesap kimliği ve CSRF değeri Instagram çerezlerinden yalnızca işlem sırasında okunur; CSRF değeri yetkili Instagram isteğinin güvenlik başlığında kullanılır. Tarayıcı ilgili oturum çerezlerini Instagram isteklerine ekler. Oturum bilgileri geliştiriciye gönderilmez veya günlüğe yazılmaz.
+Takip edilen/takipçi listeleri ve takip işlemleri için Instagram'a istek gönderilir; profil fotoğrafları Instagram'ın sağladığı adreslerden yüklenir. Bu hizmetler Meta'nın kendi gizlilik politikasına tabidir: https://privacycenter.instagram.com/policy/
+
+## Yerel saklama
+Ayarlar, dil, gizlenen hesap kimlikleri ve yarım kalan tarama (hesap kimliği, liste ve sayfalama bilgileri) chrome.storage.local içinde saklanır. Yarım kalan kayıtlar 24 saatten eskiyse devam etmek için kullanılmaz; bu süre otomatik fiziksel silme garantisi değildir. Tamamlanan taramanın kontrol noktası temizlenir. Diğer yerel kayıtlar eklenti kaldırılınca silinir.
+Tanı günlüğü, zaman, sekme numarası, olay, HTTP durumu, yanıt türü, süre ve ilerleme gibi en fazla 500 olayı Chrome oturumu boyunca saklar. Çerezler, şifreler, kullanıcı adları, istek başlıkları ve ham yanıt gövdeleri tanı günlüğüne dahil edilmez. Günlük ekrandan temizlenebilir ve Chrome oturumu sona erdiğinde silinir.
+
+## Dışa aktarma ve paylaşım
+Kullanıcı isterse tanı günlüğünü veya hesap adları/kimlikleri içeren işlem raporunu kendi cihazına indirir; kullanıcı adlarını panoya kopyalayabilir. Bu dosyalar eklenti kaldırılınca silinmez; kullanıcı tarafından silinir. Destek için bir dosyayı paylaşmak kullanıcının tercihidir.
+Bu sürüm geliştirici sunucusuna tanı kaydı göndermez, uzaktan kontrol sağlamaz, analiz veya reklam hizmeti içermez. Veriler satılmaz; reklam, kredi değerlendirmesi veya eklentinin tek amacı dışındaki işler için kullanılmaz. Verilerin kullanımı Chrome Web Store User Data Policy ve Limited Use koşullarıyla sınırlıdır.
+
+## Kontrol ve değişiklikler
+Tarama ve takip bırakma kullanıcı tarafından başlatılır. Takip bırakmak ayrıca onay gerektirir. Kullanıcı duraklatabilir veya iptal edebilir; gönderilmiş bir istek tamamlanmış olabilir. Eklentiyi kaldırmak eklentinin yerel verilerini siler. Veri uygulamaları değişirse politika ve mağaza açıklaması güncellenir.
+
+## İletişim
+YAYINDAN ÖNCE DOLDURULACAK: Yayıncı adı ve destek e-posta adresi.
+Bu metin yayıncının iletişim bilgileri eklenip herkese açık bir HTTPS adresinde yayımlandıktan sonra mağaza formuna bağlanmalıdır.
