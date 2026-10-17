@@ -1,4 +1,4 @@
-# Yayın kontrol listesi — 2.8.2
+# Yayın kontrol listesi — 2.8.6
 
 - [x] Derleme ve 16 test paketi / 28 tarayıcı özellik grubu geçti; Instagram yanıtları taklit edildi.
 - [x] Hazır eklentinin izinleri yalnızca activeTab, scripting ve storage.

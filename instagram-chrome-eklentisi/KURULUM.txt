@@ -1,4 +1,4 @@
-CHROME EKLENTİSİ KURULUMU — 2.8.2
+CHROME EKLENTİSİ KURULUMU — 2.8.6
 
 1. ZIP dosyasını diğer bilgisayara aktar ve klasöre çıkart.
 2. Chrome adres çubuğuna chrome://extensions yaz.
@@ -46,7 +46,7 @@ ESKİ SÜRÜMDEN GÜNCELLEME
 2. Yeni ZIP'i çıkart.
 3. Aynı eklenti klasörünü kullanıyorsan içeriği yeni dosyalarla değiştir.
 4. chrome://extensions sayfasında eklentinin Yeniden yükle (dairesel ok) düğmesine bas.
-5. Instagram sekmesini yenileyip eklenti simgesine tıkla. Sürüm 2.8.2 görünmeli.
+5. Instagram sekmesini yenileyip eklenti simgesine tıkla. Sürüm 2.8.6 görünmeli.
 Farklı bir klasöre çıkarttıysan eski eklentiyi kaldırıp yeni klasörü Paketlenmemiş öğe yükle ile seç.
 Aynı anda eski ve yeni eklentiyi kurulu/etkin bırakma.
 2.4.2 UYUMLULUK DÜZELTMESİ
@@ -59,7 +59,7 @@ Aynı anda eski ve yeni eklentiyi kurulu/etkin bırakma.
 - Hesap değişikliği, takip bırakma doğrulaması, iki sekme kilidi ve bekleme ayarları korunmuştur.
 2.4.2: Gönderilen 2.3.4 paketle karşılaştırıldı. has_more:false son sayfa işareti, yanıtta imleç kalsa bile orijinal kodla aynı şekilde kabul edilir. Daha fazla sayfa vaat edilip imleç verilmemesi ve döngüler hâlâ engellenir.
 
-2.8.2 CANLI GÜNLÜK
+2.8.6 CANLI GÜNLÜK
 - Üst çubuktaki ≡ düğmesi Canlı günlük ekranını açar.
 - HTTP durumu, süre, JSON/HTML/boş yanıt ayrımı, yönlendirme ve işlem ilerlemesi kaydedilir.
 - Şifre, çerez, kullanıcı adı ve ham yanıt gövdesi tanı günlüğüne yazılmaz.

@@ -1,6 +1,6 @@
 
 /* Dashboard styling: locally bundled, no remote fonts or image requests. */
-#${APP_ID}{--iu-bg:#100d1b;--iu-bg-2:#211a32;--iu-bg-3:#2a2041;--iu-line:rgba(209,190,255,.12);--iu-line-strong:rgba(209,190,255,.26);--iu-text:#f2effc;--iu-muted:#a79ebd;--iu-accent:#b79aff;--iu-accent-2:#d0bbff;--iu-gradient:linear-gradient(130deg,#b79aff,#8253e8);font-family:"Segoe UI",Candara,sans-serif}
+#${APP_ID}{--iu-bg:#100d1b;--iu-bg-2:#211a32;--iu-bg-3:#2a2041;--iu-line:rgba(209,190,255,.12);--iu-line-strong:rgba(209,190,255,.26);--iu-text:#f2effc;--iu-muted:#a79ebd;--iu-accent:#b79aff;--iu-accent-2:#d0bbff;--iu-gradient:linear-gradient(130deg,#b79aff,#8253e8);font-family:"Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif}
 #${APP_ID} .iu-panel{display:grid!important;grid-template-columns:204px minmax(0,1fr);grid-template-rows:86px minmax(0,1fr);position:absolute!important;inset:0!important;left:0!important;top:0!important;width:100vw!important;height:100vh!important;max-width:none!important;max-height:none!important;border:0;border-radius:0;box-shadow:none;background:var(--iu-bg)}
 #${APP_ID} .iu-sidebar{grid-column:1;grid-row:1/3;display:flex;flex-direction:column;gap:12px;padding:30px 20px;background:#171122;border-right:1px solid var(--iu-line);min-width:0}
 #${APP_ID} .iu-side-mark{font-size:36px;line-height:1;color:var(--iu-accent);margin-bottom:8px}
@@ -18,7 +18,7 @@
 #${APP_ID} .iu-body{grid-column:2;min-width:0;min-height:0;overflow-y:auto}
 #${APP_ID} .iu-welcome{width:100%;max-width:1040px;margin:auto;align-items:flex-start;text-align:left;padding:54px 48px 40px;gap:14px;position:relative}
 #${APP_ID} .iu-welcome-icon{width:46px;height:46px;background:#b79aff11;color:var(--iu-accent);margin-bottom:10px}
-#${APP_ID} .iu-welcome h2{font-family:Candara,"Segoe UI",sans-serif;font-size:clamp(30px,3.4vw,48px);line-height:1.12;letter-spacing:-1.8px;max-width:720px}
+#${APP_ID} .iu-welcome h2{font-family:"Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;font-size:clamp(30px,3.4vw,48px);line-height:1.12;letter-spacing:-1.8px;max-width:720px}
 #${APP_ID} .iu-welcome p{max-width:700px;font-size:13px;line-height:1.65}
 #${APP_ID} .iu-scope{margin:20px 0 4px;padding:0;border:0;display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%}
 #${APP_ID} .iu-scope legend{margin-bottom:12px;font-size:10px;letter-spacing:1.7px;color:var(--iu-muted)}
@@ -62,7 +62,7 @@
 #${APP_ID} .iu-welcome{padding:42px 42px 38px;margin:0 auto;gap:14px;isolation:isolate}
 #${APP_ID} .iu-welcome:not(:has(.iu-welcome-icon--error)):after{content:"";position:absolute;z-index:-1;top:38px;right:32px;width:145px;height:145px;border:1px solid #af83ff30;border-radius:50%;box-shadow:0 0 0 15px #a881ff08,0 0 0 16px #a881ff26,0 0 0 32px #a881ff06,0 0 0 33px #a881ff1c;transform:rotate(-25deg) scaleY(.75)}
 #${APP_ID} .iu-welcome-icon:not(.iu-welcome-icon--error){display:none}
-#${APP_ID} .iu-welcome h2{font-family:"Segoe UI",Candara,sans-serif;font-weight:650;font-size:clamp(34px,3.8vw,52px);line-height:1.08;max-width:570px;letter-spacing:-2.3px;margin-top:8px}
+#${APP_ID} .iu-welcome h2{font-family:"Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;font-weight:650;font-size:clamp(34px,3.8vw,52px);line-height:1.08;max-width:570px;letter-spacing:-2.3px;margin-top:8px}
 #${APP_ID} .iu-welcome p{max-width:620px;line-height:1.75;color:#b2a6c7}
 #${APP_ID} .iu-welcome-top{display:flex;align-items:center;justify-content:space-between;width:100%;gap:12px;margin-bottom:10px;padding-bottom:22px;border-bottom:1px solid #baa2ed18}
 #${APP_ID} .iu-welcome-top>span{color:#a99bbb;font-size:11px;letter-spacing:1.4px;text-transform:uppercase}
