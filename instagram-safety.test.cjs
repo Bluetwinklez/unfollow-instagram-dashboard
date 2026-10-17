@@ -20,7 +20,7 @@ function targets(api,count=2){api.state.users=Array.from({length:count},(_,i)=>(
 const tests=[];
 function test(name,fn){tests.push({name,fn})}
 test('ambiguous POST stops without fallback or next account',async()=>{
- const {api,calls}=setup(()=>response({status:'ok'}));targets(api);await api.startUnfollow();
+ const {api,calls}=setup(()=>response({status:'uncertain'}));targets(api);await api.startUnfollow();
  assert.equal(calls.length,1);assert.equal(api.state.log.length,1);assert.equal(api.state.users.length,2);
 });
 test('network failure does not retry mutation',async()=>{

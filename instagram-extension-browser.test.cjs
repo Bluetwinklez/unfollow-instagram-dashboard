@@ -23,7 +23,7 @@ const assert=require('assert/strict');
    if(holdScan){scanBegan();await scanGate;holdScan=false;}
    json={status:'ok',users:[{pk:'1',username:'ornek_hesap',full_name:'Örnek Hesap'},{pk:'2',username:'gezgin_notlari',full_name:'Gezgin Notları'}],has_more:false,next_max_id:'terminal-cursor'};
   }
-  else if(url.includes('/api/v1/friendships/destroy/')){
+  else if(url.includes('/api/v1/friendships/destroy/') || url.includes('/web/friendships/')){
    if(mutationHTML)return route.fulfill({contentType:'text/html',body:'<html>private-test-response</html>'});
    json={status:'ok',friendship_status:{following:false}};
   }
