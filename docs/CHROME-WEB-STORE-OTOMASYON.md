@@ -7,7 +7,7 @@ Bu belge, **Instagram Takip Yönetimi (Takip Paneli)** eklentisini GitHub Action
 ## 📌 Mimariye Genel Bakış
 
 ```
-[ Git Push (Tag v2.8.2) / Actions Dispatch ]
+[ Git Push (Tag v2.8.6) / Actions Dispatch ]
                   │
                   ▼
    [ GitHub Actions: cws-publish.yml ]
@@ -109,8 +109,8 @@ GitHub deponuzda:
 ### Yöntem A: Etiket (Tag) ile Otomatik Yayınlama
 Yeni bir sürüm yayınlamak istediğinizde versiyon etiketi atmanız yeterlidir:
 ```bash
-git tag v2.8.3
-git push origin v2.8.3
+git tag v2.8.6
+git push origin v2.8.6
 ```
 GitHub Actions otomatik olarak tüm testleri çalıştıracak, temiz mağaza paketini derleyecek ve Chrome Web Store'a yükleyecektir.
 
