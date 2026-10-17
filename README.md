@@ -10,15 +10,15 @@ Instagram takip listesini lila bir dashboard üzerinden yönetmek için Chrome M
 
 | Dosya | İçerik |
 |---|---|
-| `takip-paneli-chrome-2.8.6.zip` | Chrome'a kurulacak hazır eklenti; derleme gerekmez. |
-| `takip-paneli-source-2.8.6.zip` | Kaynak kod, testler, belgeler ve derleme betikleri. |
+| `takip-paneli-chrome-2.8.7.zip` | Chrome'a kurulacak hazır eklenti; derleme gerekmez. |
+| `takip-paneli-source-2.8.7.zip` | Kaynak kod, testler, belgeler ve derleme betikleri. |
 | `SHA256SUMS.txt` | İki ZIP'in SHA-256 doğrulama değerleri. |
 
 Bu sürüm GitHub üzerinden dağıtılır. Chrome Web Mağazası'nda henüz yayınlanmadı. Önceki gerçek hesapta görülen “unexpected response” hatasının çözüldüğü canlı kullanımda henüz doğrulanmadı.
 
 ## Chrome'a kurulum
 
-1. **takip-paneli-chrome-2.8.6.zip** dosyasını indir.
+1. **takip-paneli-chrome-2.8.7.zip** dosyasını indir.
 2. ZIP'e sağ tıklayıp **Tümünü ayıkla** ile kalıcı bir klasöre çıkar.
 3. Chrome adres çubuğuna `chrome://extensions` yaz.
 4. Sağ üstten **Geliştirici modu** seçeneğini aç.
