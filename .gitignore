@@ -1,0 +1,14 @@
+node_modules/
+instagram-magaza-hazirlik/
+instagram-chrome-eklentisi/content.js
+**/log-bridge-settings.json
+**/log-bridge-config.js
+**/__pycache__/
+*.pyc
+*.zip
+instagram-canli-log*
+instagram-features-browser-results.json
+instagram-eklenti-arayuz.png
+CHROMEWEBSTORE.md
+test-results/
+.env*

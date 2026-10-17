@@ -1,0 +1,1 @@
+const {spawnSync}=require('child_process');const fs=require('fs');for(const file of fs.readdirSync('.').filter(f=>/^instagram-.*\.test\.cjs$/.test(f)&&!f.includes('browser'))){const r=spawnSync(process.execPath,[file],{stdio:'inherit'});if(r.status!==0)process.exit(r.status||1)}
