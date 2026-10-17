@@ -7,7 +7,7 @@ const files=['manifest.json','service-worker.js','platform.js','content.js','hel
 for(const name of files)fs.copyFileSync(path.join(source,name),path.join(out,name));
 fs.cpSync(path.join(source,'icons'),path.join(out,'icons'),{recursive:true});
 const manifest=JSON.parse(fs.readFileSync(path.join(out,'manifest.json'),'utf8'));
-manifest.version='2.8.0';delete manifest.host_permissions;
+manifest.version='2.8.1';delete manifest.host_permissions;
 fs.writeFileSync(path.join(out,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
 let sw=fs.readFileSync(path.join(out,'service-worker.js'),'utf8');
 sw=sw.replace('importScripts("log-bridge-config.js");','');
@@ -16,20 +16,22 @@ sw=sw.replace('  void forwardLog(entry);','');
 if(/IU_LOG_BRIDGE|127\.0\.0\.1|forwardLog/.test(sw))throw Error('Bridge remains');
 fs.writeFileSync(path.join(out,'service-worker.js'),sw);
 let logs=fs.readFileSync(path.join(out,'logs.js'),'utf8');
-logs=logs.replace(/ const bridge=data\.iu_log_bridge_state;[\s\S]*?\n\}/,' document.getElementById("bridge").textContent="Kayıtlar bu tarayıcıda kalır. İnceleme için Günlüğü indir düğmesini kullan.";\n}');
+const bridgeView=/function renderBridge\(data\)\{[\s\S]*?\n\}/;
+if(!bridgeView.test(logs))throw Error('Log bridge view boundary missing');
+logs=logs.replace(bridgeView,'function renderBridge(){document.getElementById("bridge").textContent="Yalnızca tarayıcı içi günlük açık. Asistana otomatik aktarım yok. Günlük Chrome oturumu kapanınca silinir; paylaşmak için Günlüğü indir düğmesini kullan.";}');
 logs=logs.replaceAll('["iu_live_log_v1","iu_log_bridge_state"]','["iu_live_log_v1"]').replace('changes.iu_live_log_v1||changes.iu_log_bridge_state','changes.iu_live_log_v1');
 fs.writeFileSync(path.join(out,'logs.js'),logs);
 let help=fs.readFileSync(path.join(out,'help.html'),'utf8');
 help=help.replace(/ Paketteki <strong>CANLI-LOG-BASLAT\.cmd<\/strong>[\s\S]*?Python 3 gerektirir\./,' Günlüğü indir düğmesiyle tanı kaydını dışa aktarabilirsin.');
 help=help.replace(/ İsteğe bağlı günlük yardımcısı[\s\S]*?alır\./,'');
-help=help.replace(/Özel kullanım sürümü · [\d.]+/,'Mağaza sürümü · 2.8.0');
+help=help.replace(/Özel kullanım sürümü · [\d.]+/,'Mağaza sürümü · 2.8.1');
 help=help.replace('</footer>',' · <a href="privacy.html">Gizlilik politikası</a></footer>');
 fs.writeFileSync(path.join(out,'help.html'),help);
-let content=fs.readFileSync(path.join(out,'content.js'),'utf8').replaceAll('2.8.0-extension','2.8.0-extension');
+let content=fs.readFileSync(path.join(out,'content.js'),'utf8').replaceAll('2.8.1-extension','2.8.1-extension');
 fs.writeFileSync(path.join(out,'content.js'),content);
 const policy=`# Instagram Takip Yönetimi — Gizlilik Politikası
 
-Son güncelleme: 18 Ekim 2026. Kapsam: 2.8.0 mağaza sürümü.
+Son güncelleme: 18 Ekim 2026. Kapsam: 2.8.1 mağaza sürümü.
 
 ## İşlenen bilgiler ve amaç
 Eklenti, kullanıcı başlattığında Instagram'da takip edilen ve isteğe bağlı olarak takipçi hesaplarının kimliklerini, kullanıcı adlarını, görünen adlarını, profil fotoğrafı adreslerini ve takip durumlarını işler. Bu bilgiler listeleme, arama, seçim ve onaylanan takip bırakma işlemleri için kullanılır. Başka sekmelerin geçmişini, mesajları, konum, sağlık veya finans bilgilerini okumaz.
@@ -59,7 +61,7 @@ fs.writeFileSync(path.join(out,'privacy.html'),'<!doctype html><html lang="tr"><
 fs.copyFileSync(path.join(out,'privacy.html'),path.join(root,'privacy.html'));
 const listing=`# Chrome Web Store — Instagram Takip Yönetimi
 
-Son güncelleme: 2026-10-18. Sürüm: 2.8.0. Durum: HAZIRLIK TASLAĞI; mağazaya gönderilmedi.
+Son güncelleme: 2026-10-18. Sürüm: 2.8.1. Durum: HAZIRLIK TASLAĞI; mağazaya gönderilmedi.
 
 ## Mağaza bilgileri
 Ad: Instagram Takip Yönetimi
@@ -124,12 +126,12 @@ Bölge: Yayıncı seçer. Hesap şifresi veya kişisel oturum bilgisi inceleme n
 Open https://www.instagram.com/ and sign in with your own test account. Click the extension toolbar icon, then Scan. Select a single followed account and click Unfollow. A confirmation dialog is required before any mutation. Pause/cancel are available. A positive mutation response is independently checked before it is marked confirmed. Requests rejected by Instagram or ambiguous responses stop the operation. The Live log button opens local diagnostic events and supports JSON export. All executable code is bundled. No developer backend, analytics, remote code or companion program is used by this store build.
 
 ## Bilinen sınırlar / gönderim öncesi kalanlar
-1. Kullanıcının 2.4.2 sürümünde aldığı 'unexpected response' gerçek hesap yanıtıyla henüz teşhis edilmedi. 2.8.0 tanı günlüğü içerir, fakat bu canlı hesap hatasının çözüldüğü iddia edilmez. Göndermeden önce tek hesapla gerçek doğrulama gerekir.
+1. Kullanıcının 2.4.2 sürümünde aldığı 'unexpected response' gerçek hesap yanıtıyla henüz teşhis edilmedi. 2.8.1 tanı günlüğü içerir, fakat bu canlı hesap hatasının çözüldüğü iddia edilmez. Göndermeden önce tek hesapla gerçek doğrulama gerekir.
 2. Temel kaynak cobanov/instagram; lisans/yeniden dağıtım izni doğrulanamadı. Kaynak atfı korunuyor. Yayıncı kaynak sahibinin uygun dağıtım iznini doğrulamalı; bu paket izin belgesi sayılmaz.
 3. Yayıncı/destek bilgileri ve erişilebilir gizlilik URL'si doldurulmalı. İncelemeye gönderim yapılmadı.
 
 ## Sürüm geçmişi
-2.8.0 — 2026-10-18 — Mağaza taslağı: yerel sunucu bağlantısı ve ilgili izin çıkarıldı; tarayıcı içi günlük korundu, gizlilik sayfası eklendi.
+2.8.1 — 2026-10-18 — Mağaza taslağı: yerel sunucu bağlantısı ve ilgili izin çıkarıldı; tarayıcı içi günlük korundu, gizlilik sayfası eklendi.
 2.5.0 — Yerel tanı günlüğü ve isteğe bağlı bilgisayar yardımcısı (özel kullanım paketi).
 
 ## Kaynaklar
@@ -139,12 +141,13 @@ https://github.com/cobanov/instagram
 `;
 fs.writeFileSync(path.join(root,'CHROMEWEBSTORE.md'),listing);
 fs.writeFileSync(path.resolve('CHROMEWEBSTORE.md'),listing);
-fs.writeFileSync(path.join(root,'BASLA.txt'),`MAĞAZA HAZIRLIK DOSYALARI — 2.8.0\n\nChrome Developer Dashboard'a yalnızca instagram-magaza-2.8.0.zip dosyasını yükle. Hazırlık klasörünün tamamını yükleme. Manifest ZIP kökündedir.\n\nCHROMEWEBSTORE.md: açıklamalar, izin gerekçeleri, gizlilik beyanı ve kalan işler.\nGorseller: mağaza ekran görüntüleri ve tanıtım görseli.\nGIZLILIK-POLITIKASI.md / privacy.html: iletişim bilgisi eklenip herkese açık HTTPS adresinde yayımlanacak.\n\nDurum: taslak hazır; gönderim yapılmadı. Gerçek hesaptaki belirsiz yanıt, kaynak dağıtım izni ve yayıncı/iletişim/URL tamamlanmadan yayın onayı verilmiş sayılmaz.\nMağaza sürümü Python gerektirmez, kayıtları otomatik asistana göndermez. Canlı günlük JSON olarak indirilebilir.\n`);
-const improvements=`\n\n## 2.8.0 geliştirmeleri\n- HTML, boş yanıt ve JSON olmayan yanıtlar HTTP durumuyla açıklanır; belirsiz işlem başarılı sayılmaz.\n- Rapor şeması 2: eklenti sürümü, takip bırakma isteği ve bağımsız doğrulama yanıtlarının HTTP durumu/türü ayrı tutulur. Ham yanıt gövdeleri eklenmez.\n- Aramada görünmeyen hesapların seçimi temizlenir; görünmeyen hesaplara işlem gönderilmez.\n- Başlıklar Instagram stilleri altında okunabilmesi için açık renk alır.\n- Beklemeler korunur: 4–4,8 saniye, her 5 işlemde 5 dakika mola.\n`;
+fs.writeFileSync(path.join(root,'BASLA.txt'),`MAĞAZA HAZIRLIK DOSYALARI — 2.8.1\n\nChrome Developer Dashboard'a yalnızca instagram-magaza-2.8.1.zip dosyasını yükle. Hazırlık klasörünün tamamını yükleme. Manifest ZIP kökündedir.\n\nCHROMEWEBSTORE.md: açıklamalar, izin gerekçeleri, gizlilik beyanı ve kalan işler.\nGorseller: mağaza ekran görüntüleri ve tanıtım görseli.\nGIZLILIK-POLITIKASI.md / privacy.html: iletişim bilgisi eklenip herkese açık HTTPS adresinde yayımlanacak.\n\nDurum: taslak hazır; gönderim yapılmadı. Gerçek hesaptaki belirsiz yanıt, kaynak dağıtım izni ve yayıncı/iletişim/URL tamamlanmadan yayın onayı verilmiş sayılmaz.\nMağaza sürümü Python gerektirmez, kayıtları otomatik asistana göndermez. Canlı günlük JSON olarak indirilebilir.\n`);
+const improvements=`\n\n## 2.8.1 geliştirmeleri\n- HTML, boş yanıt ve JSON olmayan yanıtlar HTTP durumuyla açıklanır; belirsiz işlem başarılı sayılmaz.\n- Rapor şeması 2: eklenti sürümü, takip bırakma isteği ve bağımsız doğrulama yanıtlarının HTTP durumu/türü ayrı tutulur. Ham yanıt gövdeleri eklenmez.\n- Aramada görünmeyen hesapların seçimi temizlenir; görünmeyen hesaplara işlem gönderilmez.\n- Başlıklar Instagram stilleri altında okunabilmesi için açık renk alır.\n- Beklemeler korunur: 4–4,8 saniye, her 5 işlemde 5 dakika mola.\n`;
 for(const file of [path.join(root,'CHROMEWEBSTORE.md'),path.resolve('CHROMEWEBSTORE.md')])fs.appendFileSync(file,improvements);
-const audit=`\n\n## 2.8.0 hata denetimi\n- Bozuk ayar kayıtları ve geçersiz tarama kayıtları açılışı engellemez.\n- Aynı kullanıcıları yeni imleçlerle tekrarlayan sayfalar durdurulur.\n- Geçerli devam imleci yoksa eski listeyle birleştirmek yerine tarama baştan alınır.\n- Tarayıcı zamanlayıcısının sınırını aşan ayarlar reddedilir; kayıtlı süreler sınırlandırılır.\n- Okunamayan HTTP 200 liste yanıtı kesin oturum kapanması olarak etiketlenmez.\n- İşlem izni kontrolü sırasında iptal/duraklatma gelirse POST öncesi yeniden kontrol edilir.\n- Yedi yeni hata senaryosu ve gerçek Chromium içinde iptal yarışı testi geçti. Tüm Instagram istekleri testte taklit edildi.\n`;
+const audit=`\n\n## 2.8.1 hata denetimi\n- Bozuk ayar kayıtları ve geçersiz tarama kayıtları açılışı engellemez.\n- Aynı kullanıcıları yeni imleçlerle tekrarlayan sayfalar durdurulur.\n- Geçerli devam imleci yoksa eski listeyle birleştirmek yerine tarama baştan alınır.\n- Tarayıcı zamanlayıcısının sınırını aşan ayarlar reddedilir; kayıtlı süreler sınırlandırılır.\n- Okunamayan HTTP 200 liste yanıtı kesin oturum kapanması olarak etiketlenmez.\n- İşlem izni kontrolü sırasında iptal/duraklatma gelirse POST öncesi yeniden kontrol edilir.\n- Yedi yeni hata senaryosu ve gerçek Chromium içinde iptal yarışı testi geçti. Tüm Instagram istekleri testte taklit edildi.\n`;
 for(const file of [path.join(root,'CHROMEWEBSTORE.md'),path.resolve('CHROMEWEBSTORE.md')])fs.appendFileSync(file,audit);
 fs.copyFileSync(path.join(out,'help.css'),path.join(root,'help.css'));
-fs.appendFileSync(path.join(root,'CHROMEWEBSTORE.md'),'\n\n## 2.8.0\nİki tarama modu, açık lila dashboard, mod değiştirmek için Yeni tarama düğmesi, scope alanlı rapor ve GitHub hazırlığı. Krea ile üretilen tasarım referansı kodla uygulanmıştır. Görünür arayüzde üçüncü kişi imzası veya watermark yoktur; kaynak atfı CREDITS.md içinde korunur.\n');
+fs.appendFileSync(path.join(root,'CHROMEWEBSTORE.md'),'\n\n## 2.8.1\nİki tarama modu, açık lila dashboard, mod değiştirmek için Yeni tarama düğmesi, scope alanlı rapor ve GitHub hazırlığı. Krea ile üretilen tasarım referansı kodla uygulanmıştır. Görünür arayüzde üçüncü kişi imzası veya watermark yoktur; kaynak atfı CREDITS.md içinde korunur.\n');
+fs.appendFileSync(path.join(root,'CHROMEWEBSTORE.md'),'\n\n## 2.8.1 canlı günlük düzeltmeleri\nTarama hatalarının ve her hesabın doğrulama sonucunun günlüğe yazılması; donmuş sekme kontrolünün süreyle sınırlanması; günlük okuma/temizleme hatalarının ve otomatik asistan aktarımı bulunmadığının açık gösterilmesi. İzinler ve veri aktarımı değişmedi.\n');
 fs.copyFileSync(path.join(root,'CHROMEWEBSTORE.md'),path.resolve('CHROMEWEBSTORE.md'));
 console.log('Store draft generated:',root);

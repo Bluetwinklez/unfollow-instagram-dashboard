@@ -31,7 +31,12 @@ const requestLogging=`async function igRequest(url, init = {}) {
 }
 `;
 source=source.replace('async function rawIgRequest(url, init = {}) {',requestLogging+'async function rawIgRequest(url, init = {}) {');
-source=source.replace('const message = error?.message || t("scanFailed");','void globalThis.__iuPlatform.log({event:"scan.error",reason:error?.kind||"unknown",status:error?.status}); const message = error?.message || t("scanFailed");');
+const scanErrorBoundary='const message=error?.message||t("scanFailed");';
+if(!source.includes(scanErrorBoundary))throw new Error('Scan error logging boundary missing');
+source=source.replace(scanErrorBoundary,'void globalThis.__iuPlatform.log({event:"scan.error",reason:error?.kind||"unknown",status:error?.status}); '+scanErrorBoundary);
+const unfollowResultBoundary='state.log.push({ user, ok: outcome.ok, reason: outcome.reason, diagnostics:outcome.diagnostics });';
+if(!source.includes(unfollowResultBoundary))throw new Error('Unfollow result logging boundary missing');
+source=source.replace(unfollowResultBoundary,unfollowResultBoundary+` void globalThis.__iuPlatform.log({event:"unfollow.result",route:"unfollow",outcome:outcome.ok?"complete":"stopped",reason:outcome.ok?undefined:"response",confirmed:state.log.filter(entry=>entry.ok).length,loaded:state.log.length,total:targets.length,status:(outcome.diagnostics?.verification||outcome.diagnostics?.mutation)?.httpStatus,responseKind:(outcome.diagnostics?.verification||outcome.diagnostics?.mutation)?.responseKind});`);
 source=source.replace('checkpoint[cursorKey] = nextCursor; saveCheckpoint(checkpoint);','checkpoint[cursorKey] = nextCursor; saveCheckpoint(checkpoint); void globalThis.__iuPlatform.log({event:"scan.page",loaded:results.length,total});');
 for(const kind of ['scan','unfollow']){
  source=source.replace('state.'+kind+'Paused = !state.'+kind+'Paused;', 'state.'+kind+'Paused = !state.'+kind+'Paused; void globalThis.__iuPlatform.log({event:state.'+kind+'Paused?"'+kind+'.pause":"'+kind+'.resume"});');
@@ -59,8 +64,9 @@ async function withExtensionOperation(kind, task) {
    state.checkpoint = loadCheckpoint();
   }
   if (!destroyed) await task();
-  void globalThis.__iuPlatform.log({event:"operation.end",outcome:kind==="scan"?state.mode:state.unfollowOutcome,confirmed:state.log.filter(e=>e.ok).length});
+  void globalThis.__iuPlatform.log({event:"operation.end",outcome:kind==="scan"?(state.error?"stopped":state.scanCancelled?"cancelled":state.mode):state.unfollowOutcome,confirmed:state.log.filter(e=>e.ok).length});
  } catch {
+  void globalThis.__iuPlatform.log({event:"operation.error",reason:"unknown",outcome:"stopped"});
   if (!destroyed) toast(t("lockLost"));
  } finally {
   try { if (claimed) await extensionStorage.flush(); }
@@ -105,7 +111,7 @@ source=source.replace('fail: state.log.filter((e) => !e.ok).length });','fail: s
 source=source.replace('const persisted = loadStored();',`Object.assign(I18N.tr,{otherOperation:"Başka bir Instagram sekmesinde işlem sürüyor. Önce o işlemi durdur veya bitmesini bekle.",lockLost:"Eklenti bağlantısı veya işlem izni kayboldu. Sayfayı yenileyip yeniden aç.",downloadReport:"Raporu indir",unfollowDoneBody:"{ok} doğrulandı · {fail} doğrulanamadı · {remaining} işlenmedi"});
 Object.assign(I18N.en,{otherOperation:"Another Instagram tab is busy. Stop that operation or wait for it to finish.",lockLost:"Extension connection or operation ownership was lost. Reload the page and reopen the tool.",downloadReport:"Download report",unfollowDoneBody:"{ok} confirmed · {fail} unconfirmed · {remaining} not processed"});
 const persisted = loadStored();`);
-source=source.replace(/const VERSION = "[^"]+";/,'const VERSION = "2.8.0-extension";');
+source=source.replace(/const VERSION = "[^"]+";/,'const VERSION = "2.8.1-extension";');
 // Settings are a draft until Save, and success is shown only after storage flush.
 const restore='Object.assign(state.timings, DEFAULT_TIMINGS); dialog.querySelectorAll("[data-setting]").forEach((input) => { const key = input.getAttribute("data-setting"); input.value = state.timings[key]; });';
 if(!source.includes(restore))throw new Error('Settings restore boundary missing');
@@ -163,4 +169,4 @@ const wrapper=`// Bundled local script. Runs only after an explicit extension ac
 })();
 `;
 fs.writeFileSync(path.join(dir,'content.js'),wrapper);
-console.log('Bundled v2.8.0 with redacted live diagnostics and optional authenticated loopback file logging.');
+console.log('Bundled v2.8.1 with redacted live diagnostics and optional authenticated loopback file logging.');
