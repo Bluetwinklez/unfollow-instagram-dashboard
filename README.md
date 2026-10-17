@@ -69,7 +69,7 @@ Canlı günlük tarayıcıda tutulur. Bu paket günlükleri geliştiriciye veya 
 
 Hazır eklenti yalnızca `activeTab`, `scripting` ve `storage` izinlerini ister. Instagram sekmesindeki mevcut oturumla çalışır. Ayarlar, ilerleme ve günlükler yerel tutulur; geliştirici sunucusuna aktarılmaz. Hazır paket Python, yerel log sunucusu veya uzaktan kontrol bağlantısı içermez.
 
-[Gizlilik belgesi](extension/privacy.html) taslaktır. Mağaza başvurusu öncesinde yayıncı iletişim bilgileri ve nihai herkese açık gizlilik adresi tamamlanmalıdır.
+Chrome Web Mağazası gereksinimleri için canlı HTTPS [Gizlilik Politikası (GitHub Pages)](https://bluetwinklez.github.io/unfollow-instagram-dashboard/privacy.html) hazırlanmıştır. Mağaza yayın otomasyonu için [Chrome Web Store Otomasyon Rehberi](docs/CHROME-WEB-STORE-OTOMASYON.md) belgesini inceleyin.
 
 ## Geliştirme ve test
 
@@ -91,6 +91,14 @@ Testler ayrı tarayıcı profilleri ve taklit Instagram yanıtları kullanır; g
 ## Yayın paketi hazırlama
 
 Derleme ve testler geçtikten sonra değişiklikleri Git’e commit et; ardından `python scripts/package-release.py` çalıştır. Betik sürüm/test durumunu, izinleri ve paket dosyalarını denetleyip kurulabilir ZIP, kaynak ZIP ve SHA-256 listesi üretir.
+
+### Chrome Web Store Otomasyonu (GitHub Actions)
+
+Depodaki `.github/workflows/cws-publish.yml` iş akışı sayesinde `v*` etiketi oluşturulduğunda veya GitHub Actions arayüzünden tek tıkla eklenti Chrome Web Mağazası'na otomatik yüklenir.
+
+- **Tek Seferlik Kurulum:** [Chrome Web Store Otomasyon Rehberi](docs/CHROME-WEB-STORE-OTOMASYON.md)
+- **Hızlı OAuth Token:** `npm run auth:cws`
+- **Canlı Gizlilik Sayfası:** `https://bluetwinklez.github.io/unfollow-instagram-dashboard/privacy.html`
 
 ## Kaynak ve yayın durumu
 

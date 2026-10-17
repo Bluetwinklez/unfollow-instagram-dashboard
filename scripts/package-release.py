@@ -13,6 +13,9 @@ version = manifest["version"]
 report = json.loads((ROOT / "instagram-magaza-hazirlik/TUM-TEST-SONUCLARI.json").read_text(encoding="utf-8"))
 if report["version"] != version or not report["results"] or not all(item["passed"] for item in report["results"]):
     raise SystemExit("Run npm run build and npm test successfully before packaging.")
+current_files = json.loads(subprocess.check_output(["node", str(ROOT / "scripts/test-fingerprint.cjs")], cwd=ROOT, text=True))
+if not report.get("unchanged") or report.get("testedFiles") != current_files:
+    raise SystemExit("Files have changed since the successful test run. Rebuild and rerun npm test before packaging.")
 if subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True).strip():
     raise SystemExit("Commit reviewed changes before packaging the exact source revision.")
 if set(manifest["permissions"]) != {"activeTab", "scripting", "storage"} or manifest.get("host_permissions"):

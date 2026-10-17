@@ -1,0 +1,68 @@
+name: Chrome Web Store Dağıtım Otomasyonu
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Google incelemesine otomatik gönderilsin mi? (true = İncelemeye gönder, false = Yalnızca taslak yükle)'
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  test-build-upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Kodu Çek
+        uses: actions/checkout@v4
+
+      - name: Node.js Kur (v24)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Python Kur (v3.12)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Bağımlılıkları Yükle
+        run: npm ci
+
+      - name: Testleri ve Chromium Motorunu Çalıştır
+        run: |
+          npx playwright install --with-deps chromium
+          npm run build
+          npm test
+
+      - name: Mağaza Paketini (ZIP) Hazırla
+        run: |
+          # scripts/build-store.cjs ile derlenen temiz mağaza klasörünü zip'ler
+          cd instagram-magaza-hazirlik/extension
+          zip -r ../../takip-paneli-webstore.zip .
+          cd ../..
+
+      - name: ZIP Paketini GitHub Artifact Olarak Sakla
+        uses: actions/upload-artifact@v4
+        with:
+          name: takip-paneli-webstore-zip
+          path: takip-paneli-webstore.zip
+
+      - name: Chrome Web Store API ile Yükle & Yayınla
+        uses: mnao305/chrome-extension-upload@v7
+        with:
+          file-path: takip-paneli-webstore.zip
+          extension-id: ${{ secrets.CWS_EXTENSION_ID }}
+          publisher-id: ${{ secrets.CWS_PUBLISHER_ID }}
+          client-id: ${{ secrets.CWS_CLIENT_ID }}
+          client-secret: ${{ secrets.CWS_CLIENT_SECRET }}
+          refresh-token: ${{ secrets.CWS_REFRESH_TOKEN }}
+          publish: ${{ github.event.inputs.publish || false }}
