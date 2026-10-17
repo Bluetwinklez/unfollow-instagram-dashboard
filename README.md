@@ -1,63 +1,89 @@
 # Takip Paneli
 
-Açık lila dashboard tasarımlı Chrome Manifest V3 eklentisi.
+Instagram takip listesini lila bir dashboard üzerinden yönetmek için Chrome Manifest V3 eklentisi. Türkçe ve İngilizce arayüz sunar.
 
 ![Dashboard](docs/screenshots/dashboard.png)
 
-## Özellikler
+## İndir
 
-- İsteğe bağlı iki tarama: tüm takip ettiklerin veya seni geri takip etmeyenler.
-- İki liste tamamlanmadan geri takip etmeyenler sonucu açılmaz.
-- Arama, tek tek/tümünü seçme, kopyalama ve profil bağlantıları.
-- Açık onay, duraklatma, iptal ve bağımsız takip durumu doğrulaması.
-- Yarım taramaya devam etme ve sekmeler arası işlem kilidi.
-- Yerel canlı günlük ve ayrıntılı JSON işlem raporu.
-- Türkçe/İngilizce arayüz, mobil genişlik ve klavye erişimi.
+**[Hazır ZIP dosyalarını Releases sayfasından indir](https://github.com/Bluetwinklez/unfollow-instagram-dashboard/releases/latest).**
+
+| Dosya | İçerik |
+|---|---|
+| `takip-paneli-chrome-2.8.0.zip` | Chrome'a kurulacak hazır eklenti; derleme gerekmez. |
+| `takip-paneli-source-2.8.0.zip` | Kaynak kod, testler, belgeler ve derleme betikleri. |
+| `SHA256SUMS.txt` | İki ZIP'in SHA-256 doğrulama değerleri. |
+
+Bu sürüm GitHub üzerinden dağıtılır. Chrome Web Mağazası'nda henüz yayınlanmadı. Önceki gerçek hesapta görülen “unexpected response” hatasının çözüldüğü canlı kullanımda henüz doğrulanmadı.
+
+## Chrome'a kurulum
+
+1. **takip-paneli-chrome-2.8.0.zip** dosyasını indir.
+2. ZIP'e sağ tıklayıp **Tümünü ayıkla** ile kalıcı bir klasöre çıkar.
+3. Chrome adres çubuğuna `chrome://extensions` yaz.
+4. Sağ üstten **Geliştirici modu** seçeneğini aç.
+5. **Paketlenmemiş öğe yükle** düğmesine bas. İçinde doğrudan **manifest.json** bulunan çıkardığın klasörü seç.
+6. [Instagram](https://www.instagram.com/) üzerinde hesabına giriş yap. Uzantılar menüsünden **Instagram Takip Yönetimi** simgesine tıkla. Kısayol: `Ctrl+Shift+Y`.
+
+**Manifest dosyası eksik veya okunamıyor:** ZIP'i önce çıkar. ZIP dosyasını veya Chrome profil klasörünü değil, `manifest.json` dosyasının bulunduğu klasörü seç. Kaynak ZIP'ini indirdiysen yüklenecek klasör **extension/** olur. Kurulum klasörünü sonradan silme veya taşıma.
+
+### Güncelleme
+
+Devam eden işlemi bitir veya iptal et. Yeni ZIP'in içeriğini mevcut kurulum klasörüne çıkarıp dosyaları değiştir. Uzantılar sayfasında eklentinin **Yeniden yükle** düğmesine bas ve Instagram sekmesini yenile.
+
+## Kullanım
+
+1. **Tüm takip ettiklerim** veya **Beni geri takip etmeyenler** seçeneğini belirle.
+2. Taramayı başlat. İkinci seçenek iki listeyi karşılaştırır; eksik taramada sonuçlar ve takip bırakma açılmaz.
+3. İsim veya kullanıcı adıyla ara; hesapları tek tek ya da tümünü seç. Arama dışında kalan seçimler temizlenir.
+4. Takip bırakma düğmesine basıp seçili hesap sayısını kontrol ederek onayla. Önce tek hesapla çalışmayı doğrula.
+5. İstediğinde duraklat, devam et veya iptal et. İptal, daha önce tamamlanan takip bırakmalarını geri almaz.
+
+Varsayılan süreler: işlemler arasında **4–4,8 saniye**, her **5 işlemde 5 dakika mola**. Bağımsız doğrulama toplam süreyi uzatır. Süreleri ayarlardan değiştirebilirsin; hiçbir süre Instagram kısıtlamalarını önleme garantisi vermez.
 
 ![Geri takip etmeyenler](docs/screenshots/nonfollowers.png)
 
-Görseller örnek hesaplarla üretilmiştir. Gerçek hesap başarısı veya kısıtlanmama garantisi değildir.
+## Özellikler
 
-## Kurulum
+- Lila dashboard, Türkçe/İngilizce arayüz ve farklı ekranlara uyum.
+- İsteğe bağlı iki tarama: tüm takip edilenler veya geri takip etmeyenler.
+- Arama, tekli/toplu seçim, kopyalama ve profil bağlantıları.
+- Açık onay, duraklatma, devam etme ve iptal.
+- İşlemden sonra bağımsız takip durumu doğrulaması; belirsiz yanıt başarı sayılmaz.
+- Yarım taramaya devam etme, hesap değişimi kontrolü ve sekmeler arası işlem kilidi.
+- Yerel canlı günlük, JSON rapor indirme, güncel küçültülmüş gösterge ve klavye erişimi.
 
-1. Depoyu indir.
-2. Chrome'da chrome://extensions sayfasını aç ve geliştirici modunu etkinleştir.
-3. Paketlenmemiş öğe yükle ile **extension/** klasörünü seç.
-4. www.instagram.com üzerinde eklenti simgesine tıkla. Tarama seçeneğini belirleyip başlat.
-5. Takip bırakmadan önce bir hesapla dene; seçim ve onay gereklidir.
+## Hatalar ve canlı günlük
 
-Mağaza sürümünün Python veya yerel sunucuya ihtiyacı yoktur. Ayarlar ve ilerleme tarayıcıda kalır. Instagram'a oturumlu istekler gönderilir; geliştirici sunucusuna veri aktarılmaz.
+Bir işlem belirsiz yanıt verdiğinde başarılı sayılmaz. **Rapor indir / Download report** ile JSON raporunu kaydet. Raporda sürüm, işlem sonucu ve mevcut olduğunda HTTP durumu ile yanıt türü bulunur.
+
+Canlı günlük tarayıcıda tutulur. Bu paket günlükleri geliştiriciye veya asistana otomatik göndermez; inceleme için raporu kendin paylaşmalısın. Oturum süresi dolarsa yeniden giriş yap. Liste kısıtlaması veya istek sınırı görülürse art arda tekrar başlatma.
+
+## Gizlilik ve izinler
+
+Hazır eklenti yalnızca `activeTab`, `scripting` ve `storage` izinlerini ister. Instagram sekmesindeki mevcut oturumla çalışır. Ayarlar, ilerleme ve günlükler yerel tutulur; geliştirici sunucusuna aktarılmaz. Hazır paket Python, yerel log sunucusu veya uzaktan kontrol bağlantısı içermez.
+
+[Gizlilik belgesi](extension/privacy.html) taslaktır. Mağaza başvurusu öncesinde yayıncı iletişim bilgileri ve nihai herkese açık gizlilik adresi tamamlanmalıdır.
 
 ## Geliştirme ve test
 
-Node.js 24 ve Python 3 kullanılır.
+Gereksinimler: **Node.js 24**, **Python 3** ve Playwright Chromium.
 
 ```sh
+git clone https://github.com/Bluetwinklez/unfollow-instagram-dashboard.git
+cd unfollow-instagram-dashboard
 npm ci
 npx playwright install chromium
 npm run build
 npm test
 ```
 
-Linux'ta tarayıcı bağımlılıkları için npx playwright install --with-deps chromium kullanılır. Testler ayrı tarayıcı profilleri açar ve Instagram ağ isteklerini taklit eder; gerçek hesabı kullanmaz. Sonuçlar instagram-magaza-hazirlik/TUM-OZELLIK-TESTLERI.md dosyasına yazılır.
+Linux'ta `npx playwright install --with-deps chromium` kullanılır. Hızlı kontroller: `npm run test:unit`. Tarayıcı kontrolleri: `npm run test:browser`.
 
-Varsayılan hızlar: kişiler arasında 4–4,8 saniye, her 5 işlemde 5 dakika mola. Bağımsız doğrulama ayrıca zaman alır. Süreler kısıtlama olmamasını garanti etmez.
+Testler ayrı tarayıcı profilleri ve taklit Instagram yanıtları kullanır; gerçek hesabında takip bırakmaz. Önceki doğrulama **15/15 test paketi ve 28/28 tarayıcı özellik grubunu** kapsar. [Test raporu](docs/TEST-REPORT.md) ve [GitHub Actions](https://github.com/Bluetwinklez/unfollow-instagram-dashboard/actions) sonuçlarına bakabilirsin. Gerçek hesap başarısı henüz doğrulanmadı.
 
-## GitHub'a yükleme
+## Kaynak ve yayın durumu
 
-Bu klasör yerel bir Git deposu olarak hazırlanmıştır. GitHub'da boş depo oluşturduktan sonra:
+Üçüncü taraf başlangıç kodunun atıfları [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) içinde korunur. Orijinal kaynağın yeniden dağıtım izni henüz doğrulanmadı; bu depo yeni bir dağıtım lisansı vermez. Ayrıntılar: [LICENSE-NOTICE.md](LICENSE-NOTICE.md).
 
-```sh
-git add .
-git commit -m "Prepare following dashboard 2.8.0"
-git remote add origin REPOSITORY_URL
-git push -u origin main
-```
-
-REPOSITORY_URL yerine kendi deponun adresini yaz. Uzak depo: https://github.com/Bluetwinklez/unfollow-instagram-dashboard
-
-## Yayın durumu ve kaynak atfı
-
-Bu uyarlama üçüncü taraf başlangıç kodu içerir; kaynak atfı THIRD_PARTY_NOTICES.md içinde korunur. Kaynak projenin yeniden dağıtım lisansı doğrulanmadığından dağıtım izni durumu ayrıca tamamlanmalıdır. Bu klasör yeni bir dağıtım lisansı vermez. Arayüzde kişisel imza veya watermark bulunmaz; tasarım referansı Krea ile üretilmiştir.
-
-Mağaza gizlilik taslağındaki yayıncı bilgileri ve herkese açık URL doldurulmalıdır. Chrome Web Mağazası'na gönderim yapılmadı. Instagram / Meta ile bağlantılı değildir.
+Görseller örnek hesaplarla hazırlanmıştır. Instagram veya Meta ile bağlantılı değildir. [Yayın kontrol listesi](RELEASE-CHECKLIST.md) mağaza ve gerçek hesap doğrulaması için kalan işleri içerir.
