@@ -1,8 +1,8 @@
-# Tüm özellik testleri — 2.8.0
+# Tüm özellik testleri — 2.8.1
 
-Tarih: 2026-10-17T21:16:07.960Z
+Tarih: 2026-10-17T21:20:15.165Z
 
-15/15 test paketi geçti.
+16/16 test paketi geçti.
 
 | Test paketi | Sonuç | Süre |
 |---|---|---|
@@ -17,10 +17,11 @@ Tarih: 2026-10-17T21:16:07.960Z
 | instagram-extension-lock.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-extension-platform.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-live-log.test.cjs | GEÇTİ | 0.1 sn |
-| Optional local helper: authentication, redaction and writing | GEÇTİ | 0.7 sn |
-| MV3 store build integration | GEÇTİ | 16.0 sn |
-| MV3 private build integration | GEÇTİ | 16.5 sn |
-| Browser feature matrix | GEÇTİ | 20.1 sn |
+| instagram-log-view.test.cjs | GEÇTİ | 0.1 sn |
+| Optional local helper: authentication, redaction and writing | GEÇTİ | 0.8 sn |
+| MV3 store build integration | GEÇTİ | 15.6 sn |
+| MV3 private build integration | GEÇTİ | 16.0 sn |
+| Browser feature matrix | GEÇTİ | 21.7 sn |
 
 ## Gerçek Chromium içindeki özellik grupları
 
@@ -63,4 +64,4 @@ Instagram istekleri test yanıtlarıyla karşılandı. Gerçek hesapta takip bı
 
 ## Bu turda düzeltilen hata
 
-Küçültülmüş gösterge tarama bitince güncellenmiyordu. 2.6.2 sürümünde ilerleme, sonuç ve durum göstergesi güncelleniyor; tarama sonrası açılınca sonuçlar korunuyor.
+2.8.1: Eksik tarama hatası olayları ve hesap başına doğrulama sonuçları günlüğe eklenir. Donmuş sekmenin kilit sorgusu süreyle sınırlanır; işlem sahipliği devredilmez. Günlük okuma/temizleme hataları gösterilir, eski okuma sonucu yeni veriyi ezmez. Yeni günlük görünümü testleri ve eski sürümde hatayı yakalayan donmuş sekme testi geçti.

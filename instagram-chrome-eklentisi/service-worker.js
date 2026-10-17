@@ -78,6 +78,19 @@ function validSender(sender) {
   catch { return false; }
 }
 
+async function ownerIsActive(owner) {
+  let timer;
+  try {
+    const reply = await Promise.race([
+      chrome.tabs.sendMessage(owner.tabId, { type: "IU_OPERATION_PROBE", token: owner.token }, { frameId: 0 }),
+      new Promise(resolve => { timer = setTimeout(() => resolve({ active: true }), 2000); })
+    ]);
+    // A frozen owner is treated as busy: never transfer its right to send POSTs.
+    return reply?.active === true;
+  } catch { return false; /* Closed/navigated tabs have no active owner. */ }
+  finally { clearTimeout(timer); }
+}
+
 async function handleOperation(message, sender) {
   if (!validSender(sender) || typeof message.token !== "string" || !message.token || message.token.length > 100) return { ok: false, reason: "sender" };
   const stored = await chrome.storage.session.get(OPERATION_KEY);
@@ -90,12 +103,7 @@ async function handleOperation(message, sender) {
   if (message.type === "IU_OPERATION_CHECK") return { ok: owns };
   if (!/^\d{1,30}$/.test(String(message.viewerId)) || !["scan", "unfollow"].includes(message.kind)) return { ok: false, reason: "request" };
   if (owner) {
-    let active = false;
-    try {
-      const reply = await chrome.tabs.sendMessage(owner.tabId, { type: "IU_OPERATION_PROBE", token: owner.token }, { frameId: 0 });
-      active = reply?.active === true;
-    } catch { /* The owning page closed or navigated. */ }
-    if (active) return { ok: false, reason: "busy" };
+    if (await ownerIsActive(owner)) return { ok: false, reason: "busy" };
   }
   await chrome.storage.session.set({ [OPERATION_KEY]: { tabId: sender.tab.id, token: message.token, viewerId: String(message.viewerId), kind: message.kind } });
   return { ok: true };
@@ -112,7 +120,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 const LOG_KEY = "iu_live_log_v1";
-const LOG_EVENTS = new Set(["request.start","request.end","request.error","operation.start","operation.end","operation.busy","scan.page","scan.error","scan.pause","scan.resume","scan.cancel","unfollow.pause","unfollow.resume","unfollow.cancel","panel.close","storage.error"]);
+const LOG_EVENTS = new Set(["request.start","request.end","request.error","operation.start","operation.end","operation.error","operation.busy","scan.page","scan.error","scan.pause","scan.resume","scan.cancel","unfollow.pause","unfollow.resume","unfollow.cancel","unfollow.result","panel.close","storage.error"]);
 
 function cleanLog(raw, tabId) {
   if (!raw || !LOG_EVENTS.has(raw.event)) return null;

@@ -1,0 +1,36 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
+const elements=new Map();
+const watchdog=setTimeout(()=>{console.error('FAIL: live log view test stalled');process.exit(1)},3000);
+function element(){return {textContent:'',hidden:false,checked:false,disabled:false,children:[],handlers:{},addEventListener(name,fn){this.handlers[name]=fn},appendChild(child){this.children.push(child)},replaceChildren(fragment){this.children=fragment.children},click(){}}}
+for(const id of ['rows','errors','follow','empty','status','bridge','clear','download'])elements.set(id,element());
+let read=async()=>({iu_live_log_v1:[]}),clearOK=false;
+const chrome={storage:{session:{get:()=>read()},onChanged:{addListener(){}}},runtime:{async sendMessage(){return {ok:clearOK}},getManifest:()=>({version:'test'})}};
+const context=vm.createContext({chrome,document:{getElementById:id=>elements.get(id),createDocumentFragment:element,createElement:element},Date,console,setInterval(){},setTimeout,URL,Blob});
+vm.runInContext(fs.readFileSync('extension/logs.js','utf8'),context);
+(async()=>{
+ await new Promise(resolve=>setImmediate(resolve));
+ read=async()=>{throw Error('storage unavailable')};
+ await vm.runInContext('refresh()',context);
+ assert.match(elements.get('status').textContent,/okunamadı/);
+ read=async()=>({iu_live_log_v1:[{at:new Date().toISOString(),tabId:1,event:'scan.error',level:'error',status:429}]});
+ await vm.runInContext('refresh()',context);
+ assert.match(elements.get('status').textContent,/bağlı.*1 olay/);
+ let finishOld;
+ read=()=>new Promise(resolve=>finishOld=resolve);
+ const old=vm.runInContext('refresh()',context);
+ read=async()=>({iu_live_log_v1:[{at:new Date().toISOString(),tabId:1,event:'unfollow.result',outcome:'stopped',level:'warn',status:200,loaded:1,total:2,confirmed:0}]});
+ await vm.runInContext('refresh()',context);
+ finishOld({iu_live_log_v1:[]});await old;
+ assert.equal(elements.get('rows').children.length,1,'Late reads must not overwrite the latest log');
+ const row=elements.get('rows').children[0];
+ assert.match(row.children[3].textContent,/doğrulanamadı/);
+ assert.equal(row.children[4].textContent,'1 / 2 · 0 doğrulandı');
+ await elements.get('clear').handlers.click();
+ assert.match(elements.get('status').textContent,/temizlenemedi/);
+ assert.equal(elements.get('clear').disabled,false);
+ clearOK=true;read=async()=>({iu_live_log_v1:[]});
+ await elements.get('clear').handlers.click();
+ assert.equal(elements.get('rows').children.length,0);
+ assert.match(elements.get('bridge').textContent,/Asistana otomatik aktarım yok/);
+ console.log('PASS: log read failure recovery, out-of-order read protection, unconfirmed outcome/progress, denied clear handling and truthful browser-only status.');
+})().catch(error=>{console.error(error);process.exitCode=1}).finally(()=>clearTimeout(watchdog));

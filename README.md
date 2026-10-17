@@ -10,15 +10,15 @@ Instagram takip listesini lila bir dashboard üzerinden yönetmek için Chrome M
 
 | Dosya | İçerik |
 |---|---|
-| `takip-paneli-chrome-2.8.0.zip` | Chrome'a kurulacak hazır eklenti; derleme gerekmez. |
-| `takip-paneli-source-2.8.0.zip` | Kaynak kod, testler, belgeler ve derleme betikleri. |
+| `takip-paneli-chrome-2.8.1.zip` | Chrome'a kurulacak hazır eklenti; derleme gerekmez. |
+| `takip-paneli-source-2.8.1.zip` | Kaynak kod, testler, belgeler ve derleme betikleri. |
 | `SHA256SUMS.txt` | İki ZIP'in SHA-256 doğrulama değerleri. |
 
 Bu sürüm GitHub üzerinden dağıtılır. Chrome Web Mağazası'nda henüz yayınlanmadı. Önceki gerçek hesapta görülen “unexpected response” hatasının çözüldüğü canlı kullanımda henüz doğrulanmadı.
 
 ## Chrome'a kurulum
 
-1. **takip-paneli-chrome-2.8.0.zip** dosyasını indir.
+1. **takip-paneli-chrome-2.8.1.zip** dosyasını indir.
 2. ZIP'e sağ tıklayıp **Tümünü ayıkla** ile kalıcı bir klasöre çıkar.
 3. Chrome adres çubuğuna `chrome://extensions` yaz.
 4. Sağ üstten **Geliştirici modu** seçeneğini aç.
@@ -55,6 +55,12 @@ Varsayılan süreler: işlemler arasında **4–4,8 saniye**, her **5 işlemde 5
 
 ## Hatalar ve canlı günlük
 
+![Canlı günlük ekranı](docs/screenshots/live-log.png)
+
+Panelin üstündeki **Canlı günlük (≡)** düğmesi kayıt ekranını açar. Tarama hataları ve her takip bırakmanın doğrulama sonucu anlık eklenir. Günlük son 500 olayı tutar; Chrome oturumu kapatılınca silinir. İndirdiğin JSON dosyaları cihazında kalır. Okuma/temizleme hataları ekranda belirtilir; kayıt ekranı 5 saniyede bir bağlantısını yeniden kontrol eder.
+
+**Asistana otomatik canlı aktarım bu hazır ZIP’te yoktur.** İnceleme için Günlüğü indir ile dosyayı paylaşabilirsin. Kaynak koddaki isteğe bağlı yerel yardımcı ayrı kurulum gerektirir; Releases eklenti paketine dahil değildir.
+
 Bir işlem belirsiz yanıt verdiğinde başarılı sayılmaz. **Rapor indir / Download report** ile JSON raporunu kaydet. Raporda sürüm, işlem sonucu ve mevcut olduğunda HTTP durumu ile yanıt türü bulunur.
 
 Canlı günlük tarayıcıda tutulur. Bu paket günlükleri geliştiriciye veya asistana otomatik göndermez; inceleme için raporu kendin paylaşmalısın. Oturum süresi dolarsa yeniden giriş yap. Liste kısıtlaması veya istek sınırı görülürse art arda tekrar başlatma.
@@ -80,7 +86,11 @@ npm test
 
 Linux'ta `npx playwright install --with-deps chromium` kullanılır. Hızlı kontroller: `npm run test:unit`. Tarayıcı kontrolleri: `npm run test:browser`.
 
-Testler ayrı tarayıcı profilleri ve taklit Instagram yanıtları kullanır; gerçek hesabında takip bırakmaz. Önceki doğrulama **15/15 test paketi ve 28/28 tarayıcı özellik grubunu** kapsar. [Test raporu](docs/TEST-REPORT.md) ve [GitHub Actions](https://github.com/Bluetwinklez/unfollow-instagram-dashboard/actions) sonuçlarına bakabilirsin. Gerçek hesap başarısı henüz doğrulanmadı.
+Testler ayrı tarayıcı profilleri ve taklit Instagram yanıtları kullanır; gerçek hesabında takip bırakmaz. Önceki doğrulama **16/16 test paketi ve 28/28 tarayıcı özellik grubunu** kapsar. [Test raporu](docs/TEST-REPORT.md) ve [GitHub Actions](https://github.com/Bluetwinklez/unfollow-instagram-dashboard/actions) sonuçlarına bakabilirsin. Gerçek hesap başarısı henüz doğrulanmadı.
+
+## Yayın paketi hazırlama
+
+Derleme ve testler geçtikten sonra değişiklikleri Git’e commit et; ardından `python scripts/package-release.py` çalıştır. Betik sürüm/test durumunu, izinleri ve paket dosyalarını denetleyip kurulabilir ZIP, kaynak ZIP ve SHA-256 listesi üretir.
 
 ## Kaynak ve yayın durumu
 
