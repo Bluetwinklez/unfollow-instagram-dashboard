@@ -308,8 +308,8 @@ async function sendUnfollowRequest(id, csrf) {
   assertViewer();
   const currentCsrf = getCookie("csrftoken");
   if (!currentCsrf) return failed(t("csrfMissing"));
-  const {response, text} = await igRequest(`/api/v1/friendships/destroy/${encodeURIComponent(id)}/`, {
-   method:"POST", headers:{...IG_HEADERS,"accept":"application/json","x-csrftoken":currentCsrf}
+  const {response, text} = await igRequest(`/web/friendships/${encodeURIComponent(id)}/unfollow/`, {
+   method:"POST", headers:{...IG_HEADERS,"content-type":"application/x-www-form-urlencoded","x-csrftoken":currentCsrf}
   });
   if (destroyed || state.unfollowCancelled) return failed(t("cancelledUncertain"));
   assertViewer();
