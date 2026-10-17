@@ -7,7 +7,8 @@
     "build": "node scripts/build-extension.cjs && node scripts/build-store.cjs && node scripts/sync-extension.cjs",
     "test": "node scripts/test-all.cjs",
     "test:unit": "node scripts/test-unit.cjs",
-    "test:browser": "node instagram-extension-browser.test.cjs && node instagram-features-browser.test.cjs"
+    "test:browser": "node instagram-extension-browser.test.cjs && node instagram-features-browser.test.cjs",
+    "auth:cws": "node scripts/cws-auth-helper.mjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"

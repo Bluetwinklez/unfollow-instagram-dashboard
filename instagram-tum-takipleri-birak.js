@@ -129,7 +129,15 @@ function showResults(checkpoint, complete) { state.viewerId = String(checkpoint.
   assertViewer(viewerId);
   if (!Array.isArray(json?.users)) throw new Error(t("scanFailed"));
   if (json.should_limit_list_of_followers === true || json.should_limit_list_of_followings === true) throw scanError("incomplete", t("limitedList"));
-  const users = json.users.map(normalizeUser).filter(u => u.id && u.username);
+  const users = [];
+  for (const raw of json.users) {
+   if (!raw || typeof raw !== "object" || Array.isArray(raw)) throw scanError("incomplete", t("listChanged"));
+   const user = normalizeUser(raw);
+   // Matching followers needs their ID, even when Instagram omits a username.
+   // A missing ID can change the comparison, so never silently discard it.
+   if (!user.id || (kind === "following" && !user.username)) throw scanError("incomplete", t("listChanged"));
+   users.push(user);
+  }
   const previousCount=dedupe(results).length;
   results.push(...users);
   const unique = dedupe(results);
