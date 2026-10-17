@@ -6,11 +6,11 @@ function fixture(post,verification){let api;const calls=[];
 }
 (async()=>{
  for(const [body,kind] of [['<html>login</html>','html'],['','empty'],['not json','text'],['null','json']]){
-  const {api,calls}=fixture({body});await api.startUnfollow();
+  const {api,calls}=fixture({body});api.state.timings.continueOnFailure=false;await api.startUnfollow();
   assert.equal(api.state.log[0].ok,false);assert.equal(api.state.log[0].diagnostics.mutation.httpStatus,200);assert.equal(api.state.log[0].diagnostics.mutation.responseKind,kind);
   assert.match(api.state.log[0].reason,/HTTP 200/);assert.deepEqual(calls,['POST']);assert.equal(api.state.unfollowOutcome,'stopped');assert.ok(!JSON.stringify(api.state.log).includes('login'));
  }
- const {api,calls}=fixture({body:'{"status":"ok","friendship_status":{"following":false}}'},{body:'<html>private response</html>'});
+ const {api,calls}=fixture({body:'{"status":"ok","friendship_status":{"following":false}}'},{body:'<html>private response</html>'});api.state.timings.continueOnFailure=false;
  await api.startUnfollow();assert.equal(api.state.log[0].ok,false);assert.equal(api.state.log[0].diagnostics.verification.responseKind,'html');assert.deepEqual(calls,['POST','GET']);assert.ok(!JSON.stringify(api.state.log).includes('private response'));
  api.state.search='iki';api.pruneSelectionToDisplayed();assert.deepEqual([...api.state.selected],['2']);
  api.state.search='yok';api.pruneSelectionToDisplayed();assert.equal(api.state.selected.size,0);
