@@ -1,2 +1,2 @@
-202dab2d634c0350744d1a2fef7f0dda24c45614906789d57c7abf5450a546d1  takip-paneli-chrome-2.8.6.zip
-ba10c8514f2ba80771e71df13cb3f8b77a7dbbe74914f5631ad6bbb8e5ae711e  takip-paneli-source-2.8.6.zip
+5fff993ce7a290370fd73c355c79b83e45c4995debe9bf6f46d484f57bef822e  takip-paneli-chrome-2.8.6.zip
+8d1e51d15d8eca7e2081252191285f2faddb833da45e2e41be0336bbfe15ae03  takip-paneli-source-2.8.6.zip
