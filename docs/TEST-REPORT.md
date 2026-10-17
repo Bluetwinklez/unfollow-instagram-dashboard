@@ -1,12 +1,12 @@
 # Tüm özellik testleri — 2.8.0
 
-Tarih: 2026-10-17T21:09:23.194Z
+Tarih: 2026-10-17T21:16:07.960Z
 
 15/15 test paketi geçti.
 
 | Test paketi | Sonuç | Süre |
 |---|---|---|
-| instagram-safety.test.cjs | GEÇTİ | 0.2 sn |
+| instagram-safety.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-unfollow-verification.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-scan-compatibility.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-diagnostics.test.cjs | GEÇTİ | 0.1 sn |
@@ -17,10 +17,10 @@ Tarih: 2026-10-17T21:09:23.194Z
 | instagram-extension-lock.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-extension-platform.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-live-log.test.cjs | GEÇTİ | 0.1 sn |
-| Optional local helper: authentication, redaction and writing | GEÇTİ | 0.9 sn |
-| MV3 store build integration | GEÇTİ | 15.9 sn |
-| MV3 private build integration | GEÇTİ | 15.6 sn |
-| Browser feature matrix | GEÇTİ | 21.5 sn |
+| Optional local helper: authentication, redaction and writing | GEÇTİ | 0.7 sn |
+| MV3 store build integration | GEÇTİ | 16.0 sn |
+| MV3 private build integration | GEÇTİ | 16.5 sn |
+| Browser feature matrix | GEÇTİ | 20.1 sn |
 
 ## Gerçek Chromium içindeki özellik grupları
 
