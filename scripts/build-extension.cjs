@@ -111,7 +111,7 @@ source=source.replace('fail: state.log.filter((e) => !e.ok).length });','fail: s
 source=source.replace('const persisted = loadStored();',`Object.assign(I18N.tr,{otherOperation:"Başka bir Instagram sekmesinde işlem sürüyor. Önce o işlemi durdur veya bitmesini bekle.",lockLost:"Eklenti bağlantısı veya işlem izni kayboldu. Sayfayı yenileyip yeniden aç.",downloadReport:"Raporu indir",unfollowDoneBody:"{ok} doğrulandı · {fail} doğrulanamadı · {remaining} işlenmedi"});
 Object.assign(I18N.en,{otherOperation:"Another Instagram tab is busy. Stop that operation or wait for it to finish.",lockLost:"Extension connection or operation ownership was lost. Reload the page and reopen the tool.",downloadReport:"Download report",unfollowDoneBody:"{ok} confirmed · {fail} unconfirmed · {remaining} not processed"});
 const persisted = loadStored();`);
-source=source.replace(/const VERSION = "[^"]+";/,'const VERSION = "2.8.10-extension";');
+source=source.replace(/const VERSION = "[^"]+";/,'const VERSION = "2.8.11-extension";');
 // Settings are a draft until Save, and success is shown only after storage flush.
 const restore='Object.assign(state.timings, DEFAULT_TIMINGS); dialog.querySelectorAll("[data-setting]").forEach((input) => { const key = input.getAttribute("data-setting"); if (input.type === "checkbox") input.checked = Boolean(state.timings[key]); else input.value = state.timings[key]; });';
 if(!source.includes(restore))throw new Error('Settings restore boundary missing');
@@ -169,4 +169,4 @@ const wrapper=`// Bundled local script. Runs only after an explicit extension ac
 })();
 `;
 fs.writeFileSync(path.join(dir,'content.js'),wrapper);
-console.log('Bundled v2.8.10 with redacted live diagnostics and optional authenticated loopback file logging.');
+console.log('Bundled v2.8.11 with redacted live diagnostics and optional authenticated loopback file logging.');
