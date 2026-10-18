@@ -1,13 +1,17 @@
-# Yayın kontrol listesi — 2.8.7
+# Yayın kontrol listesi
 
-- [x] Derleme ve 16 test paketi / 28 tarayıcı özellik grubu geçti; Instagram yanıtları taklit edildi.
-- [x] Hazır eklentinin izinleri yalnızca activeTab, scripting ve storage.
-- [x] Günlük; tarama hataları, doğrulama sonuçları, okuma/temizleme hataları ve aktarım durumu için denetlendi.
-- [x] Paketleme betiği test durumunu, temiz Git revizyonunu, dosya listesini ve ZIP kökündeki manifesti doğrular.
-- [x] Yerel yardımcı anahtarları ve yapılandırmaları Git'e dahil değil.
-- [ ] Gerçek Instagram hesabında tek hesaplık işlem ve bağımsız doğrulamayı dene.
-- [ ] Kaynak yeniden dağıtım iznini doğrula.
-- [ ] Yayıncı adı/destek iletişimini ve nihai herkese açık gizlilik URL'sini tamamla.
-- [ ] Chrome Web Mağazası'na gönder ve inceleme sonucunu doğrula.
+- [x] Başlangıç revizyonu ve özgün arşiv özeti korundu.
+- [x] Belirsizlikte durma ve başarı sayacı onarıldı.
+- [x] Ön ilişki kontrolü + tek POST + bağımsız doğrulama uygulandı.
+- [x] Koruma, kimlik, sahiplik ve iptal gönderim sınırında tekrar denetleniyor.
+- [x] Yerel dashboard, kurallar, simülasyon, görevler, yedek ve destek raporu test edildi.
+- [x] 23/23 otomatik test paketi geçti; gerçek Instagram yanıtları taklit edildi.
+- [x] İzinler activeTab, scripting, storage ile sınırlı.
+- [x] Özel anahtar/config/log dosyaları paket allowlist dışında.
+- [x] OAuth yardımcısı state/PKCE ve loopback ile onarıldı.
+- [x] README, mimari, gizlilik ve otomasyon belgeleri güncellendi.
+- [ ] Gerçek hesapta tek hedef üzerinde bağımsız canlı kabul testi.
+- [ ] Kaynak yeniden dağıtım hakkının doğrulanması.
+- [ ] Google mağaza beyanları, hesap iletişim doğrulaması ve inceleme sonucu.
 
-Hazır Releases paketi tarayıcı içi günlük içerir; asistana otomatik aktarım içermez. [Denetim raporu](docs/AUDIT-2.8.1.md).
+Son test kanıtı docs/repair/TEST-RESULTS.json dosyasına kopyalanır. GitHub Pages URL'sinin erişimi ve son GitHub iş akışları yayın sonrasında ayrıca kontrol edilir. Chrome/Brave sınırları BROWSER-COMPATIBILITY.json içinde belirtilir.

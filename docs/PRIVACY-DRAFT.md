@@ -1,6 +1,6 @@
 # Instagram Takip Yönetimi — Gizlilik Politikası
 
-Son güncelleme: 18 Ekim 2026. Kapsam: 2.8.7 mağaza sürümü.
+Son güncelleme: 18 Ekim 2026. Kapsam: 2.9.0 mağaza sürümü.
 
 ## İşlenen bilgiler ve amaç
 Eklenti, kullanıcı başlattığında Instagram'da takip edilen ve isteğe bağlı olarak takipçi hesaplarının kimliklerini, kullanıcı adlarını, görünen adlarını, profil fotoğrafı adreslerini ve takip durumlarını işler. Bu bilgiler listeleme, arama, seçim ve onaylanan takip bırakma işlemleri için kullanılır. Başka sekmelerin geçmişini, mesajları, konum, sağlık veya finans bilgilerini okumaz.
@@ -11,6 +11,7 @@ Takip edilen/takipçi listeleri ve takip işlemleri için Instagram'a istek gön
 
 ## Yerel saklama
 Ayarlar, dil, gizlenen hesap kimlikleri ve yarım kalan tarama (hesap kimliği, liste ve sayfalama bilgileri) chrome.storage.local içinde saklanır. Yarım kalan kayıtlar 24 saatten eskiyse devam etmek için kullanılmaz; bu süre otomatik fiziksel silme garantisi değildir. Tamamlanan taramanın kontrol noktası temizlenir. Diğer yerel kayıtlar eklenti kaldırılınca silinir.
+Çalışma alanı tamamlanan taramaları, hesap kimliklerini/kullanıcı adlarını, isteğe bağlı koruma/favori/etiket/notları, kayıtlı seçimleri, inceleme oturumlarını, görevleri ve yerel iş akışlarını cihazda saklar. Tarama saklama sayısı ayarlanabilir. Bu veriler Ayarlar ekranından yedeklenebilir veya hesap bazında temizlenebilir. İşlem geçmişi en fazla 300 kaydı cihazda saklar; belirsiz işlemler otomatik yeniden başlatılmaz. Görevler ve simülasyonlar Instagram işlemi göndermez.
 Tanı günlüğü, zaman, sekme numarası, olay, HTTP durumu, yanıt türü, süre ve ilerleme gibi en fazla 500 olayı Chrome oturumu boyunca saklar. Çerezler, şifreler, kullanıcı adları, istek başlıkları ve ham yanıt gövdeleri tanı günlüğüne dahil edilmez. Günlük ekrandan temizlenebilir ve Chrome oturumu sona erdiğinde silinir.
 
 ## Dışa aktarma ve paylaşım
@@ -21,5 +22,5 @@ Bu sürüm geliştirici sunucusuna tanı kaydı göndermez, uzaktan kontrol sağ
 Tarama ve takip bırakma kullanıcı tarafından başlatılır. Takip bırakmak ayrıca onay gerektirir. Kullanıcı duraklatabilir veya iptal edebilir; gönderilmiş bir istek tamamlanmış olabilir. Eklentiyi kaldırmak eklentinin yerel verilerini siler. Veri uygulamaları değişirse politika ve mağaza açıklaması güncellenir.
 
 ## İletişim
-YAYINDAN ÖNCE DOLDURULACAK: Yayıncı adı ve destek e-posta adresi.
-Bu metin yayıncının iletişim bilgileri eklenip herkese açık bir HTTPS adresinde yayımlandıktan sonra mağaza formuna bağlanmalıdır.
+Proje ve destek: https://github.com/Bluetwinklez/unfollow-instagram-dashboard/issues
+Yayıncı hesabının Chrome Web Mağazası iletişim ve doğrulama bilgileri geliştirici panelinden ayrıca yönetilir.

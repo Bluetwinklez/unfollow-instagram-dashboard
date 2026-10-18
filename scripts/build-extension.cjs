@@ -34,17 +34,23 @@ source=source.replace('async function rawIgRequest(url, init = {}) {',requestLog
 const scanErrorBoundary='const message=error?.message||t("scanFailed");';
 if(!source.includes(scanErrorBoundary))throw new Error('Scan error logging boundary missing');
 source=source.replace(scanErrorBoundary,'void globalThis.__iuPlatform.log({event:"scan.error",reason:error?.kind||"unknown",status:error?.status}); '+scanErrorBoundary);
-const unfollowResultBoundary='state.log.push({ user, ok: outcome.ok, reason: outcome.reason, diagnostics:outcome.diagnostics });';
+const unfollowResultBoundary='persistOperationHistory();';
 if(!source.includes(unfollowResultBoundary))throw new Error('Unfollow result logging boundary missing');
-source=source.replace(unfollowResultBoundary,unfollowResultBoundary+` void globalThis.__iuPlatform.log({event:"unfollow.result",route:"unfollow",outcome:outcome.ok?"complete":"stopped",reason:outcome.ok?undefined:"response",confirmed:state.log.filter(entry=>entry.ok).length,loaded:state.log.length,total:targets.length,status:(outcome.diagnostics?.verification||outcome.diagnostics?.mutation)?.httpStatus,responseKind:(outcome.diagnostics?.verification||outcome.diagnostics?.mutation)?.responseKind});`);
+source=source.replace(unfollowResultBoundary,unfollowResultBoundary+` void globalThis.__iuPlatform.log({event:"unfollow.result",code:outcome.code,route:"unfollow",outcome:outcome.ok?"complete":"stopped",reason:outcome.ok?undefined:"response",confirmed:state.log.filter(entry=>entry.ok).length,loaded:state.log.length,total:targets.length,status:(outcome.diagnostics?.verification||outcome.diagnostics?.mutation)?.httpStatus,responseKind:(outcome.diagnostics?.verification||outcome.diagnostics?.mutation)?.responseKind});`);
 source=source.replace('checkpoint[cursorKey] = nextCursor; saveCheckpoint(checkpoint);','checkpoint[cursorKey] = nextCursor; saveCheckpoint(checkpoint); void globalThis.__iuPlatform.log({event:"scan.page",loaded:results.length,total});');
 for(const kind of ['scan','unfollow']){
  source=source.replace('state.'+kind+'Paused = !state.'+kind+'Paused;', 'state.'+kind+'Paused = !state.'+kind+'Paused; void globalThis.__iuPlatform.log({event:state.'+kind+'Paused?"'+kind+'.pause":"'+kind+'.resume"});');
  source=source.replace('state.'+kind+'Cancelled = true; state.'+kind+'Paused = false; activeRequest?.abort();','void globalThis.__iuPlatform.log({event:"'+kind+'.cancel"}); state.'+kind+'Cancelled = true; state.'+kind+'Paused = false; activeRequest?.abort();');
 }
-const logButton='<button type="button" data-action="live-log" aria-label="Canlı günlük" title="Canlı günlük">≡</button> ';
+const logButton='<button type="button" data-action="workspace" aria-label="${escapeAttr(t("workspace"))}" title="${escapeAttr(t("workspace"))}">▦</button> <button type="button" data-action="live-log" aria-label="Canlı günlük" title="Canlı günlük">≡</button> ';
 source=source.replace('<button type="button" data-action="settings"',logButton+'<button type="button" data-action="settings"');
-source=source.replace('function bindHeader(root) {','function bindHeader(root) {root.querySelector("[data-action=\'live-log\']")?.addEventListener("click",()=>void globalThis.__iuPlatform.openLog());');
+source=source.replace('function bindHeader(root) {','function bindHeader(root) {root.querySelector("[data-action=\'workspace\']")?.addEventListener("click",()=>void globalThis.__iuPlatform.openWorkspace());root.querySelector("[data-action=\'live-log\']")?.addEventListener("click",()=>void globalThis.__iuPlatform.openLog());');
+source=source.replace('function showResults(checkpoint, complete) {','function showResults(checkpoint, complete) { if(complete)void globalThis.__iuPlatform.saveSnapshot(checkpoint);');
+const confirmation='const count = state.selected.size; showDialog({ title: t("unfollowConfirmTitle", { count }),';
+if(!source.includes(confirmation))throw Error('Confirmation boundary missing');
+source=source.replace('function confirmUnfollow() {','async function confirmUnfollow() {');
+source=source.replace(confirmation,'let excluded=0; try { const protectedIds=new Set(await globalThis.__iuPlatform.protectedIds(state.viewerId)); for(const id of protectedIds)if(state.selected.delete(id))excluded++; } catch {toast(t("lockLost"));return;} state.protectedExcluded=excluded; renderBody(); if(!state.selected.size){toast(state.language===\"tr\"?\"Seçimdeki hesaplar korumalı; işlem yapılmadı.\":\"Selected accounts are protected; no action sent.\");return;} const count = state.selected.size; showDialog({ title: t("unfollowConfirmTitle", { count }),');
+source=source.replace('body: t("unfollowConfirmBody"),','body: t("unfollowConfirmBody")+(state.protectedExcluded? (state.language===\"tr\"?\" Korumalı olduğu için dışlanan: ":\" Protected accounts excluded: ")+state.protectedExcluded: \"\"),');
 // Response diagnostics and localized explanations are shared with the core.
 const operations=`let operationStarting = false;
 async function withExtensionOperation(kind, task) {
@@ -59,9 +65,9 @@ async function withExtensionOperation(kind, task) {
   claimed = true;
   void globalThis.__iuPlatform.log({event:"operation.start",route:kind==="scan"?"following":"unfollow"});
   if (destroyed) return;
-  if (kind === "scan") {
-   extensionStorage = await globalThis.__iuPlatform.createStorage([STORAGE_KEY,CHECKPOINT_KEY], showStorageWarning);
-   state.checkpoint = loadCheckpoint();
+  {
+   extensionStorage = await globalThis.__iuPlatform.createStorage([STORAGE_KEY,CHECKPOINT_KEY,"iu_operation_history_v1"], showStorageWarning);
+   if(kind === "scan")state.checkpoint = loadCheckpoint();
   }
   if (!destroyed) await task();
   void globalThis.__iuPlatform.log({event:"operation.end",outcome:kind==="scan"?(state.error?"stopped":state.scanCancelled?"cancelled":state.mode):state.unfollowOutcome,confirmed:state.log.filter(e=>e.ok).length});
@@ -74,17 +80,21 @@ async function withExtensionOperation(kind, task) {
  }
 }
 async function startScan(options = {}) {return withExtensionOperation("scan", () => runScan(options));}
-async function startUnfollow() {return withExtensionOperation("unfollow", () => runUnfollow());}
+async function startUnfollow() {return withExtensionOperation("unfollow", async () => {
+ const protectedIds=new Set(await globalThis.__iuPlatform.protectedIds(state.viewerId));
+ for(const id of protectedIds)state.selected.delete(id);
+ await runUnfollow();
+});}
 function downloadRunReport() {
  const confirmed = state.log.filter(entry => entry.ok);
  const logged = new Set(state.log.map(entry => entry.user.id));
  const skipped = state.users.filter(user => state.selected.has(user.id) && !logged.has(user.id));
  const report = {
   schemaVersion:2, extensionVersion:VERSION, scanScope:state.scanScope, exportedAt:new Date().toISOString(), accountId:state.viewerId,
-  outcome:state.unfollowOutcome, planned:state.progress.total,
-  confirmed:confirmed.length, notConfirmed:state.log.length-confirmed.length,
-  notProcessed:skipped.length,
-  accounts:[...state.log.map(entry => ({id:entry.user.id, username:entry.user.username, status:entry.ok?"confirmed":"not-confirmed", reason:entry.reason||"",diagnostics:entry.diagnostics||null})),
+  outcome:state.unfollowOutcome, planned:state.progress.total,protectedExcluded:state.protectedExcluded||0,
+  confirmed:confirmed.length, failed:state.log.filter(e=>e.category==="failed").length, uncertain:state.log.filter(e=>e.category==="uncertain").length, notConfirmed:state.log.filter(e=>e.category!=="confirmed"&&e.category!=="not_processed").length,
+  notProcessed:skipped.length+state.log.filter(e=>e.category==="not_processed").length,
+  accounts:[...state.log.map(entry => ({id:entry.user.id, username:entry.user.username, status:entry.ok?"confirmed":"not-confirmed",category:entry.category,code:entry.code,operationId:entry.operationId, reason:entry.reason||"",diagnostics:entry.diagnostics||null})),
     ...skipped.map(user => ({id:user.id,username:user.username,status:"not-processed",reason:""}))]
  };
  const url = URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:"application/json;charset=utf-8"}));
@@ -95,23 +105,37 @@ function downloadRunReport() {
 }
 `;
 source=source.replace('async function runScan(options = {})',operations+'async function runScan(options = {})');
-const postGuard='assertViewer();\n  const currentCsrf = getCookie("csrftoken");';
+const dispatchBoundary='transitionOperation(state.activeOperation,"dispatching"); dispatched=true;';
+if(!source.includes(dispatchBoundary))throw Error('Dispatch persistence guard boundary missing');
+source=source.replace(dispatchBoundary,`if(!await extensionStorage.flush())return failed(state.language==="tr"?"İşlem niyeti kaydedilemedi; istek gönderilmedi.":"Could not persist operation intent; no request sent.");
+  while(true){
+   await waitWhile(()=>state.unfollowPaused&&!state.unfollowCancelled&&!destroyed);
+   if(destroyed||state.unfollowCancelled)return failed(t("cancelledUncertain"));
+   if(!await globalThis.__iuPlatform.assertOwnership())throw Object.assign(new Error(t("lockLost")),{kind:"operation",code:"OPERATION_LOCK_LOST"});
+   if(await globalThis.__iuPlatform.isProtected(state.viewerId,String(id)))return failed(state.language==="tr"?"Korumalı hesap; istek gönderilmedi.":"Protected account; no request sent.");
+   if(destroyed||state.unfollowCancelled)return failed(t("cancelledUncertain"));
+   if(state.unfollowPaused)continue;
+   assertViewer();currentCsrf=getCookie("csrftoken");if(!currentCsrf)return failed(t("csrfMissing"));break;
+  }
+  `+dispatchBoundary);
+const postGuard='assertViewer();\n  let currentCsrf = getCookie("csrftoken");';
 if(!source.includes(postGuard))throw new Error('POST ownership guard boundary missing');
 source=source.replace(postGuard,`if (!await globalThis.__iuPlatform.assertOwnership()) throw Object.assign(new Error(t("lockLost")),{kind:"operation"});
   await waitWhile(() => state.unfollowPaused && !state.unfollowCancelled && !destroyed);
   if (destroyed || state.unfollowCancelled) return failed(t("cancelledUncertain"));
   assertViewer();
-  const currentCsrf = getCookie("csrftoken");`);
+  if(await globalThis.__iuPlatform.isProtected(state.viewerId,String(id)))return failed(state.language==="tr"?"Korumalı hesap; işlem yapılmadı.":"Protected account; no action sent.");
+  let currentCsrf = getCookie("csrftoken");`);
 source=source.replace('error?.kind === "account" ? error.message', '(error?.kind === "account" || error?.kind === "operation") ? error.message');
 source=source.replace('function bindUnfollow(body) {', 'function bindUnfollow(body) { body.querySelector("[data-action=\'download-report\']")?.addEventListener("click", downloadRunReport);');
 const backButton='<button type="button" class="iu-btn iu-btn--primary" data-action="back-results">${escapeHTML(t("goBack"))}</button>';
 if(!source.includes(backButton))throw new Error('Report action boundary missing');
 source=source.replace(backButton,backButton+' <button type="button" class="iu-btn" data-action="download-report">${escapeHTML(t("downloadReport"))}</button>');
 source=source.replace('fail: state.log.filter((e) => !e.ok).length });','fail: state.log.filter((e) => !e.ok).length, remaining: Math.max(0,state.progress.total-state.log.length) });');
-source=source.replace('const persisted = loadStored();',`Object.assign(I18N.tr,{otherOperation:"Başka bir Instagram sekmesinde işlem sürüyor. Önce o işlemi durdur veya bitmesini bekle.",lockLost:"Eklenti bağlantısı veya işlem izni kayboldu. Sayfayı yenileyip yeniden aç.",downloadReport:"Raporu indir",unfollowDoneBody:"{ok} doğrulandı · {fail} doğrulanamadı · {remaining} işlenmedi"});
-Object.assign(I18N.en,{otherOperation:"Another Instagram tab is busy. Stop that operation or wait for it to finish.",lockLost:"Extension connection or operation ownership was lost. Reload the page and reopen the tool.",downloadReport:"Download report",unfollowDoneBody:"{ok} confirmed · {fail} unconfirmed · {remaining} not processed"});
+source=source.replace('const persisted = loadStored();',`Object.assign(I18N.tr,{workspace:"Çalışma alanı",otherOperation:"Başka bir Instagram sekmesinde işlem sürüyor. Önce o işlemi durdur veya bitmesini bekle.",lockLost:"Eklenti bağlantısı veya işlem izni kayboldu. Sayfayı yenileyip yeniden aç.",downloadReport:"Raporu indir",unfollowDoneBody:"{ok} doğrulandı · {failed} başarısız · {uncertain} belirsiz · {remaining} işlenmedi"});
+Object.assign(I18N.en,{workspace:"Workspace",otherOperation:"Another Instagram tab is busy. Stop that operation or wait for it to finish.",lockLost:"Extension connection or operation ownership was lost. Reload the page and reopen the tool.",downloadReport:"Download report",unfollowDoneBody:"{ok} confirmed · {failed} failed · {uncertain} uncertain · {remaining} not processed"});
 const persisted = loadStored();`);
-source=source.replace(/const VERSION = "[^"]+";/,'const VERSION = "2.8.12-extension";');
+source=source.replace(/const VERSION = "[^"]+";/,'const VERSION = "2.9.0-extension";');
 // Settings are a draft until Save, and success is shown only after storage flush.
 const restore='Object.assign(state.timings, DEFAULT_TIMINGS); dialog.querySelectorAll("[data-setting]").forEach((input) => { const key = input.getAttribute("data-setting"); if (input.type === "checkbox") input.checked = Boolean(state.timings[key]); else input.value = state.timings[key]; });';
 if(!source.includes(restore))throw new Error('Settings restore boundary missing');
@@ -160,7 +184,7 @@ const wrapper=`// Bundled local script. Runs only after an explicit extension ac
    warning.style.cssText="position:absolute;top:110px;right:20px;max-width:min(420px,calc(100vw - 40px));padding:14px 18px;background:#6b2424;color:#fff;border-radius:10px;pointer-events:auto;z-index:3";
    root.appendChild(warning);
   }
-  let extensionStorage = await globalThis.__iuPlatform.createStorage(["iu_all_following_state_v1","iu_all_following_scan_v1"],showStorageWarning);
+  let extensionStorage = await globalThis.__iuPlatform.createStorage(["iu_all_following_state_v1","iu_all_following_scan_v1","iu_operation_history_v1"],showStorageWarning);
   ${source}
   return {ok:Boolean(document.getElementById("iu-app"))};
  } catch {
@@ -169,4 +193,4 @@ const wrapper=`// Bundled local script. Runs only after an explicit extension ac
 })();
 `;
 fs.writeFileSync(path.join(dir,'content.js'),wrapper);
-console.log('Bundled v2.8.12 with redacted live diagnostics and optional authenticated loopback file logging.');
+console.log('Bundled v2.9.0 with redacted live diagnostics and optional authenticated loopback file logging.');

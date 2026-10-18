@@ -22,7 +22,8 @@ if set(manifest["permissions"]) != {"activeTab", "scripting", "storage"} or mani
     raise SystemExit("Release must contain the browser-only build.")
 
 allowed = {"manifest.json", "content.js", "platform.js", "service-worker.js", "CREDITS.md", "privacy.html"}
-for stem in ("help", "logs"):
+allowed.add("workspace-core.js")
+for stem in ("help", "logs", "workspace"):
     allowed.update(stem + suffix for suffix in (".html", ".css", ".js"))
 allowed.update(manifest["icons"].values())
 actual = {p.relative_to(EXTENSION).as_posix() for p in EXTENSION.rglob("*") if p.is_file()}

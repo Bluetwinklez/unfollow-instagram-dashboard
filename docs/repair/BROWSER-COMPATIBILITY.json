@@ -1,0 +1,16 @@
+{
+  "at": "2026-10-18T02:27:25.069Z",
+  "results": [
+    {
+      "browser": "Google Chrome",
+      "version": "155.0.8059.80",
+      "status": "extension-worker-not-observed",
+      "liveInstagram": false
+    },
+    {
+      "browser": "Brave",
+      "status": "not-installed",
+      "liveInstagram": false
+    }
+  ]
+}

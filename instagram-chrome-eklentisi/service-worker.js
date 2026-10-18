@@ -1,4 +1,5 @@
 "use strict";
+importScripts("workspace-core.js");
 importScripts("log-bridge-config.js");
 
 async function showHelp(tabId, reason = "site") {
@@ -110,6 +111,11 @@ async function handleOperation(message, sender) {
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+ if(message?.type==="IU_HEALTH_PING"){sendResponse({ok:sender.id===chrome.runtime.id&&sender.url===chrome.runtime.getURL("workspace.html")});return false;}
+  if(["IU_WORKSPACE_OPEN","IU_WORKSPACE_CAPTURE","IU_WORKSPACE_COMMIT"].includes(message?.type)){
+   void(async()=>sendResponse(await queueOperation(()=>handleWorkspace(message,sender))))();return true;
+  }
+
   if (["IU_LOG_APPEND", "IU_LOG_CLEAR", "IU_LOG_OPEN"].includes(message?.type)) {
     void (async () => { sendResponse(await queueOperation(() => handleLogMessage(message, sender))); })();
     return true;
@@ -119,12 +125,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   return true;
 });
 
+const LOG_CODES=new Set(["NETWORK_FAILURE","NETWORK_TIMEOUT","REQUEST_ABORTED","HTTP_UNAUTHORIZED","HTTP_FORBIDDEN","HTTP_NOT_FOUND","HTTP_RATE_LIMITED","HTTP_SERVER_ERROR","HTTP_ERROR","UNEXPECTED_HTML","INVALID_JSON","EMPTY_RESPONSE","GRAPHQL_APPLICATION_ERROR","GRAPHQL_PARTIAL_RESULT","UNEXPECTED_RESPONSE_SCHEMA","UNSUPPORTED_INTEGRATION","ACCOUNT_CONTEXT_CHANGED","TARGET_ID_MISMATCH","MUTATION_RESULT_UNCERTAIN","VERIFICATION_UNAVAILABLE","VERIFICATION_INCONCLUSIVE","OPERATION_LOCK_LOST","STORAGE_WRITE_FAILURE","RESPONSE_TOO_LARGE","APPLICATION_REJECTED","CURRENT_STATE_VERIFIED","CANCELLED_BEFORE_DISPATCH","VERIFIED_STILL_FOLLOWING","ALREADY_NOT_FOLLOWING"]);
 const LOG_KEY = "iu_live_log_v1";
 const LOG_EVENTS = new Set(["request.start","request.end","request.error","operation.start","operation.end","operation.error","operation.busy","scan.page","scan.error","scan.pause","scan.resume","scan.cancel","unfollow.pause","unfollow.resume","unfollow.cancel","unfollow.result","panel.close","storage.error"]);
 
 function cleanLog(raw, tabId) {
   if (!raw || !LOG_EVENTS.has(raw.event)) return null;
-  const entry = { at: new Date().toISOString(), tabId, event: raw.event, level:"info" };
+  const entry = { at: new Date().toISOString(), tabId, event: raw.event, level:"info" }; if(LOG_CODES.has(raw.code))entry.code=raw.code;
   for (const field of ["status","durationMs","loaded","total","confirmed"]) {
     if (Number.isFinite(raw[field]) && raw[field] >= 0) entry[field] = Math.min(1e9, Math.round(raw[field]));
   }
@@ -132,11 +139,11 @@ function cleanLog(raw, tabId) {
   if (["following","followers","unfollow","verify","other"].includes(raw.route)) entry.route = raw.route;
   if (["json","html","empty","text"].includes(raw.responseKind)) entry.responseKind = raw.responseKind;
   if (typeof raw.redirected === "boolean") entry.redirected = raw.redirected;
-  if (["complete","cancelled","stopped","results","idle","running"].includes(raw.outcome)) entry.outcome = raw.outcome;
+  if (["complete","cancelled","stopped","results","idle","running","completed_with_errors","complete_no_changes"].includes(raw.outcome)) entry.outcome = raw.outcome;
   if (["rate","session","blocked","network","http","cancelled","incomplete","account","unknown","aborted","response"].includes(raw.reason)) entry.reason = raw.reason;
   if (typeof raw.requestId === "string" && /^[a-zA-Z0-9-]{1,40}$/.test(raw.requestId)) entry.requestId = raw.requestId;
   if (entry.status >= 400 || raw.event.endsWith("error")) entry.level="error";
-  else if (raw.event.endsWith("cancel") || raw.event === "operation.busy" || raw.outcome === "stopped") entry.level="warn";
+  else if (raw.event.endsWith("cancel") || raw.event === "operation.busy" || raw.outcome === "stopped" || raw.outcome === "completed_with_errors") entry.level="warn";
   return entry;
 }
 
@@ -179,3 +186,23 @@ chrome.tabs.onRemoved.addListener(tabId => {
     return { ok: true };
   });
 });
+
+async function handleWorkspace(message,sender){
+ const fromPage=sender.id===chrome.runtime.id && sender.url===chrome.runtime.getURL("workspace.html");
+ if(message.type==="IU_WORKSPACE_OPEN"){
+  if(!validSender(sender))return {ok:false};
+  await chrome.tabs.create({url:chrome.runtime.getURL("workspace.html")});return {ok:true};
+ }
+ if(message.type==="IU_WORKSPACE_CAPTURE"&&!validSender(sender))return {ok:false};
+ if(message.type==="IU_WORKSPACE_COMMIT"&&!fromPage)return {ok:false};
+ const key=IUWorkspace.KEY;
+ const stored=await chrome.storage.local.get(key);const db=IUWorkspace.parse(stored[key]);
+ if(message.type==="IU_WORKSPACE_CAPTURE")IUWorkspace.capture(db,message.snapshot);
+ else{
+  if(message.expectedRevision!==db.revision)return {ok:false,reason:"conflict"};
+  const backup=IUWorkspace.validateBackup({schemaVersion:1,accountId:message.accountId,account:message.account});
+  db.accounts[backup.accountId]=backup.account;db.revision++;
+ }
+ const encoded=JSON.stringify(db);if(encoded.length>7_000_000)return {ok:false,reason:"quota"};
+ await chrome.storage.local.set({[key]:encoded});return {ok:true,revision:db.revision};
+}

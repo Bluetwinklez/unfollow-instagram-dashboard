@@ -1,0 +1,279 @@
+{
+  "version": "2.9.0",
+  "at": "2026-10-18T12:42:40.546Z",
+  "realInstagram": false,
+  "results": [
+    {
+      "name": "instagram-safety.test.cjs",
+      "passed": true,
+      "durationMs": 224,
+      "output": "PASS ambiguous POST stops without fallback or next account\nPASS network failure does not retry mutation\nPASS changed account before starting sends nothing\nPASS changed account after first POST cannot produce success or next POST\nPASS closing aborts pending mutation and retains uncertainty\nPASS short list with known total is not accepted as complete\nPASS server-limited lists never enable results\nPASS complete matching scan succeeds with viewer binding\nPASS repeated cursor prevents scan completion\nPASS missing profile total does not require unsupported metadata endpoint\nPASS server refusal stops at first account\nPASS account switch during verification never counts success\nPASS count check also supports empty following list\nPASS missing cursor while more pages are promised cannot unlock results\nPASS confirmed success removes only confirmed account\n15/15 passed; no real network\n"
+    },
+    {
+      "name": "instagram-unfollow-verification.test.cjs",
+      "passed": true,
+      "durationMs": 135,
+      "output": "PASS: 9 scenarios; independently verified success, retained accounts, stop on uncertainty. No real network.\n"
+    },
+    {
+      "name": "instagram-scan-compatibility.test.cjs",
+      "passed": true,
+      "durationMs": 85,
+      "output": "PASS: original list-only scan works when metadata endpoint rejects, unknown total disclosed, real 429 preserved, HTML not misclassified.\n"
+    },
+    {
+      "name": "instagram-diagnostics.test.cjs",
+      "passed": true,
+      "durationMs": 104,
+      "output": "PASS: ambiguous HTML/empty/text/null preserve HTTP metadata, stop without repeated POST, redact bodies; search prunes invisible selection.\n"
+    },
+    {
+      "name": "instagram-audit-regressions.test.cjs",
+      "passed": true,
+      "durationMs": 84,
+      "output": "PASS null settings cannot prevent startup\nPASS non-array hidden list cannot prevent startup\nPASS invalid checkpoint timestamp and user records are ignored\nPASS duplicate users under changing cursors stop after second page\nPASS unusable saved cursor restarts without retaining stale seeds\nPASS timer-overflow settings cannot turn long waits into immediate actions\nPASS HTTP 200 HTML is an unknown response, not proven sign-out\n7/7 audit regressions passed\n"
+    },
+    {
+      "name": "instagram-timing.test.cjs",
+      "passed": true,
+      "durationMs": 66,
+      "output": "PASS: six mocked unfollows; five 4–4.8s delays, one 5-minute cooldown after fifth POST, six independent verification waits; production defaults unchanged. Virtual timers, no real network.\n"
+    },
+    {
+      "name": "instagram-scope.test.cjs",
+      "passed": true,
+      "durationMs": 102,
+      "output": "PASS: all-following scan, full nonfollowers comparison, mutual exclusion from mutation, partial follower failure hides results, scope-bound resume skips completed following list.\n"
+    },
+    {
+      "name": "instagram-extension.test.cjs",
+      "passed": true,
+      "durationMs": 69,
+      "output": "PASS: MV3, permissions, PNG sizes, CSP-safe bundle, isolated injection, wrong/restricted-page handling.\n[Instagram Takip Yönetimi] Panel açılamadı: restricted\n"
+    },
+    {
+      "name": "instagram-extension-lock.test.cjs",
+      "passed": true,
+      "durationMs": 79,
+      "output": "PASS: concurrent tab lock, owner-only release, worker restart, stale lock recovery, origin validation.\n"
+    },
+    {
+      "name": "instagram-extension-platform.test.cjs",
+      "passed": true,
+      "durationMs": 65,
+      "output": "PASS: ordered writes, remove-after-set, visible storage failure, singleton listener and lock lifecycle.\n"
+    },
+    {
+      "name": "instagram-live-log.test.cjs",
+      "passed": true,
+      "durationMs": 83,
+      "output": "PASS: live logs preserve HTTP status, redact undeclared fields, reject other origins, cap at 500 and restrict clearing.\n"
+    },
+    {
+      "name": "instagram-log-view.test.cjs",
+      "passed": true,
+      "durationMs": 94,
+      "output": "PASS: log read failure recovery, out-of-order read protection, unconfirmed outcome/progress, denied clear handling and truthful browser-only status.\n"
+    },
+    {
+      "name": "instagram-release-proof.test.cjs",
+      "passed": true,
+      "durationMs": 266,
+      "output": "PASS: same-version runtime changes invalidate test proof; ignored credentials/docs and equivalent line endings do not; stale reports cannot package.\n"
+    },
+    {
+      "name": "instagram-oauth.test.cjs",
+      "passed": true,
+      "durationMs": 202,
+      "output": "PASS: OAuth loopback binding, state rejection, PKCE, single token exchange and failed exchange cannot display success.\n"
+    },
+    {
+      "name": "instagram-repair-v5.test.cjs",
+      "passed": true,
+      "durationMs": 97,
+      "output": "PASS: default/explicit preference safety, HTML/empty/network/promotion/errors, text/javascript JSON, exact POST payload/headers, no blind retry, operation history and distinct failed/uncertain outcomes.\n"
+    },
+    {
+      "name": "instagram-workspace.test.cjs",
+      "passed": true,
+      "durationMs": 106,
+      "output": "PASS: workspace account isolation, snapshots/analytics, unknown-safe rules, conflicts, workflow validation/simulation isolation, backup schema, CSV safety and 100–10,000 account performance.\n[{\"count\":100,\"ms\":9.92},{\"count\":1000,\"ms\":3.13},{\"count\":5000,\"ms\":7.08},{\"count\":10000,\"ms\":14.65}]\n"
+    },
+    {
+      "name": "instagram-workspace-storage.test.cjs",
+      "passed": true,
+      "durationMs": 93,
+      "output": "PASS: serialized workspace commits, stale revision rejection, trusted-page checks, account isolation and storage failure preserve existing data.\n"
+    },
+    {
+      "name": "Optional local helper: authentication, redaction and writing",
+      "passed": true,
+      "durationMs": 767,
+      "output": ".\r\n----------------------------------------------------------------------\r\nRan 1 test in 0.542s\r\n\r\nOK\r\n"
+    },
+    {
+      "name": "MV3 store build integration",
+      "passed": true,
+      "durationMs": 19830,
+      "output": "Loaded: chrome-extension://iehjdnlkphppgoggojhjkhabbgnbphko/service-worker.js\nTab target: tab 7B1D7867EF58B9AE0DC2E0E50D11EADA\nPage: error Failed to load resource: the server responded with a status of 429 (Too Many Requests)\nPASS: real MV3 install, settings, scan, cross-tab lock, verification, report, live HTTP log UI/export, redaction, minimize and close. All Instagram requests intercepted.\n"
+    },
+    {
+      "name": "MV3 private build integration",
+      "passed": true,
+      "durationMs": 17124,
+      "output": "Loaded: chrome-extension://imohidcpdpnmdbjlinnleeinohjjkmon/service-worker.js\nTab target: tab AF4792A33000F1E2226297DB181D69D1\nPage: error Failed to load resource: the server responded with a status of 429 (Too Many Requests)\nPASS: real MV3 install, settings, scan, cross-tab lock, verification, report, live HTTP log UI/export, redaction, minimize and close. All Instagram requests intercepted.\n"
+    },
+    {
+      "name": "Browser feature matrix",
+      "passed": true,
+      "durationMs": 23536,
+      "output": "PASS TR/EN language switch survives reload\nPASS Both optional scan choices are visible\nPASS Mobile viewport fits screen without horizontal panel overflow\nPASS Settings persist across reload; Escape closes dialog\nPASS Headings stay readable under conflicting site CSS\nPASS Reference dashboard side panel starts scan\nPASS Scan pause prevents next page request\nPASS Side panel pause and resume operate the active scan\nPASS Minimized panel updates from scan progress to completed result\nPASS Interrupted scan persists and resumes after reload without reloading first page; checkpoint clears on completion\nPASS Side gauge reflects actual selected accounts\nPASS Nonfollowers mode lists and selects only non-mutual accounts\nPASS New scan can switch back to all-following mode\nPASS No removed filters reappear\nPASS Keyboard Enter and Space toggle row selection\nPASS Copy all and copy selected write expected usernames to clipboard\nPASS Profile links point to intended account in new tab\nPASS Select all and clear selection\nPASS Side panel unfollow requires the same confirmation dialog\nPASS Destructive confirmation starts on cancel and traps keyboard focus\nPASS Dismiss confirmation sends no mutation\nPASS Unfollow pause holds independent verification and next account\nPASS Resume verifies first account; cancel prevents next account; report counts remaining correctly\nPASS Minimize and expand preserve remaining results\nPASS Live log filters, autoscroll toggle and clearing\nPASS Bundled privacy page opens\nPASS Close removes panel\nPASS Live log updates after clearing when new events arrive\n28/28 browser feature groups passed; all Instagram requests mocked.\n"
+    },
+    {
+      "name": "Local-first workspace browser integration",
+      "passed": true,
+      "durationMs": 11032,
+      "output": "PASS: actual MV3 workspace onboarding, snapshot persistence, protection, notes/labels XSS safety, selection, review, sessions, palette, tasks, workflow simulation, backup, support redaction, account isolation, restart, TR/EN, theme and mobile layout. Zero Instagram requests.\nPASS: local workspace tasks survive a full Chromium process restart and remain usable offline.\n"
+    },
+    {
+      "name": "Release security and permissions audit",
+      "passed": true,
+      "durationMs": 127,
+      "output": "{\"passed\":true,\"trackedFiles\":109,\"manifestVersion\":\"2.9.0\",\"permissions\":[\"activeTab\",\"scripting\",\"storage\"],\"scope\":\"Current tracked source and browser-only extension; token values are never printed.\"}\n"
+    }
+  ],
+  "features": {
+    "version": "2.9.0",
+    "passed": [
+      "TR/EN language switch survives reload",
+      "Both optional scan choices are visible",
+      "Mobile viewport fits screen without horizontal panel overflow",
+      "Settings persist across reload; Escape closes dialog",
+      "Headings stay readable under conflicting site CSS",
+      "Reference dashboard side panel starts scan",
+      "Scan pause prevents next page request",
+      "Side panel pause and resume operate the active scan",
+      "Minimized panel updates from scan progress to completed result",
+      "Interrupted scan persists and resumes after reload without reloading first page; checkpoint clears on completion",
+      "Side gauge reflects actual selected accounts",
+      "Nonfollowers mode lists and selects only non-mutual accounts",
+      "New scan can switch back to all-following mode",
+      "No removed filters reappear",
+      "Keyboard Enter and Space toggle row selection",
+      "Copy all and copy selected write expected usernames to clipboard",
+      "Profile links point to intended account in new tab",
+      "Select all and clear selection",
+      "Side panel unfollow requires the same confirmation dialog",
+      "Destructive confirmation starts on cancel and traps keyboard focus",
+      "Dismiss confirmation sends no mutation",
+      "Unfollow pause holds independent verification and next account",
+      "Resume verifies first account; cancel prevents next account; report counts remaining correctly",
+      "Minimize and expand preserve remaining results",
+      "Live log filters, autoscroll toggle and clearing",
+      "Bundled privacy page opens",
+      "Close removes panel",
+      "Live log updates after clearing when new events arrive"
+    ],
+    "realInstagram": false
+  },
+  "testedFiles": {
+    "extension/CREDITS.md": "4a8afc2744900c089496a0fd466d14226e8c736c3f21af86b0c946a9cf65ba46",
+    "extension/content.js": "526106e0344786aa04650f7f0f21b2750c7e41a751b9ee8f407c8c072d53a9c4",
+    "extension/help.css": "21808db6477327214b7acacc8636667eabbe61cade52e8f930235477d4723e17",
+    "extension/help.html": "4dc8ee532155e41a4d265e6d16b98305a8d85da5eab588fe37748d851ae4ef11",
+    "extension/help.js": "0e7463c5ff99acd7fdf3d266881ce2df408da71c5a8a38d637cf474bdae81b73",
+    "extension/icons/icon-128.png": "56d258ba56d52c69140d64f1f173a2da281372cee977a8385f105aaed673b309",
+    "extension/icons/icon-16.png": "5f243f7cdd1b35c4987c378582aecf0045544c07dd8c2feeabcf2c71a1430985",
+    "extension/icons/icon-32.png": "d0f6a100efcc453dd6654bb34d19e9b9df4f3e9cb6e2369ea33ac24dc5877c0f",
+    "extension/icons/icon-48.png": "7f620a84e13805891577625f72bf73ddd67fa90918fc1cdb124e26e56c177d76",
+    "extension/logs.css": "a855bd90313d1fea74ad5e20b2ffa441541b310b0a59a434f61e1db8efdffccc",
+    "extension/logs.html": "f3f8f2b2bb56d43f78c9a3480b38e66d701b918edb8ce9128ce66e239e6c0187",
+    "extension/logs.js": "adb3c813e0eca972718560aa82407b27bcf095878473257f54a0a90ba56e355e",
+    "extension/manifest.json": "58b2b2e89905e2941720642de2c574d9d2fb23716d30ff876bfafc3aee862ca3",
+    "extension/platform.js": "1fbda6e6560b34e5527bf78488e50000b8d5bc1af0e36bba0aac6b2feb796abb",
+    "extension/privacy.html": "8559d5704929be2d1553181eb737ae65e4ef93e8af50dfca9bad82315b78b986",
+    "extension/service-worker.js": "173298e0ca54883609eb7ce38981677ecbd18588235f8faea7a6b31007bbfe9b",
+    "extension/workspace-core.js": "db21192349284e8ac73032d14fb5e5ed7ba8f1e994a4ecc97953b05e704e673d",
+    "extension/workspace.css": "300a35b35692b2cb7f7d54f2599065ae0df19aef3b344a499e404ae109f7170f",
+    "extension/workspace.html": "0ce577b1f59a1fa9ae4506e7c95781d49a5c3f3fd3d0b63b8472268a5dfc7758",
+    "extension/workspace.js": "dc095b4b5066bb39f9574d4b8ba2c8ab738408e1eb8e09885266b3cda2a19883",
+    "instagram-audit-regressions.test.cjs": "fdaddc968bc9a606f9bbb27c8403564eef41977bac6727ad1bb6cb08b833e5ba",
+    "instagram-chrome-eklentisi/CANLI-LOG-BASLAT.cmd": "cd270628128647c09a09fcaa56d8db24d8928696306272e68b7eeb0fb48b2b6c",
+    "instagram-chrome-eklentisi/CREDITS.md": "4a8afc2744900c089496a0fd466d14226e8c736c3f21af86b0c946a9cf65ba46",
+    "instagram-chrome-eklentisi/KURULUM.txt": "7251223346959bef9979867e0492319998f37ab5c7c6b0d3d749f0e2581409d9",
+    "instagram-chrome-eklentisi/content.js": "526106e0344786aa04650f7f0f21b2750c7e41a751b9ee8f407c8c072d53a9c4",
+    "instagram-chrome-eklentisi/help.css": "21808db6477327214b7acacc8636667eabbe61cade52e8f930235477d4723e17",
+    "instagram-chrome-eklentisi/help.html": "80e4d06fee685d62875c2b12a4cdf49f183e6139a0b0c200d6f57d2278107c78",
+    "instagram-chrome-eklentisi/help.js": "0e7463c5ff99acd7fdf3d266881ce2df408da71c5a8a38d637cf474bdae81b73",
+    "instagram-chrome-eklentisi/icons/icon-128.png": "56d258ba56d52c69140d64f1f173a2da281372cee977a8385f105aaed673b309",
+    "instagram-chrome-eklentisi/icons/icon-16.png": "5f243f7cdd1b35c4987c378582aecf0045544c07dd8c2feeabcf2c71a1430985",
+    "instagram-chrome-eklentisi/icons/icon-32.png": "d0f6a100efcc453dd6654bb34d19e9b9df4f3e9cb6e2369ea33ac24dc5877c0f",
+    "instagram-chrome-eklentisi/icons/icon-48.png": "7f620a84e13805891577625f72bf73ddd67fa90918fc1cdb124e26e56c177d76",
+    "instagram-chrome-eklentisi/log-bridge.py": "572486b3168de1963be2dfec5e3561fc831c35c83c483f51a56cc908b820a34b",
+    "instagram-chrome-eklentisi/logs.css": "a855bd90313d1fea74ad5e20b2ffa441541b310b0a59a434f61e1db8efdffccc",
+    "instagram-chrome-eklentisi/logs.html": "f3f8f2b2bb56d43f78c9a3480b38e66d701b918edb8ce9128ce66e239e6c0187",
+    "instagram-chrome-eklentisi/logs.js": "6661e46dbc13f253f3e8712ce2d6e9c94c819d905cb4e36dd91b74803feb1092",
+    "instagram-chrome-eklentisi/manifest.json": "a1ad3a9a30dec38294095c64a7a2c618820a6c0ff0a9c6527f6e3a1d3b826d86",
+    "instagram-chrome-eklentisi/platform.js": "1fbda6e6560b34e5527bf78488e50000b8d5bc1af0e36bba0aac6b2feb796abb",
+    "instagram-chrome-eklentisi/service-worker.js": "bc7fbd1885bf4dc54b665e9bec13441faa2191e442f996bbccf0992abd52d8e5",
+    "instagram-chrome-eklentisi/workspace-core.js": "db21192349284e8ac73032d14fb5e5ed7ba8f1e994a4ecc97953b05e704e673d",
+    "instagram-chrome-eklentisi/workspace.css": "300a35b35692b2cb7f7d54f2599065ae0df19aef3b344a499e404ae109f7170f",
+    "instagram-chrome-eklentisi/workspace.html": "0ce577b1f59a1fa9ae4506e7c95781d49a5c3f3fd3d0b63b8472268a5dfc7758",
+    "instagram-chrome-eklentisi/workspace.js": "dc095b4b5066bb39f9574d4b8ba2c8ab738408e1eb8e09885266b3cda2a19883",
+    "instagram-dashboard.css": "87298ad9834647fb9a91e574ef6eb4ed128f843f65f962901590b52cde869e82",
+    "instagram-diagnostics.test.cjs": "5866c7e7fb0e7965b2f903858fb7e0227539bacf3f42671f27d11176a1d0058f",
+    "instagram-extension-browser.test.cjs": "2bdc7fddc4ebbf1df52b2ce9a99b0fefed64fe4fa45a90921b0f1e6a72350ed7",
+    "instagram-extension-lock.test.cjs": "a504c31462740b37600af5c637aa866cf0fa2515d3382856c7ebbb75e8f021a9",
+    "instagram-extension-platform.test.cjs": "239261b76c768d116a648f5bcc93b272ee8b5f481c782798b41cc85b22d43141",
+    "instagram-extension.test.cjs": "bddccf4667a226ad3ace4930f6c214fb7c6ee0e595c08b6f2d5ea7c6c9c5abe3",
+    "instagram-features-browser.test.cjs": "8b9adc4cb659ab3bfac6c7cd7507252692217b9d3297983aee698d704e131703",
+    "instagram-live-log.test.cjs": "d6d93a07c6993abe1be4932fb30d13371ae0c7f815e9906dae702b60f383c9e8",
+    "instagram-log-bridge.test.py": "74da067764ce25a9f1e138a9a8eda1ee2cab3766b7f03bdf93882c6daeddc026",
+    "instagram-log-view.test.cjs": "44d6cadf802f127db601ac725977896d94f4fe01f25653e46714db46b50f1b34",
+    "instagram-magaza-hazirlik/extension/CREDITS.md": "4a8afc2744900c089496a0fd466d14226e8c736c3f21af86b0c946a9cf65ba46",
+    "instagram-magaza-hazirlik/extension/content.js": "526106e0344786aa04650f7f0f21b2750c7e41a751b9ee8f407c8c072d53a9c4",
+    "instagram-magaza-hazirlik/extension/help.css": "21808db6477327214b7acacc8636667eabbe61cade52e8f930235477d4723e17",
+    "instagram-magaza-hazirlik/extension/help.html": "4dc8ee532155e41a4d265e6d16b98305a8d85da5eab588fe37748d851ae4ef11",
+    "instagram-magaza-hazirlik/extension/help.js": "0e7463c5ff99acd7fdf3d266881ce2df408da71c5a8a38d637cf474bdae81b73",
+    "instagram-magaza-hazirlik/extension/icons/icon-128.png": "56d258ba56d52c69140d64f1f173a2da281372cee977a8385f105aaed673b309",
+    "instagram-magaza-hazirlik/extension/icons/icon-16.png": "5f243f7cdd1b35c4987c378582aecf0045544c07dd8c2feeabcf2c71a1430985",
+    "instagram-magaza-hazirlik/extension/icons/icon-32.png": "d0f6a100efcc453dd6654bb34d19e9b9df4f3e9cb6e2369ea33ac24dc5877c0f",
+    "instagram-magaza-hazirlik/extension/icons/icon-48.png": "7f620a84e13805891577625f72bf73ddd67fa90918fc1cdb124e26e56c177d76",
+    "instagram-magaza-hazirlik/extension/logs.css": "a855bd90313d1fea74ad5e20b2ffa441541b310b0a59a434f61e1db8efdffccc",
+    "instagram-magaza-hazirlik/extension/logs.html": "f3f8f2b2bb56d43f78c9a3480b38e66d701b918edb8ce9128ce66e239e6c0187",
+    "instagram-magaza-hazirlik/extension/logs.js": "adb3c813e0eca972718560aa82407b27bcf095878473257f54a0a90ba56e355e",
+    "instagram-magaza-hazirlik/extension/manifest.json": "58b2b2e89905e2941720642de2c574d9d2fb23716d30ff876bfafc3aee862ca3",
+    "instagram-magaza-hazirlik/extension/platform.js": "1fbda6e6560b34e5527bf78488e50000b8d5bc1af0e36bba0aac6b2feb796abb",
+    "instagram-magaza-hazirlik/extension/privacy.html": "8559d5704929be2d1553181eb737ae65e4ef93e8af50dfca9bad82315b78b986",
+    "instagram-magaza-hazirlik/extension/service-worker.js": "173298e0ca54883609eb7ce38981677ecbd18588235f8faea7a6b31007bbfe9b",
+    "instagram-magaza-hazirlik/extension/workspace-core.js": "db21192349284e8ac73032d14fb5e5ed7ba8f1e994a4ecc97953b05e704e673d",
+    "instagram-magaza-hazirlik/extension/workspace.css": "300a35b35692b2cb7f7d54f2599065ae0df19aef3b344a499e404ae109f7170f",
+    "instagram-magaza-hazirlik/extension/workspace.html": "0ce577b1f59a1fa9ae4506e7c95781d49a5c3f3fd3d0b63b8472268a5dfc7758",
+    "instagram-magaza-hazirlik/extension/workspace.js": "dc095b4b5066bb39f9574d4b8ba2c8ab738408e1eb8e09885266b3cda2a19883",
+    "instagram-oauth.test.cjs": "f9c91e40dc9ed81ef3fe87b9303a0f8d378c62bf473b65fbd31e24daed0a9b3a",
+    "instagram-release-proof.test.cjs": "7975acb01b2f547680f94e0b17b682457827cceebd17d9282b0d96414880c44c",
+    "instagram-repair-v5.test.cjs": "f5a313b89a912f79ef37c6c40a0ce8781a95956d3f88196ac7f215c978803cef",
+    "instagram-safety.test.cjs": "32ad1866a689399a9ad5541efbd1c193c7edb81bf118911d07b4e05356a6b4fa",
+    "instagram-scan-compatibility.test.cjs": "23b8d606352988c77a6554cbf158ea738b4d741eef9a80bbb47d108af7894c94",
+    "instagram-scope.test.cjs": "f7202147e6561f2c1480ec938748dab31f8c6573ff9d02bece86d905f830874d",
+    "instagram-timing.test.cjs": "358df28a2c33109e88d5c2e01ab2ed52ca9684c112aa113116bfab8c0ccb8990",
+    "instagram-tum-takipleri-birak.js": "99be312577f665f8ecea68a310d46c300d835e7442bd8bdf1be2de1f73ba4734",
+    "instagram-unfollow-verification.test.cjs": "ff0b410b99fa66ddba92903c231293d67b833ca4e1d760c3a040520d7cd6e964",
+    "instagram-workspace-browser.test.cjs": "c79fce9be68ec8d5682a99d1c97c553d46e57831cfaa25a8edc72e242b6f5155",
+    "instagram-workspace-storage.test.cjs": "01e437a4abb2456f590e71774413d4b780e889b69ad42bb8e1ced316fcafffbe",
+    "instagram-workspace.test.cjs": "e7890a5ff65379d93e3a5c4a6920f55f80c66c6e52116c509661977d74780c48",
+    "package-lock.json": "fd581109173b7517ce3c8d41f6853f84a8ab74ffa30423fe8d1549c6ef6cf257",
+    "package.json": "f94b07987a4c2af56129ae58c85c42c2a392385b254b39d4218f4e3150c8be4c",
+    "scripts/audit-release.cjs": "5992e9f3dfb2fc00b718a8e1d51eb64806629d511228029b9b2b3446ce7d3537",
+    "scripts/browser-compatibility.cjs": "c81a992d93396a9347afc1363f617fd2b878c351f1e7eb1a0410d736dc7b5642",
+    "scripts/build-extension.cjs": "d5c9d470bb0835e00304933370229a985a5eb12d321b74f730702512f6d58db0",
+    "scripts/build-store.cjs": "18a16bd956d2eb867d9fa08f937631aeb78e42c55a35535f923b7a92c231d53a",
+    "scripts/cws-auth-helper.mjs": "0cb99de92e639b6660bcbd7adcffc4fa554c5d3bae1e6a7bd36313264ee5d9a5",
+    "scripts/package-release.py": "93e204622c4316646dbcbef7830829dc7fb85c312258be94aca44510d02cee7b",
+    "scripts/sync-extension.cjs": "78962922e22055ef25ea58631c0424779c123722d3e42043efb6e13958deb4f8",
+    "scripts/test-all.cjs": "1fb67dde31c7b09d5da1c5aa2da51a69721888c83f238066ea38dad5e71fb164",
+    "scripts/test-fingerprint.cjs": "08748972202e71f58e3742a3fdae6c27dd2f08e8e40244cd318e98fa7b9f7515",
+    "scripts/test-unit.cjs": "4c5308d26cf0740223b9fe293ae716c832ad824e0e1028a0089f01343437cc86"
+  },
+  "unchanged": true
+}

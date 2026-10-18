@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Instagram Takip Y\u00f6netimi",
-  "description": "Takip ettiklerini tam sayfa listele; se\u00e7ti\u011fin hesaplar\u0131n takibini onaylayarak b\u0131rak.",
-  "version": "2.8.12",
+  "name": "Instagram Takip Yönetimi",
+  "description": "Takip ettiklerini tam sayfa listele; seçtiğin hesapların takibini onaylayarak bırak.",
+  "version": "2.9.0",
   "minimum_chrome_version": "106",
   "host_permissions": [
     "http://127.0.0.1/*"
@@ -16,7 +16,7 @@
     "service_worker": "service-worker.js"
   },
   "action": {
-    "default_title": "Instagram takip listesini a\u00e7",
+    "default_title": "Instagram takip listesini aç",
     "default_icon": {
       "16": "icons/icon-16.png",
       "32": "icons/icon-32.png",
