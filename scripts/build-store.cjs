@@ -7,7 +7,7 @@ const files=['manifest.json','service-worker.js','platform.js','content.js','hel
 for(const name of files)fs.copyFileSync(path.join(source,name),path.join(out,name));
 fs.cpSync(path.join(source,'icons'),path.join(out,'icons'),{recursive:true});
 const manifest=JSON.parse(fs.readFileSync(path.join(out,'manifest.json'),'utf8'));
-manifest.version='2.8.11';delete manifest.host_permissions;
+manifest.version='2.8.12';delete manifest.host_permissions;
 fs.writeFileSync(path.join(out,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
 let sw=fs.readFileSync(path.join(out,'service-worker.js'),'utf8');
 sw=sw.replace('importScripts("log-bridge-config.js");','');
@@ -24,14 +24,14 @@ fs.writeFileSync(path.join(out,'logs.js'),logs);
 let help=fs.readFileSync(path.join(out,'help.html'),'utf8');
 help=help.replace(/ Paketteki <strong>CANLI-LOG-BASLAT\.cmd<\/strong>[\s\S]*?Python 3 gerektirir\./,' Günlüğü indir düğmesiyle tanı kaydını dışa aktarabilirsin.');
 help=help.replace(/ İsteğe bağlı günlük yardımcısı[\s\S]*?alır\./,'');
-help=help.replace(/Özel kullanım sürümü · [\d.]+/,'Mağaza sürümü · 2.8.11');
+help=help.replace(/Özel kullanım sürümü · [\d.]+/,'Mağaza sürümü · 2.8.12');
 help=help.replace('</footer>',' · <a href="privacy.html">Gizlilik politikası</a></footer>');
 fs.writeFileSync(path.join(out,'help.html'),help);
-let content=fs.readFileSync(path.join(out,'content.js'),'utf8').replaceAll('2.8.11-extension','2.8.11-extension');
+let content=fs.readFileSync(path.join(out,'content.js'),'utf8').replaceAll('2.8.12-extension','2.8.12-extension');
 fs.writeFileSync(path.join(out,'content.js'),content);
 const policy=`# Instagram Takip Yönetimi — Gizlilik Politikası
 
-Son güncelleme: 18 Ekim 2026. Kapsam: 2.8.11 mağaza sürümü.
+Son güncelleme: 18 Ekim 2026. Kapsam: 2.8.12 mağaza sürümü.
 
 ## İşlenen bilgiler ve amaç
 Eklenti, kullanıcı başlattığında Instagram'da takip edilen ve isteğe bağlı olarak takipçi hesaplarının kimliklerini, kullanıcı adlarını, görünen adlarını, profil fotoğrafı adreslerini ve takip durumlarını işler. Bu bilgiler listeleme, arama, seçim ve onaylanan takip bırakma işlemleri için kullanılır. Başka sekmelerin geçmişini, mesajları, konum, sağlık veya finans bilgilerini okumaz.
