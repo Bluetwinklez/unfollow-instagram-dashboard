@@ -1,4 +1,4 @@
-(() => { "use strict"; if (location.hostname !== "www.instagram.com") { alert("Open https://www.instagram.com first, then paste this script again."); return; } const APP_ID = "iu-app"; const VERSION = "2.8.8-all-following-verified"; const CLEANUP_EVENT = "iu-cleanup"; const STYLE_ID = "iu-style"; const STORAGE_KEY = "iu_all_following_state_v1"; const CHECKPOINT_KEY = "iu_all_following_scan_v1"; const CHECKPOINT_TTL = 24 * 60 * 60 * 1000; const IG_HEADERS = { "x-ig-app-id": "936619743392459", "x-requested-with": "XMLHttpRequest" }; const DEFAULT_TIMINGS = { scanDelayMin: 1000, scanDelayMax: 1300, scanPauseEveryPages: 7, scanPauseMs: 10000, usersPerRequest: 50, unfollowDelayMin: 4000, unfollowDelayMax: 4800, unfollowPauseEvery: 5, unfollowPauseMs: 300000, continueOnFailure: true }; const SCAN_MICRO_DELAY_MIN = 500; const SCAN_MICRO_DELAY_MAX = 2000; const SCAN_PAUSE_JITTER_MS = 5000; const PROGRESS_TITLE_ID = "iu-progress-title"; const PANEL_WIDTH = 380; const PANEL_MARGIN = 18; const MAX_RETRIES = 3; const I18N = { en: { title: "Instagram Unfollow All", subtitle: "List ALL accounts you follow", welcomeTitle: "Ready when you are", welcomeBody: "Lists ALL accounts you follow, including mutual followers. Scanning changes nothing. Select all and confirm to unfollow everyone.", scanBtn: "Scan now", scanning: "Scanning", loadingFollowing: "Loading the people you follow", loadingFollowers: "Loading your followers", paused: "Paused", pause: "Pause", resume: "Resume", cancel: "Cancel", ofTotal: "{current} of {total}", ofUnknown: "{current} so far", scanCompletedToast: "{count} followed accounts found", scanFailed: "Scan failed", retry: "Try again", goBack: "Back to results", search: "Search by name or username", filterVerified: "Verified", filterPrivate: "Private", filterNoAvatar: "No profile picture", filterShowHidden: "Hidden users", foundCount: "{count} followed accounts", foundOne: "1 followed account", foundNone: "No followed accounts to display.", noMatches: "No users match your filters.", hide: "Hide", unhide: "Unhide", hideTooltip: "Hide from this list", unhideTooltip: "Show again", openProfile: "Open profile", copy: "Copy", copyAll: "Copy all", copiedToast: "Copied {count} usernames", selectAll: "Select all", selectNone: "Clear", selectedCount: "{count} selected", unfollow: "Unfollow", unfollowConfirmTitle: "Unfollow {count} users?", unfollowConfirmBody: "This will run slowly to protect your account from rate limiting. You can pause at any time, but already-completed unfollows cannot be reversed from this tool.", unfollowConfirmBtn: "Yes, unfollow {count}", unfollowing: "Unfollowing", currently: "Currently", nextActionIn: "Next action in {seconds}s", cooldownIn: "Cooldown — {seconds}s", scanPause: "Long pause — {seconds}s", unfollowDoneTitle: "Done", unfollowDoneBody: "{ok} unfollowed, {fail} failed", unfollowBlocked: "Instagram blocked this action, so {count} remaining users were skipped. Wait a few hours before trying again.", continueOnFailure: "Continue on failure", settings: "Settings", settingsTitle: "Timing settings", settingsBody: "Lower delays make Instagram more likely to throttle or block your account. Keep these conservative.", minScanDelay: "Min scan delay (ms)", maxScanDelay: "Max scan delay (ms)", scanPauseEvery: "Long pause every N pages", scanPauseLength: "Long pause length (ms)", usersPerRequest: "Users requested per page", minUnfollowDelay: "Min unfollow delay (ms)", maxUnfollowDelay: "Max unfollow delay (ms)", unfollowPauseEvery: "Cooldown every N unfollows", unfollowPauseLength: "Cooldown length (ms)", restoreDefaults: "Restore defaults", save: "Save", saved: "Settings saved", cookieMissing: "Could not read your login cookie. Make sure you are signed in.", csrfMissing: "Could not read csrftoken cookie.", requestFailed: "Request failed: {status}", tooManyRequests: "Instagram is rate-limiting requests. Try again later or increase delays in settings.", sessionExpired: "Instagram signed you out. Sign in again, paste the script again and press Resume. The scan continues where it stopped.", scanBlocked: "Instagram temporarily refused list requests for this account. Wait a few hours, paste the script again and press Resume.", networkError: "The connection dropped. Check the network and press Resume.", keepTabVisible: "Keep this tab in front. Chrome slows background tabs down to one step per minute.", resumeScan: "Resume scan", startOver: "Start over", resumeHint: "A previous scan stopped at {loaded} of {total} followers. Continue from there instead of starting again.", resumeHintUnknown: "A previous scan stopped partway. Continue from there instead of starting again.", partialTitle: "Follower list incomplete", partialBody: "{loaded} of {total} followers were loaded. Results and unfollowing stay unavailable until the full list is checked. Your progress is saved.", partialBodyUnknown: "{loaded} followers were loaded before the scan stopped. Results and unfollowing stay unavailable until the full list is checked. Your progress is saved.", incompleteList: "Instagram returned an incomplete list ({loaded} of {total}). No followed account results can be confirmed. Your progress is saved; wait before resuming.", limitedList: "Instagram is limiting this list. No followed account results can be confirmed. Wait before trying again.", scanNotice: "Large accounts can take 20 minutes or more. Instagram may still interrupt a scan. If it does, wait before resuming; repeating the scan immediately can prolong restrictions.", close: "Close", langSwitch: "Switch to Turkish", minimize: "Minimize", expand: "Expand", langCode: "TR", pillScanning: "Scanning {current}/{total}", pillUnfollowing: "Unfollowing {current}/{total}", pillResults: "{count} followed accounts", pillIdle: "Open" }, tr: { title: "Instagram Tüm Takip Edilenler", subtitle: "Takip ettiğin TÜM hesapları listele", welcomeTitle: "Hazır olduğunda başlat", welcomeBody: "Geri takip edenler dahil TÜM takip ettiklerin listelenir. Tarama hesabını değiştirmez. Hepsini bırakmak için Tümünü seç ve Takibi bırak düğmelerini kullan.", scanBtn: "Taramayı başlat", scanning: "Taranıyor", loadingFollowing: "Takip ettiklerin yükleniyor", loadingFollowers: "Takipçilerin yükleniyor", paused: "Duraklatıldı", pause: "Duraklat", resume: "Devam et", cancel: "İptal", ofTotal: "{current} / {total}", ofUnknown: "Şu ana kadar {current}", scanCompletedToast: "{count} takip edilen bulundu", scanFailed: "Tarama başarısız", retry: "Tekrar dene", goBack: "Sonuçlara dön", search: "İsim veya kullanıcı adı ara", filterVerified: "Onaylı", filterPrivate: "Gizli", filterNoAvatar: "Profil resmi yok", filterShowHidden: "Gizlenen kullanıcılar", foundCount: "{count} takip edilen", foundOne: "1 takip edilen", foundNone: "Listelenecek takip edilen hesap yok.", noMatches: "Filtrelerinle eşleşen kullanıcı yok.", hide: "Gizle", unhide: "Göster", hideTooltip: "Bu listeden gizle", unhideTooltip: "Tekrar göster", openProfile: "Profili aç", copy: "Kopyala", copyAll: "Tümünü kopyala", copiedToast: "{count} kullanıcı adı kopyalandı", selectAll: "Tümünü seç", selectNone: "Temizle", selectedCount: "{count} seçili", unfollow: "Takibi bırak", unfollowConfirmTitle: "{count} kullanıcının takibi bırakılsın mı?", unfollowConfirmBody: "Seni geri takip edenler de buna dahildir. İşlem yavaş çalışır; Instagram yine de hesabını kısıtlayabilir. İstediğin zaman duraklatabilirsin, ama tamamlanan işlemler bu araçtan geri alınamaz.", unfollowConfirmBtn: "Evet, {count} kişiyi bırak", unfollowing: "Takip bırakılıyor", currently: "Şu an", nextActionIn: "Sonraki işlem {seconds} sn sonra", cooldownIn: "Mola — {seconds} sn", scanPause: "Uzun mola — {seconds} sn", unfollowDoneTitle: "Tamamlandı", unfollowDoneBody: "{ok} başarılı, {fail} başarısız", unfollowBlocked: "Instagram bu işlemi engelledi, kalan {count} kişi atlandı. Tekrar denemeden önce birkaç saat bekle.", continueOnFailure: "Hata olunca devam et", settings: "Ayarlar", settingsTitle: "Hız ayarları", settingsBody: "Düşük gecikmeler Instagram'ın hesabını kısıtlamasına neden olabilir. Yavaş tut.", minScanDelay: "Min tarama gecikmesi (ms)", maxScanDelay: "Maks tarama gecikmesi (ms)", scanPauseEvery: "Her N sayfada uzun mola", scanPauseLength: "Uzun mola süresi (ms)", usersPerRequest: "Sayfa başına istenen kullanıcı", minUnfollowDelay: "Min takip bırakma gecikmesi (ms)", maxUnfollowDelay: "Maks takip bırakma gecikmesi (ms)", unfollowPauseEvery: "Her N takip bırakmada mola", unfollowPauseLength: "Mola süresi (ms)", restoreDefaults: "Varsayılana dön", save: "Kaydet", saved: "Ayarlar kaydedildi", cookieMissing: "Giriş çerezi okunamadı. Giriş yaptığından emin ol.", csrfMissing: "csrftoken çerezi okunamadı.", requestFailed: "İstek başarısız: {status}", tooManyRequests: "Instagram istekleri kısıtlıyor. Sonra dene veya ayarlardan gecikmeleri artır.", sessionExpired: "Instagram oturumunu kapattı. Tekrar giriş yap, kodu yeniden yapıştır ve Devam et'e bas. Tarama kaldığı yerden sürer.", scanBlocked: "Instagram bu hesap için liste isteklerini geçici olarak reddetti. Birkaç saat bekle, kodu yeniden yapıştır ve Devam et'e bas.", networkError: "Bağlantı koptu. Ağı kontrol et ve Devam et'e bas.", keepTabVisible: "Bu sekmeyi önde tut. Chrome arka plandaki sekmeleri dakikada bir adıma yavaşlatır.", resumeScan: "Taramaya devam et", startOver: "Baştan başla", resumeHint: "Önceki tarama {total} takipçinin {loaded} tanesinde durdu. Baştan başlamak yerine oradan devam edebilirsin.", resumeHintUnknown: "Önceki tarama yarıda kaldı. Baştan başlamak yerine oradan devam edebilirsin.", partialTitle: "Takipçi listesi eksik", partialBody: "{total} takipçinin {loaded} tanesi yüklendi. Listenin tamamı kontrol edilene kadar sonuçlar ve takip bırakma kapalı. İlerlemen kaydedildi.", partialBodyUnknown: "Tarama durmadan önce {loaded} takipçi yüklendi. Listenin tamamı kontrol edilene kadar sonuçlar ve takip bırakma kapalı. İlerlemen kaydedildi.", incompleteList: "Instagram eksik liste döndürdü ({loaded} / {total}). Takip edilenler henüz doğrulanamadı. İlerlemen kaydedildi; devam etmeden önce bekle.", limitedList: "Instagram bu listeyi kısıtlıyor. Takip edilenler henüz doğrulanamadı. Tekrar denemeden önce bekle.", scanNotice: "Büyük hesaplarda tarama 20 dakika veya daha uzun sürebilir. Instagram yine de taramayı kesebilir. Böyle olursa devam etmeden önce bekle; hemen tekrarlamak kısıtlamayı uzatabilir.", close: "Kapat", langSwitch: "İngilizce'ye geç", minimize: "Küçült", expand: "Aç", langCode: "EN", pillScanning: "Taranıyor {current}/{total}", pillUnfollowing: "Bırakılıyor {current}/{total}", pillResults: "{count} takip edilen", pillIdle: "Aç" } }; const SVG = { minimize: '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><rect x="3" y="7.25" width="10" height="1.5" rx="0.75" fill="currentColor"/></svg>', close: '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>', gear: '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zm6.7 2.5a6.7 6.7 0 0 0-.1-1.1l1.4-1.1-1.5-2.6-1.7.7a6.6 6.6 0 0 0-1.9-1.1L10.5 1h-3l-.4 1.8a6.6 6.6 0 0 0-1.9 1.1l-1.7-.7L1.9 5.8 3.3 6.9a6.7 6.7 0 0 0 0 2.2L1.9 10.2l1.5 2.6 1.7-.7a6.6 6.6 0 0 0 1.9 1.1L7.5 15h3l.4-1.8a6.6 6.6 0 0 0 1.9-1.1l1.7.7 1.5-2.6-1.4-1.1c.1-.4.1-.7.1-1.1z"/></svg>', open: '<svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M6 3h7v7M13 3L6.5 9.5M9 13H3V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>', sparkle: '<svg viewBox="0 0 24 24" width="36" height="36" aria-hidden="true"><path fill="currentColor" d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6L12 2zm6 11l1 2.8L22 17l-3 .8L18 21l-1-3.2L14 17l3-1.2 1-2.8z"/></svg>', alert: '<svg viewBox="0 0 24 24" width="36" height="36" aria-hidden="true"><path fill="currentColor" d="M12 2 1 21h22L12 2zm0 6 7.5 13h-15L12 8zm-1 4v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg>', check: '<svg viewBox="0 0 16 16" width="36" height="36" aria-hidden="true"><path fill="currentColor" d="M14 4.5L6 12.5l-4-4L3 7.5l3 3 7-7z"/></svg>' }; for (const [lang, values] of Object.entries({"en":{"accountChanged":"The signed-in account changed. Scan again before continuing.","totalUnknown":"Could not verify the total following count. Bulk actions remain disabled.","listChanged":"The list or total changed during scanning. Start a new scan.","mutationUncertain":"Unfollow result uncertain. Stopped without retrying the action.","cancelledUncertain":"Cancelled. An already-sent action may have completed; unverified accounts remain listed.","stillFollowing":"This account is still followed. Stopped.","stoppedTitle":"Stopped — check the reason below","cancelledTitle":"Cancelled"},"tr":{"accountChanged":"Açık Instagram hesabı değişti. Devam etmeden önce yeniden tara.","totalUnknown":"Toplam takip edilen sayısı doğrulanamadı. Toplu işlem kapalı.","listChanged":"Tarama sırasında liste veya toplam sayı değişti. Baştan tara.","mutationUncertain":"Takip bırakma sonucu belirsiz. İstek tekrarlanmadan işlem durduruldu.","cancelledUncertain":"İptal edildi. Gönderilmiş işlem uygulanmış olabilir; doğrulanamayan hesaplar listede kaldı.","stillFollowing":"Bu hesap hâlâ takip ediliyor. İşlem durduruldu.","stoppedTitle":"Durduruldu — aşağıdaki nedeni kontrol et","cancelledTitle":"İptal edildi"}})) Object.assign(I18N[lang], values); Object.assign(I18N.tr,{coverageUnverified:"Liste, Instagram’ın döndürdüğü son sayfaya kadar alındı. Profildeki toplam takip edilen sayısıyla ayrıca karşılaştırılmadı; burada görünen hesaplar üzerinde işlem yapılır.",tooManyRequests:"Instagram bu liste isteğini kısıtladı. HTTP durumunu kontrol et; bu yanıt tek başına hesabın engellendiği anlamına gelmez."});
+(() => { "use strict"; if (location.hostname !== "www.instagram.com") { alert("Open https://www.instagram.com first, then paste this script again."); return; } const APP_ID = "iu-app"; const VERSION = "2.8.9-all-following-verified"; const CLEANUP_EVENT = "iu-cleanup"; const STYLE_ID = "iu-style"; const STORAGE_KEY = "iu_all_following_state_v1"; const CHECKPOINT_KEY = "iu_all_following_scan_v1"; const CHECKPOINT_TTL = 24 * 60 * 60 * 1000; const IG_HEADERS = { "x-ig-app-id": "936619743392459", "x-requested-with": "XMLHttpRequest" }; const DEFAULT_TIMINGS = { scanDelayMin: 1000, scanDelayMax: 1300, scanPauseEveryPages: 7, scanPauseMs: 10000, usersPerRequest: 50, unfollowDelayMin: 4000, unfollowDelayMax: 4800, unfollowPauseEvery: 5, unfollowPauseMs: 300000, continueOnFailure: true }; const SCAN_MICRO_DELAY_MIN = 500; const SCAN_MICRO_DELAY_MAX = 2000; const SCAN_PAUSE_JITTER_MS = 5000; const PROGRESS_TITLE_ID = "iu-progress-title"; const PANEL_WIDTH = 380; const PANEL_MARGIN = 18; const MAX_RETRIES = 3; const I18N = { en: { title: "Instagram Unfollow All", subtitle: "List ALL accounts you follow", welcomeTitle: "Ready when you are", welcomeBody: "Lists ALL accounts you follow, including mutual followers. Scanning changes nothing. Select all and confirm to unfollow everyone.", scanBtn: "Scan now", scanning: "Scanning", loadingFollowing: "Loading the people you follow", loadingFollowers: "Loading your followers", paused: "Paused", pause: "Pause", resume: "Resume", cancel: "Cancel", ofTotal: "{current} of {total}", ofUnknown: "{current} so far", scanCompletedToast: "{count} followed accounts found", scanFailed: "Scan failed", retry: "Try again", goBack: "Back to results", search: "Search by name or username", filterVerified: "Verified", filterPrivate: "Private", filterNoAvatar: "No profile picture", filterShowHidden: "Hidden users", foundCount: "{count} followed accounts", foundOne: "1 followed account", foundNone: "No followed accounts to display.", noMatches: "No users match your filters.", hide: "Hide", unhide: "Unhide", hideTooltip: "Hide from this list", unhideTooltip: "Show again", openProfile: "Open profile", copy: "Copy", copyAll: "Copy all", copiedToast: "Copied {count} usernames", selectAll: "Select all", selectNone: "Clear", selectedCount: "{count} selected", unfollow: "Unfollow", unfollowConfirmTitle: "Unfollow {count} users?", unfollowConfirmBody: "This will run slowly to protect your account from rate limiting. You can pause at any time, but already-completed unfollows cannot be reversed from this tool.", unfollowConfirmBtn: "Yes, unfollow {count}", unfollowing: "Unfollowing", currently: "Currently", nextActionIn: "Next action in {seconds}s", cooldownIn: "Cooldown — {seconds}s", scanPause: "Long pause — {seconds}s", unfollowDoneTitle: "Done", unfollowDoneBody: "{ok} unfollowed, {fail} failed", unfollowBlocked: "Instagram blocked this action, so {count} remaining users were skipped. Wait a few hours before trying again.", continueOnFailure: "Continue on failure", settings: "Settings", settingsTitle: "Timing settings", settingsBody: "Lower delays make Instagram more likely to throttle or block your account. Keep these conservative.", minScanDelay: "Min scan delay (ms)", maxScanDelay: "Max scan delay (ms)", scanPauseEvery: "Long pause every N pages", scanPauseLength: "Long pause length (ms)", usersPerRequest: "Users requested per page", minUnfollowDelay: "Min unfollow delay (ms)", maxUnfollowDelay: "Max unfollow delay (ms)", unfollowPauseEvery: "Cooldown every N unfollows", unfollowPauseLength: "Cooldown length (ms)", restoreDefaults: "Restore defaults", save: "Save", saved: "Settings saved", cookieMissing: "Could not read your login cookie. Make sure you are signed in.", csrfMissing: "Could not read csrftoken cookie.", requestFailed: "Request failed: {status}", tooManyRequests: "Instagram is rate-limiting requests. Try again later or increase delays in settings.", sessionExpired: "Instagram signed you out. Sign in again, paste the script again and press Resume. The scan continues where it stopped.", scanBlocked: "Instagram temporarily refused list requests for this account. Wait a few hours, paste the script again and press Resume.", networkError: "The connection dropped. Check the network and press Resume.", keepTabVisible: "Keep this tab in front. Chrome slows background tabs down to one step per minute.", resumeScan: "Resume scan", startOver: "Start over", resumeHint: "A previous scan stopped at {loaded} of {total} followers. Continue from there instead of starting again.", resumeHintUnknown: "A previous scan stopped partway. Continue from there instead of starting again.", partialTitle: "Follower list incomplete", partialBody: "{loaded} of {total} followers were loaded. Results and unfollowing stay unavailable until the full list is checked. Your progress is saved.", partialBodyUnknown: "{loaded} followers were loaded before the scan stopped. Results and unfollowing stay unavailable until the full list is checked. Your progress is saved.", incompleteList: "Instagram returned an incomplete list ({loaded} of {total}). No followed account results can be confirmed. Your progress is saved; wait before resuming.", limitedList: "Instagram is limiting this list. No followed account results can be confirmed. Wait before trying again.", scanNotice: "Large accounts can take 20 minutes or more. Instagram may still interrupt a scan. If it does, wait before resuming; repeating the scan immediately can prolong restrictions.", close: "Close", langSwitch: "Switch to Turkish", minimize: "Minimize", expand: "Expand", langCode: "TR", pillScanning: "Scanning {current}/{total}", pillUnfollowing: "Unfollowing {current}/{total}", pillResults: "{count} followed accounts", pillIdle: "Open" }, tr: { title: "Instagram Tüm Takip Edilenler", subtitle: "Takip ettiğin TÜM hesapları listele", welcomeTitle: "Hazır olduğunda başlat", welcomeBody: "Geri takip edenler dahil TÜM takip ettiklerin listelenir. Tarama hesabını değiştirmez. Hepsini bırakmak için Tümünü seç ve Takibi bırak düğmelerini kullan.", scanBtn: "Taramayı başlat", scanning: "Taranıyor", loadingFollowing: "Takip ettiklerin yükleniyor", loadingFollowers: "Takipçilerin yükleniyor", paused: "Duraklatıldı", pause: "Duraklat", resume: "Devam et", cancel: "İptal", ofTotal: "{current} / {total}", ofUnknown: "Şu ana kadar {current}", scanCompletedToast: "{count} takip edilen bulundu", scanFailed: "Tarama başarısız", retry: "Tekrar dene", goBack: "Sonuçlara dön", search: "İsim veya kullanıcı adı ara", filterVerified: "Onaylı", filterPrivate: "Gizli", filterNoAvatar: "Profil resmi yok", filterShowHidden: "Gizlenen kullanıcılar", foundCount: "{count} takip edilen", foundOne: "1 takip edilen", foundNone: "Listelenecek takip edilen hesap yok.", noMatches: "Filtrelerinle eşleşen kullanıcı yok.", hide: "Gizle", unhide: "Göster", hideTooltip: "Bu listeden gizle", unhideTooltip: "Tekrar göster", openProfile: "Profili aç", copy: "Kopyala", copyAll: "Tümünü kopyala", copiedToast: "{count} kullanıcı adı kopyalandı", selectAll: "Tümünü seç", selectNone: "Temizle", selectedCount: "{count} seçili", unfollow: "Takibi bırak", unfollowConfirmTitle: "{count} kullanıcının takibi bırakılsın mı?", unfollowConfirmBody: "Seni geri takip edenler de buna dahildir. İşlem yavaş çalışır; Instagram yine de hesabını kısıtlayabilir. İstediğin zaman duraklatabilirsin, ama tamamlanan işlemler bu araçtan geri alınamaz.", unfollowConfirmBtn: "Evet, {count} kişiyi bırak", unfollowing: "Takip bırakılıyor", currently: "Şu an", nextActionIn: "Sonraki işlem {seconds} sn sonra", cooldownIn: "Mola — {seconds} sn", scanPause: "Uzun mola — {seconds} sn", unfollowDoneTitle: "Tamamlandı", unfollowDoneBody: "{ok} başarılı, {fail} başarısız", unfollowBlocked: "Instagram bu işlemi engelledi, kalan {count} kişi atlandı. Tekrar denemeden önce birkaç saat bekle.", continueOnFailure: "Hata olunca devam et", settings: "Ayarlar", settingsTitle: "Hız ayarları", settingsBody: "Düşük gecikmeler Instagram'ın hesabını kısıtlamasına neden olabilir. Yavaş tut.", minScanDelay: "Min tarama gecikmesi (ms)", maxScanDelay: "Maks tarama gecikmesi (ms)", scanPauseEvery: "Her N sayfada uzun mola", scanPauseLength: "Uzun mola süresi (ms)", usersPerRequest: "Sayfa başına istenen kullanıcı", minUnfollowDelay: "Min takip bırakma gecikmesi (ms)", maxUnfollowDelay: "Maks takip bırakma gecikmesi (ms)", unfollowPauseEvery: "Her N takip bırakmada mola", unfollowPauseLength: "Mola süresi (ms)", restoreDefaults: "Varsayılana dön", save: "Kaydet", saved: "Ayarlar kaydedildi", cookieMissing: "Giriş çerezi okunamadı. Giriş yaptığından emin ol.", csrfMissing: "csrftoken çerezi okunamadı.", requestFailed: "İstek başarısız: {status}", tooManyRequests: "Instagram istekleri kısıtlıyor. Sonra dene veya ayarlardan gecikmeleri artır.", sessionExpired: "Instagram oturumunu kapattı. Tekrar giriş yap, kodu yeniden yapıştır ve Devam et'e bas. Tarama kaldığı yerden sürer.", scanBlocked: "Instagram bu hesap için liste isteklerini geçici olarak reddetti. Birkaç saat bekle, kodu yeniden yapıştır ve Devam et'e bas.", networkError: "Bağlantı koptu. Ağı kontrol et ve Devam et'e bas.", keepTabVisible: "Bu sekmeyi önde tut. Chrome arka plandaki sekmeleri dakikada bir adıma yavaşlatır.", resumeScan: "Taramaya devam et", startOver: "Baştan başla", resumeHint: "Önceki tarama {total} takipçinin {loaded} tanesinde durdu. Baştan başlamak yerine oradan devam edebilirsin.", resumeHintUnknown: "Önceki tarama yarıda kaldı. Baştan başlamak yerine oradan devam edebilirsin.", partialTitle: "Takipçi listesi eksik", partialBody: "{total} takipçinin {loaded} tanesi yüklendi. Listenin tamamı kontrol edilene kadar sonuçlar ve takip bırakma kapalı. İlerlemen kaydedildi.", partialBodyUnknown: "Tarama durmadan önce {loaded} takipçi yüklendi. Listenin tamamı kontrol edilene kadar sonuçlar ve takip bırakma kapalı. İlerlemen kaydedildi.", incompleteList: "Instagram eksik liste döndürdü ({loaded} / {total}). Takip edilenler henüz doğrulanamadı. İlerlemen kaydedildi; devam etmeden önce bekle.", limitedList: "Instagram bu listeyi kısıtlıyor. Takip edilenler henüz doğrulanamadı. Tekrar denemeden önce bekle.", scanNotice: "Büyük hesaplarda tarama 20 dakika veya daha uzun sürebilir. Instagram yine de taramayı kesebilir. Böyle olursa devam etmeden önce bekle; hemen tekrarlamak kısıtlamayı uzatabilir.", close: "Kapat", langSwitch: "İngilizce'ye geç", minimize: "Küçült", expand: "Aç", langCode: "EN", pillScanning: "Taranıyor {current}/{total}", pillUnfollowing: "Bırakılıyor {current}/{total}", pillResults: "{count} takip edilen", pillIdle: "Aç" } }; const SVG = { minimize: '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><rect x="3" y="7.25" width="10" height="1.5" rx="0.75" fill="currentColor"/></svg>', close: '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>', gear: '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zm6.7 2.5a6.7 6.7 0 0 0-.1-1.1l1.4-1.1-1.5-2.6-1.7.7a6.6 6.6 0 0 0-1.9-1.1L10.5 1h-3l-.4 1.8a6.6 6.6 0 0 0-1.9 1.1l-1.7-.7L1.9 5.8 3.3 6.9a6.7 6.7 0 0 0 0 2.2L1.9 10.2l1.5 2.6 1.7-.7a6.6 6.6 0 0 0 1.9 1.1L7.5 15h3l.4-1.8a6.6 6.6 0 0 0 1.9-1.1l1.7.7 1.5-2.6-1.4-1.1c.1-.4.1-.7.1-1.1z"/></svg>', open: '<svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M6 3h7v7M13 3L6.5 9.5M9 13H3V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>', sparkle: '<svg viewBox="0 0 24 24" width="36" height="36" aria-hidden="true"><path fill="currentColor" d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6L12 2zm6 11l1 2.8L22 17l-3 .8L18 21l-1-3.2L14 17l3-1.2 1-2.8z"/></svg>', alert: '<svg viewBox="0 0 24 24" width="36" height="36" aria-hidden="true"><path fill="currentColor" d="M12 2 1 21h22L12 2zm0 6 7.5 13h-15L12 8zm-1 4v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg>', check: '<svg viewBox="0 0 16 16" width="36" height="36" aria-hidden="true"><path fill="currentColor" d="M14 4.5L6 12.5l-4-4L3 7.5l3 3 7-7z"/></svg>' }; for (const [lang, values] of Object.entries({"en":{"accountChanged":"The signed-in account changed. Scan again before continuing.","totalUnknown":"Could not verify the total following count. Bulk actions remain disabled.","listChanged":"The list or total changed during scanning. Start a new scan.","mutationUncertain":"Unfollow result uncertain. Stopped without retrying the action.","cancelledUncertain":"Cancelled. An already-sent action may have completed; unverified accounts remain listed.","stillFollowing":"This account is still followed. Stopped.","stoppedTitle":"Stopped — check the reason below","cancelledTitle":"Cancelled"},"tr":{"accountChanged":"Açık Instagram hesabı değişti. Devam etmeden önce yeniden tara.","totalUnknown":"Toplam takip edilen sayısı doğrulanamadı. Toplu işlem kapalı.","listChanged":"Tarama sırasında liste veya toplam sayı değişti. Baştan tara.","mutationUncertain":"Takip bırakma sonucu belirsiz. İstek tekrarlanmadan işlem durduruldu.","cancelledUncertain":"İptal edildi. Gönderilmiş işlem uygulanmış olabilir; doğrulanamayan hesaplar listede kaldı.","stillFollowing":"Bu hesap hâlâ takip ediliyor. İşlem durduruldu.","stoppedTitle":"Durduruldu — aşağıdaki nedeni kontrol et","cancelledTitle":"İptal edildi"}})) Object.assign(I18N[lang], values); Object.assign(I18N.tr,{coverageUnverified:"Liste, Instagram’ın döndürdüğü son sayfaya kadar alındı. Profildeki toplam takip edilen sayısıyla ayrıca karşılaştırılmadı; burada görünen hesaplar üzerinde işlem yapılır.",tooManyRequests:"Instagram bu liste isteğini kısıtladı. HTTP durumunu kontrol et; bu yanıt tek başına hesabın engellendiği anlamına gelmez."});
 Object.assign(I18N.en,{coverageUnverified:"Loaded through the last page returned by Instagram. The list was not independently compared with the profile total; actions apply to the accounts shown here.",tooManyRequests:"Instagram limited this list request. Check the HTTP status; this response alone does not establish an account-wide block."});
 Object.assign(I18N.tr,{title:"Takip Paneli",subtitle:"Listele, seç ve kontrol et",welcomeTitle:"Takip listen. Kontrol sende.",welcomeBody:"Nasıl bir liste görmek istediğini seç. Tarama hesabında değişiklik yapmaz; takip bırakma ayrıca onayını ister.",scopeChoose:"TARAMA SEÇENEĞİ",scopeAll:"Tüm takip ettiklerim",scopeAllBody:"Seni geri takip edenler dahil, takip ettiğin tüm hesaplar.",scopeNonfollowers:"Beni geri takip etmeyenler",scopeNonfollowersBody:"İki listeyi karşılaştır; yalnızca seni takip etmeyen hesapları göster.",workspace:"ÇALIŞMA ALANI",overview:"Genel bakış",liveLog:"Canlı günlük",localOnly:"Veriler bu cihazda",statFollowing:"Takip edilen",statNonfollowers:"Geri takip etmeyen",statInList:"Listelenen",statSelected:"Seçili"});
 Object.assign(I18N.en,{title:"Follow Panel",subtitle:"Review, select and manage",welcomeTitle:"Your following. Your control.",welcomeBody:"Choose a list to review. Scanning changes nothing; unfollowing always requires your confirmation.",scopeChoose:"SCAN OPTIONS",scopeAll:"Everyone I follow",scopeAllBody:"All accounts you follow, including mutual followers.",scopeNonfollowers:"People not following me back",scopeNonfollowersBody:"Compare both lists and show only accounts that do not follow you.",workspace:"WORKSPACE",overview:"Overview",liveLog:"Live log",localOnly:"Data stays on this device",statFollowing:"Following",statNonfollowers:"Not following back",statInList:"Listed",statSelected:"Selected"});
@@ -22,7 +22,7 @@ const persisted = loadStored(); const state = { scanScope:persisted.scanScope ==
  const loaded=followers?checkpoint.followerIds.length:checkpoint.following.length;
  return (state.language === "tr" ? "Önceki tarama: " : "Previous scan: ")+t(checkpoint.scope === "nonfollowers"?"scopeNonfollowers":"scopeAll")+" · "+formatCount(loaded)+" "+t(followers?"loadingFollowers":"loadingFollowing");
 }
-function formatCount(value) { const number = Number(value) || 0; try { return number.toLocaleString(state.language === "tr" ? "tr-TR" : "en-US"); } catch { return String(number); } } function persist() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ scanScope:state.scanScope, hidden: [...state.hidden], timings: state.timings, filters: state.filters, panelPos: state.panelPos, minimized: state.minimized, language: state.language })); } catch { } } function t(key, vars) { const dict = I18N[state.language] || I18N.en; const template = dict[key] ?? I18N.en[key] ?? key; if (!vars) return template; return template.replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? ""); } function cleanupExisting() { document.dispatchEvent(new Event(CLEANUP_EVENT)); if (typeof window.__iuCleanup === "function") { try { window.__iuCleanup(); } catch {   } } document.getElementById(APP_ID)?.remove(); document.getElementById(STYLE_ID)?.remove(); } function injectStyles() { const style = document.createElement("style"); style.id = STYLE_ID; style.textContent = CSS; document.head.appendChild(style); } function mount() { const root = document.createElement("div"); root.id = APP_ID; document.body.appendChild(root); window.__iuCleanup = unmount; document.addEventListener(CLEANUP_EVENT, unmount); document.addEventListener("visibilitychange", onVisibilityChange); renderShell(); } function unmount() { if (destroyed) return; destroyed = true; state.scanCancelled = true; state.unfollowCancelled = true; state.scanPaused = false; state.unfollowPaused = false; activeRequest?.abort(); wakeUp(); stopCountdown(); document.removeEventListener(CLEANUP_EVENT, unmount); document.removeEventListener("visibilitychange", onVisibilityChange); closeActiveDialog?.(); if (toastTimer) { clearTimeout(toastTimer); toastTimer = null; } document.getElementById(APP_ID)?.remove(); document.getElementById(STYLE_ID)?.remove(); if (window.__iuCleanup === unmount) window.__iuCleanup = null; } function renderShell() { const root = document.getElementById(APP_ID); if (!root) return; if (state.minimized) { root.innerHTML = ` <button class="iu-pill" data-action="expand" type="button" aria-label="${escapeAttr(t("expand"))}"> <span class="iu-pill-dot ${pillStateClass()}"></span> <span data-pill-label>${escapeHTML(pillLabel())}</span> </button> `; root.querySelector("[data-action='expand']")?.addEventListener("click", () => setMinimized(false)); applyPanelPosition(); return; } root.innerHTML = ` <section class="iu-panel" role="dialog" aria-label="${escapeAttr(t("title"))}"> <aside class="iu-sidebar"><div class="iu-side-mark">◎</div><strong>${escapeHTML(t("title"))}</strong><span class="iu-side-caption">${escapeHTML(t("workspace"))}</span><div class="iu-side-active">◉ ${escapeHTML(t("overview"))}</div><button type="button" data-nav-log>≡ ${escapeHTML(t("liveLog"))}</button><button type="button" data-nav-settings>⚙ ${escapeHTML(t("settings"))}</button><div class="iu-side-footer">${escapeHTML(t("localOnly"))}</div></aside><header class="iu-header" data-drag> <div class="iu-brand"> <span class="iu-brand-dot"></span> <div class="iu-brand-text"> <strong>${escapeHTML(t("title"))}</strong> <span data-subtitle>v${VERSION} · ${escapeHTML(t("subtitle"))}</span> </div> </div> <div class="iu-header-actions"> <button type="button" data-action="settings" aria-label="${escapeAttr(t("settings"))}" title="${escapeAttr(t("settings"))}">${SVG.gear}</button> <button type="button" data-action="language" aria-label="${escapeAttr(t("langSwitch"))}" title="${escapeAttr(t("langSwitch"))}"><span data-lang aria-hidden="true">${escapeHTML(t("langCode"))}</span></button> <button type="button" data-action="minimize" aria-label="${escapeAttr(t("minimize"))}" title="${escapeAttr(t("minimize"))}">${SVG.minimize}</button> <button type="button" data-action="close" aria-label="${escapeAttr(t("close"))}" title="${escapeAttr(t("close"))}">${SVG.close}</button> </div> </header> <div class="iu-body" data-body></div><aside class="iu-inspector" data-inspector aria-label="İşlem paneli"></aside> </section> `; bindHeader(root); /* Full-screen panel does not drag. */ applyPanelPosition(); renderBody(); } function bindHeader(root) { root.querySelector("[data-nav-log]")?.addEventListener("click",()=>void globalThis.__iuPlatform?.openLog());root.querySelector("[data-nav-settings]")?.addEventListener("click",showSettings); root.querySelector("[data-action='close']")?.addEventListener("click", () => unmount()); root.querySelector("[data-action='minimize']")?.addEventListener("click", () => setMinimized(true)); root.querySelector("[data-action='settings']")?.addEventListener("click", showSettings); root.querySelector("[data-action='language']")?.addEventListener("click", toggleLanguage); } function applyPanelPosition() { const root = document.getElementById(APP_ID); if (!root) return; const node = root.querySelector(".iu-panel") || root.querySelector(".iu-pill"); if (!node) return; const pos = state.panelPos; if (pos && Number.isFinite(pos.x) && Number.isFinite(pos.y)) { const max = panelBounds(node); node.style.left = clamp(pos.x, 0, max.x) + "px"; node.style.top = clamp(pos.y, 0, max.y) + "px"; node.style.right = "auto"; node.style.bottom = "auto"; } else { node.style.left = "auto"; node.style.top = "auto"; node.style.right = PANEL_MARGIN + "px"; node.style.bottom = PANEL_MARGIN + "px"; } } function panelBounds(node) { const rect = node.getBoundingClientRect(); return { x: Math.max(0, window.innerWidth - rect.width), y: Math.max(0, window.innerHeight - rect.height) }; } function bindDrag(handle) { if (!handle) return; const panel = handle.closest(".iu-panel"); if (!panel) return; let startX = 0; let startY = 0; let originX = 0; let originY = 0; let dragging = false; handle.addEventListener("pointerdown", (event) => { if (event.target.closest("button")) return; dragging = true; const rect = panel.getBoundingClientRect(); originX = rect.left; originY = rect.top; startX = event.clientX; startY = event.clientY; panel.style.left = originX + "px"; panel.style.top = originY + "px"; panel.style.right = "auto"; panel.style.bottom = "auto"; handle.setPointerCapture(event.pointerId); handle.classList.add("iu-dragging"); }); handle.addEventListener("pointermove", (event) => { if (!dragging) return; const max = panelBounds(panel); const x = clamp(originX + (event.clientX - startX), 0, max.x); const y = clamp(originY + (event.clientY - startY), 0, max.y); panel.style.left = x + "px"; panel.style.top = y + "px"; }); const stop = (event) => { if (!dragging) return; dragging = false; handle.releasePointerCapture?.(event.pointerId); handle.classList.remove("iu-dragging"); const rect = panel.getBoundingClientRect(); state.panelPos = { x: rect.left, y: rect.top }; persist(); }; handle.addEventListener("pointerup", stop); handle.addEventListener("pointercancel", stop); } function setMinimized(value) { state.minimized = Boolean(value); persist(); renderShell(); } function pillLabel() { if(state.mode === "unfollowDone")return unfollowTitle(); if (state.mode === "scanning") { return t("pillScanning", { current: formatCount(state.progress.current), total: state.progress.total ? formatCount(state.progress.total) : "?" }); } if (state.mode === "unfollowing") { return t("pillUnfollowing", { current: state.progress.current, total: state.progress.total }); } if (state.mode === "results") { if (state.partial) return t("partialTitle"); return t("pillResults", { count: state.users.filter((u) => u.follows_viewer === false).length }); } return t("pillIdle"); } function pillStateClass() { if (state.mode === "scanning" || state.mode === "unfollowing") return "iu-pill-dot--active"; if (state.error) return "iu-pill-dot--error"; return ""; } function updateInspector() {
+function formatCount(value) { const number = Number(value) || 0; try { return number.toLocaleString(state.language === "tr" ? "tr-TR" : "en-US"); } catch { return String(number); } } function persist() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ scanScope:state.scanScope, hidden: [...state.hidden], timings: state.timings, filters: state.filters, panelPos: state.panelPos, minimized: state.minimized, language: state.language })); } catch { } } function t(key, vars) { const dict = I18N[state.language] || I18N.en; const template = dict[key] ?? I18N.en[key] ?? key; if (!vars) return template; return template.replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? ""); } function cleanupExisting() { document.dispatchEvent(new Event(CLEANUP_EVENT)); if (typeof window.__iuCleanup === "function") { try { window.__iuCleanup(); } catch {   } } document.getElementById(APP_ID)?.remove(); document.getElementById(STYLE_ID)?.remove(); } function injectStyles() { const style = document.createElement("style"); style.id = STYLE_ID; style.textContent = CSS; document.head.appendChild(style); } function mount() { const root = document.createElement("div"); root.id = APP_ID; document.body.appendChild(root); window.__iuCleanup = unmount; document.addEventListener(CLEANUP_EVENT, unmount); document.addEventListener("visibilitychange", onVisibilityChange); renderShell(); } function unmount() { if (destroyed) return; destroyed = true; state.scanCancelled = true; state.unfollowCancelled = true; state.scanPaused = false; state.unfollowPaused = false; activeRequest?.abort(); wakeUp(); stopCountdown(); document.removeEventListener(CLEANUP_EVENT, unmount); document.removeEventListener("visibilitychange", onVisibilityChange); closeActiveDialog?.(); if (toastTimer) { clearTimeout(toastTimer); toastTimer = null; } document.getElementById(APP_ID)?.remove(); document.getElementById(STYLE_ID)?.remove(); if (window.__iuCleanup === unmount) window.__iuCleanup = null; } function renderShell() { const root = document.getElementById(APP_ID); if (!root) return; if (state.minimized) { root.innerHTML = ` <button class="iu-pill" data-action="expand" type="button" aria-label="${escapeAttr(t("expand"))}"> <span class="iu-pill-dot ${pillStateClass()}"></span> <span data-pill-label>${escapeHTML(pillLabel())}</span> </button> `; root.querySelector("[data-action='expand']")?.addEventListener("click", () => setMinimized(false)); applyPanelPosition(); return; } root.innerHTML = ` <section class="iu-panel" role="dialog" aria-label="${escapeAttr(t("title"))}"> <aside class="iu-sidebar"><div class="iu-side-mark">◎</div><strong>${escapeHTML(t("title"))}</strong><span class="iu-side-caption">${escapeHTML(t("workspace"))}</span><div class="iu-side-active">◉ ${escapeHTML(t("overview"))}</div><button type="button" data-nav-log>≡ ${escapeHTML(t("liveLog"))}</button><button type="button" data-nav-settings>⚙ ${escapeHTML(t("settings"))}</button><div class="iu-side-footer">${escapeHTML(t("localOnly"))}</div></aside><header class="iu-header" data-drag> <div class="iu-brand"> <span class="iu-brand-dot"></span> <div class="iu-brand-text"> <strong>${escapeHTML(t("title"))}</strong> <span data-subtitle>v${VERSION} · ${escapeHTML(t("subtitle"))}</span> </div> </div> <div class="iu-header-actions"> <button type="button" data-action="settings" aria-label="${escapeAttr(t("settings"))}" title="${escapeAttr(t("settings"))}">${SVG.gear}</button> <button type="button" data-action="language" aria-label="${escapeAttr(t("langSwitch"))}" title="${escapeAttr(t("langSwitch"))}"><span data-lang aria-hidden="true">${escapeHTML(t("langCode"))}</span></button> <button type="button" data-action="minimize" aria-label="${escapeAttr(t("minimize"))}" title="${escapeAttr(t("minimize"))}">${SVG.minimize}</button> <button type="button" data-action="close" aria-label="${escapeAttr(t("close"))}" title="${escapeAttr(t("close"))}">${SVG.close}</button> </div> </header> <div class="iu-body" data-body></div><aside class="iu-inspector" data-inspector aria-label="İşlem paneli"></aside> </section> `; bindHeader(root); bindDrag(root.querySelector("[data-drag]")); applyPanelPosition(); renderBody(); } function bindHeader(root) { root.querySelector("[data-nav-log]")?.addEventListener("click",()=>void globalThis.__iuPlatform?.openLog());root.querySelector("[data-nav-settings]")?.addEventListener("click",showSettings); root.querySelector("[data-action='close']")?.addEventListener("click", () => unmount()); root.querySelector("[data-action='minimize']")?.addEventListener("click", () => setMinimized(true)); root.querySelector("[data-action='settings']")?.addEventListener("click", showSettings); root.querySelector("[data-action='language']")?.addEventListener("click", toggleLanguage); } function applyPanelPosition() { const root = document.getElementById(APP_ID); if (!root) return; const node = root.querySelector(".iu-panel") || root.querySelector(".iu-pill"); if (!node) return; const pos = state.panelPos; if (pos && Number.isFinite(pos.x) && Number.isFinite(pos.y)) { const max = panelBounds(node); node.style.left = clamp(pos.x, 0, max.x) + "px"; node.style.top = clamp(pos.y, 0, max.y) + "px"; node.style.right = "auto"; node.style.bottom = "auto"; } else { node.style.left = "auto"; node.style.top = "auto"; node.style.right = PANEL_MARGIN + "px"; node.style.bottom = PANEL_MARGIN + "px"; } } function panelBounds(node) { const rect = node.getBoundingClientRect(); return { x: Math.max(0, window.innerWidth - rect.width), y: Math.max(0, window.innerHeight - rect.height) }; } function bindDrag(handle) { if (!handle) return; const panel = handle.closest(".iu-panel"); if (!panel) return; let startX = 0; let startY = 0; let originX = 0; let originY = 0; let dragging = false; handle.addEventListener("pointerdown", (event) => { if (event.target.closest("button")) return; dragging = true; const rect = panel.getBoundingClientRect(); originX = rect.left; originY = rect.top; startX = event.clientX; startY = event.clientY; panel.style.left = originX + "px"; panel.style.top = originY + "px"; panel.style.right = "auto"; panel.style.bottom = "auto"; handle.setPointerCapture(event.pointerId); handle.classList.add("iu-dragging"); }); handle.addEventListener("pointermove", (event) => { if (!dragging) return; const max = panelBounds(panel); const x = clamp(originX + (event.clientX - startX), 0, max.x); const y = clamp(originY + (event.clientY - startY), 0, max.y); panel.style.left = x + "px"; panel.style.top = y + "px"; }); const stop = (event) => { if (!dragging) return; dragging = false; handle.releasePointerCapture?.(event.pointerId); handle.classList.remove("iu-dragging"); const rect = panel.getBoundingClientRect(); state.panelPos = { x: rect.left, y: rect.top }; persist(); }; handle.addEventListener("pointerup", stop); handle.addEventListener("pointercancel", stop); } function setMinimized(value) { state.minimized = Boolean(value); persist(); renderShell(); } function pillLabel() { if(state.mode === "unfollowDone")return unfollowTitle(); if (state.mode === "scanning") { return t("pillScanning", { current: formatCount(state.progress.current), total: state.progress.total ? formatCount(state.progress.total) : "?" }); } if (state.mode === "unfollowing") { return t("pillUnfollowing", { current: state.progress.current, total: state.progress.total }); } if (state.mode === "results") { if (state.partial) return t("partialTitle"); return t("pillResults", { count: state.users.filter((u) => u.follows_viewer === false).length }); } return t("pillIdle"); } function pillStateClass() { if (state.mode === "scanning" || state.mode === "unfollowing") return "iu-pill-dot--active"; if (state.error) return "iu-pill-dot--error"; return ""; } function updateInspector() {
  const host=document.querySelector('#'+APP_ID+' [data-inspector]');if(!host)return;
  const busy=state.mode === "scanning" || state.mode === "unfollowing";
  const results=state.mode === "results";
@@ -247,177 +247,384 @@ async function sendUnfollowRequest(id, csrf) {
  return state.users.filter((u) => u.follows_viewer === false)
   .filter((u) => !query || (u.username + " " + (u.full_name || "")).toLowerCase().includes(query))
   .sort((a, b) => a.username.localeCompare(b.username));
-} function pruneSelectionToDisplayed() { if (!state.selected.size) return; const visible = new Set(getDisplayUsers().map((u) => u.id)); state.selected.forEach((id) => { if (!visible.has(id)) state.selected.delete(id); }); } function normalizeUser(raw) { return { id: String(raw.id || raw.pk || raw.pk_id || ""), username: String(raw.username || ""), full_name: String(raw.full_name || ""), profile_pic_url: String(raw.profile_pic_url || raw.profile_pic_url_hd || ""), is_verified: Boolean(raw.is_verified), is_private: Boolean(raw.is_private), follows_viewer: Boolean(raw.follows_viewer ?? raw.friendship_status?.followed_by ?? raw.followed_by) }; } function dedupe(list) { const seen = new Set(); return list.filter((u) => { if (!u.id || seen.has(u.id)) return false; seen.add(u.id); return true; }); } function isDefaultAvatar(user) { const url = user.profile_pic_url || ""; return /44884218_345707102882519|464760996_1254146839119862/.test(url); } function getCookie(name) { const match = document.cookie.match(new RegExp("(^|; )" + name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "=([^;]*)")); return match ? decodeURIComponent(match[2]) : null; } function sleep(ms) { return new Promise((resolve) => setTimeout(resolve, Math.max(0, ms))); } function interruptibleSleep(ms) { return new Promise((resolve) => { let timer = null; let settled = false; const finish = (expired) => { if (settled) return; settled = true; if (timer) clearTimeout(timer); if (wakeSleep === finish) wakeSleep = null; resolve(expired); }; wakeSleep = finish; timer = setTimeout(() => finish(true), Math.max(0, ms)); }); } function wakeUp() { if (typeof wakeSleep === "function") wakeSleep(false); } function visibilityNote() { return typeof document !== "undefined" && document.hidden ? t("keepTabVisible") : ""; } function onVisibilityChange() { if (state.mode !== "scanning") return; state.progress.note = visibilityNote(); updateProgressDOM(); } function randomBetween(min, max) { const lo = Math.min(min, max); const hi = Math.max(min, max); return Math.floor(Math.random() * (hi - lo)) + lo; } async function waitWhile(predicate, interval = 1000) { while (predicate()) await interruptibleSleep(interval); } async function sleepWithCountdown(ms, reasonKey) { state.waitReason = reasonKey; let remaining = Math.max(0, ms); while (remaining > 0) { if (state.scanCancelled || state.unfollowCancelled) break; if (state.scanPaused || state.unfollowPaused) { state.waitUntil = 0; updateCountdownDOM(); await waitWhile(() => (state.scanPaused || state.unfollowPaused) && !state.scanCancelled && !state.unfollowCancelled); continue; } state.waitUntil = Date.now() + remaining; updateCountdownDOM(); const before = Date.now(); const expired = await interruptibleSleep(remaining); remaining = expired ? 0 : Math.max(0, remaining - (Date.now() - before)); } state.waitUntil = 0; state.waitReason = ""; updateCountdownDOM(); } function startCountdown() { if (countdownTimer) return; countdownTimer = setInterval(updateCountdownDOM, 500); } function stopCountdown() { if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; } } function updateCountdownDOM() { const node = document.querySelector(`#${APP_ID} [data-countdown]`); if (!node) return; if (!state.waitUntil) { node.textContent = ""; return; } const remaining = Math.max(0, Math.ceil((state.waitUntil - Date.now()) / 1000)); const reason = state.waitReason || "nextActionIn"; node.textContent = t(reason, { seconds: remaining }); } function progressCounter(current, total) { if (total) return t("ofTotal", { current: formatCount(current), total: formatCount(total) }); return t("ofUnknown", { current: formatCount(current) }); } function setBar(root, percent, valueText, known) { const bar = root.querySelector("[data-progress-bar]"); if (bar) bar.style.width = percent + "%"; const box = root.querySelector("[data-bar]"); if (!box) return; if (known) box.setAttribute("aria-valuenow", String(percent)); else box.removeAttribute("aria-valuenow"); box.setAttribute("aria-valuetext", valueText); } function updatePillDOM() { if (!state.minimized) return; const pillLabelEl = document.querySelector(`#${APP_ID} [data-pill-label]`); if (pillLabelEl) pillLabelEl.textContent = pillLabel(); const dot=document.querySelector(`#${APP_ID} .iu-pill-dot`);if(dot)dot.className="iu-pill-dot "+pillStateClass(); } function updateProgressDOM() { updateInspector(); if(state.minimized){updatePillDOM();return;} const root = document.querySelector(`#${APP_ID} [data-body]`); if (!root) return; const { current, total, label, note } = state.progress; const percent = total ? Math.min(100, Math.round((current / total) * 100)) : 0; const counter = progressCounter(current, total); setBar(root, percent, counter, Boolean(total)); const counterEl = root.querySelector("[data-progress-counter]"); if (counterEl) counterEl.textContent = counter; const labelEl = root.querySelector("[data-progress-label]"); if (labelEl) labelEl.textContent = state.scanPaused ? t("paused") : t(label); const noteEl = root.querySelector("[data-progress-note]"); if (noteEl) noteEl.textContent = note || ""; updatePillDOM(); } function updateUnfollowDOM() { updateInspector(); if(state.minimized){updatePillDOM();return;} const root = document.querySelector(`#${APP_ID} [data-body]`); if (!root) return; const { current, total, note } = state.progress; const percent = total ? Math.min(100, Math.round((current / total) * 100)) : 0; const summary = unfollowSummary(); setBar(root, percent, summary, Boolean(total)); const counterEl = root.querySelector("[data-progress-counter]"); if (counterEl) counterEl.textContent = summary; const labelEl = root.querySelector("[data-progress-label]"); if (labelEl) labelEl.textContent = unfollowTitle(); const noteEl = root.querySelector("[data-progress-note]"); if (noteEl) noteEl.textContent = note || ""; const last = state.log[state.log.length - 1]; const currentEl = root.querySelector("[data-current]"); if (currentEl) { currentEl.hidden = !last; if (last) { const userEl = currentEl.querySelector("[data-current-user]"); if (userEl) userEl.textContent = "@" + last.user.username; const tagEl = currentEl.querySelector("[data-current-tag]"); if (tagEl) { tagEl.textContent = last.ok ? "✓" : "✕"; tagEl.title = last.reason || ""; tagEl.classList.toggle("iu-tag--green", last.ok); tagEl.classList.toggle("iu-tag--red", !last.ok); } } } updatePillDOM(); } function toast(message) { const root = document.getElementById(APP_ID); if (!root) return; root.querySelector(".iu-toast")?.remove(); if (toastTimer) { clearTimeout(toastTimer); toastTimer = null; } const node = document.createElement("div"); node.className = "iu-toast"; node.setAttribute("role", "status"); node.setAttribute("aria-live", "polite"); node.textContent = message; root.appendChild(node); toastTimer = setTimeout(() => { node.remove(); toastTimer = null; }, 3500); } function clamp(value, min, max) { return Math.min(Math.max(value, min), max); } function escapeHTML(value) { return String(value ?? "").replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch])); } function escapeAttr(value) { return escapeHTML(value); } const CSS = ` #${APP_ID}, #${APP_ID} * { box-sizing: border-box; } #${APP_ID} { --iu-bg: #161513; --iu-bg-2: #201e1a; --iu-bg-3: #2b2823; --iu-line: rgba(247,244,239,0.10); --iu-line-strong: rgba(247,244,239,0.20); --iu-text: #f7f4ef; --iu-muted: #9a948a; --iu-accent: #f0508a; --iu-accent-2: #ff6b9d; --iu-gradient: linear-gradient(135deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5); --iu-danger: #b3251c; --iu-danger-text: #f06a5d; --iu-success: #22c55e; position: fixed; inset: 0; pointer-events: none; z-index: 2147483647; color: var(--iu-text); color-scheme: dark; font: 14px/1.45 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; } #${APP_ID} .iu-list, #${APP_ID} .iu-form { scrollbar-width: thin; scrollbar-color: var(--iu-line-strong) transparent; } #${APP_ID} .iu-list::-webkit-scrollbar, #${APP_ID} .iu-form::-webkit-scrollbar { width: 8px; } #${APP_ID} .iu-list::-webkit-scrollbar-track, #${APP_ID} .iu-form::-webkit-scrollbar-track { background: transparent; } #${APP_ID} .iu-list::-webkit-scrollbar-thumb, #${APP_ID} .iu-form::-webkit-scrollbar-thumb { background: var(--iu-line-strong); border-radius: 4px; } #${APP_ID} .iu-list::-webkit-scrollbar-thumb:hover, #${APP_ID} .iu-form::-webkit-scrollbar-thumb:hover { background: var(--iu-muted); } #${APP_ID} :focus-visible { outline: 2px solid var(--iu-accent); outline-offset: 2px; } #${APP_ID} > * { pointer-events: auto; } #${APP_ID} button, #${APP_ID} input, #${APP_ID} a { font: inherit; color: inherit; } #${APP_ID} a { text-decoration: none; } #${APP_ID} button { cursor: pointer; } #${APP_ID} [hidden] { display: none !important; } #${APP_ID} .iu-panel { position: absolute; width: ${PANEL_WIDTH}px; max-width: calc(100vw - 24px); max-height: calc(100vh - 24px); display: flex; flex-direction: column; background: var(--iu-bg); border: 1px solid var(--iu-line); border-radius: 14px; box-shadow: 0 24px 60px rgba(0,0,0,0.45), 0 2px 6px rgba(0,0,0,0.3); overflow: hidden; animation: iu-pop 0.18s ease-out; } @keyframes iu-pop { from { opacity: 0; transform: translateY(8px) scale(0.985); } to { opacity: 1; transform: translateY(0) scale(1); } } #${APP_ID} .iu-header { flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 12px 12px 14px; border-bottom: 1px solid var(--iu-line); cursor: grab; user-select: none; background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent); } #${APP_ID} .iu-header.iu-dragging { cursor: grabbing; } #${APP_ID} .iu-brand { display: flex; align-items: center; gap: 10px; min-width: 0; } #${APP_ID} .iu-brand-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--iu-gradient); flex-shrink: 0; } #${APP_ID} .iu-brand-text { min-width: 0; } #${APP_ID} .iu-brand-text strong { display: block; font-size: 14px; font-weight: 600; } #${APP_ID} .iu-brand-text span { display: block; font-size: 11px; color: var(--iu-muted); } #${APP_ID} .iu-header-actions { display: flex; gap: 4px; flex-shrink: 0; } #${APP_ID} .iu-header-actions button { width: 28px; height: 28px; display: grid; place-items: center; border: none; background: transparent; border-radius: 6px; color: var(--iu-muted); transition: background 0.15s, color 0.15s; font-size: 11px; font-weight: 600; } #${APP_ID} .iu-header-actions button:hover { background: var(--iu-bg-2); color: var(--iu-text); } #${APP_ID} .iu-header-actions svg { display: block; } #${APP_ID} .iu-body { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; overflow: hidden; } #${APP_ID} .iu-welcome { padding: 28px 22px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; } #${APP_ID} .iu-welcome-icon { width: 64px; height: 64px; display: grid; place-items: center; border-radius: 50%; background: rgba(240,80,138,0.15); color: var(--iu-accent); margin-bottom: 4px; } #${APP_ID} .iu-welcome-icon--error { background: rgba(240,106,93,0.15); color: var(--iu-danger-text); } #${APP_ID} .iu-welcome h2 { color:var(--iu-text); margin: 0; font-size: 17px; font-weight: 600; } #${APP_ID} .iu-welcome p { margin: 0; color: var(--iu-muted); font-size: 13px; max-width: 300px; } #${APP_ID} .iu-welcome-actions { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 6px; } #${APP_ID} .iu-notice { margin: 12px 16px 0; padding: 12px 14px; border: 1px solid rgba(240,180,80,0.45); border-radius: 10px; background: rgba(240,180,80,0.10); font-size: 13px; } #${APP_ID} .iu-notice strong { display: block; margin-bottom: 4px; font-weight: 600; } #${APP_ID} .iu-notice p { margin: 0; color: var(--iu-muted); font-size: 12px; line-height: 1.45; } #${APP_ID} .iu-notice-reason { margin-top: 6px !important; color: var(--iu-text) !important; } #${APP_ID} .iu-notice-actions { display: flex; gap: 8px; margin-top: 10px; } #${APP_ID} .iu-btn { border: 1px solid var(--iu-line); background: var(--iu-bg-2); color: var(--iu-text); padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; transition: background 0.15s, border-color 0.15s, transform 0.05s; } #${APP_ID} .iu-btn:hover:not(:disabled) { background: var(--iu-bg-3); border-color: var(--iu-line-strong); } #${APP_ID} .iu-btn:active:not(:disabled) { transform: scale(0.98); } #${APP_ID} .iu-btn:disabled { opacity: 0.4; cursor: not-allowed; } #${APP_ID} .iu-btn--primary { background: var(--iu-accent); border-color: var(--iu-accent); color: var(--iu-bg); } #${APP_ID} .iu-btn--primary:hover:not(:disabled) { background: var(--iu-accent-2); border-color: var(--iu-accent-2); } #${APP_ID} .iu-btn--danger { background: var(--iu-danger); border-color: var(--iu-danger); color: #fff; } #${APP_ID} .iu-btn--danger:hover:not(:disabled) { background: #8f1d16; border-color: #8f1d16; } #${APP_ID} .iu-btn--ghost { background: transparent; } #${APP_ID} .iu-btn--lg { padding: 10px 20px; font-size: 14px; margin-top: 8px; } #${APP_ID} .iu-btn--small { padding: 6px 10px; font-size: 12px; } #${APP_ID} .iu-progress { padding: 22px 20px; display: flex; flex-direction: column; gap: 14px; } #${APP_ID} .iu-progress-head h2 { color:var(--iu-text); margin: 0; font-size: 15px; font-weight: 600; } #${APP_ID} .iu-progress-head p { margin: 4px 0 0; color: var(--iu-muted); font-size: 12px; min-height: 1em; } #${APP_ID} .iu-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.06); overflow: hidden; } #${APP_ID} .iu-bar > span { display: block; height: 100%; background: var(--iu-gradient); transition: width 0.3s ease; } #${APP_ID} .iu-progress-meta { display: flex; justify-content: space-between; align-items: center; font-size: 12px; } #${APP_ID} .iu-progress-actions { display: flex; gap: 8px; } #${APP_ID} .iu-current { display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--iu-bg-2); border-radius: 8px; font-size: 12px; } #${APP_ID} .iu-current strong { font-weight: 600; } #${APP_ID} .iu-blocked { padding: 10px; border-radius: 8px; font-size: 12px; line-height: 1.5; color: #fecaca; background: rgba(240, 106, 93, 0.12); border: 1px solid rgba(240, 106, 93, 0.35); } #${APP_ID} .iu-results { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; } #${APP_ID} .iu-results-summary { padding: 12px 16px 4px; font-size: 13px; color: var(--iu-muted); } #${APP_ID} .iu-search-row { padding: 8px 16px; } #${APP_ID} .iu-search { width: 100%; height: 36px; padding: 0 12px; border: 1px solid var(--iu-line); border-radius: 8px; background: var(--iu-bg-2); color: var(--iu-text); transition: border-color 0.15s; } #${APP_ID} .iu-search:focus { border-color: var(--iu-accent); } #${APP_ID} .iu-search::-webkit-search-cancel-button { filter: opacity(0.6); cursor: pointer; } #${APP_ID} .iu-filters { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px 10px; } #${APP_ID} .iu-chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border: 1px solid var(--iu-line); border-radius: 999px; background: transparent; color: var(--iu-muted); font-size: 12px; transition: border-color 0.15s, color 0.15s, background 0.15s; } #${APP_ID} .iu-chip:hover { border-color: var(--iu-line-strong); color: var(--iu-text); } #${APP_ID} .iu-chip--on { background: rgba(240,80,138,0.12); border-color: rgba(240,80,138,0.5); color: var(--iu-accent-2); } #${APP_ID} .iu-chip-tick { display: inline-grid; place-items: center; width: 12px; height: 12px; } #${APP_ID} .iu-chip-tick svg { width: 12px; height: 12px; } #${APP_ID} .iu-list { flex: 1 1 auto; min-height: 100px; max-height: 50vh; overflow-y: auto; overscroll-behavior: contain; border-top: 1px solid var(--iu-line); border-bottom: 1px solid var(--iu-line); } #${APP_ID} .iu-list-empty { padding: 30px 20px; text-align: center; color: var(--iu-muted); font-size: 13px; } #${APP_ID} .iu-row { display: grid; grid-template-columns: 18px 36px 1fr auto; gap: 10px; padding: 8px 16px; align-items: center; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.1s; } #${APP_ID} .iu-row:hover { background: rgba(247,244,239,0.04); } #${APP_ID} .iu-row:focus-visible { outline: 2px solid var(--iu-accent); outline-offset: -2px; } #${APP_ID} .iu-row--selected { background: rgba(240,80,138,0.14); box-shadow: inset 3px 0 0 var(--iu-accent); } #${APP_ID} .iu-row--selected:hover { background: rgba(240,80,138,0.2); } #${APP_ID} .iu-row:last-child { border-bottom: none; } #${APP_ID} .iu-row--hidden { opacity: 0.55; } #${APP_ID} .iu-row-check { width: 16px; height: 16px; accent-color: var(--iu-accent); cursor: pointer; margin: 0; } #${APP_ID} .iu-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; background: var(--iu-bg-3); } #${APP_ID} .iu-row-text { min-width: 0; } #${APP_ID} .iu-row-name { display: flex; align-items: center; gap: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 13px; font-weight: 500; } #${APP_ID} .iu-row-name > a { color: var(--iu-text); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } #${APP_ID} .iu-row-name a:hover { color: var(--iu-accent-2); } #${APP_ID} .iu-row-sub { font-size: 12px; color: var(--iu-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } #${APP_ID} .iu-row-actions { display: flex; gap: 4px; align-items: center; } #${APP_ID} .iu-icon-btn { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 6px; border: none; background: transparent; color: var(--iu-muted); transition: background 0.15s, color 0.15s; } #${APP_ID} .iu-icon-btn:hover { background: var(--iu-bg-2); color: var(--iu-text); } #${APP_ID} .iu-text-btn { width: auto; padding: 0 8px; font-size: 11px; font-weight: 500; } #${APP_ID} .iu-tag { display: inline-flex; align-items: center; flex-shrink: 0; padding: 1px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(255,255,255,0.06); color: var(--iu-muted); letter-spacing: 0.02em; text-transform: uppercase; } #${APP_ID} .iu-tag--blue { background: rgba(240,80,138,0.15); color: var(--iu-accent-2); } #${APP_ID} .iu-tag--green { background: rgba(34,197,94,0.15); color: var(--iu-success); } #${APP_ID} .iu-tag--red { background: rgba(240,106,93,0.15); color: var(--iu-danger-text); } #${APP_ID} .iu-actionbar { flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 16px; background: var(--iu-bg); border-top: 1px solid var(--iu-line); } #${APP_ID} .iu-actionbar-left, #${APP_ID} .iu-actionbar-right { display: flex; align-items: center; gap: 8px; min-width: 0; } #${APP_ID} .iu-muted { color: var(--iu-muted); font-size: 12px; } #${APP_ID} .iu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: grid; place-items: center; padding: 20px; z-index: 1; } #${APP_ID} .iu-dialog { width: 100%; max-width: 380px; background: var(--iu-bg); border: 1px solid var(--iu-line); border-radius: 12px; padding: 18px; box-shadow: 0 30px 80px rgba(0,0,0,0.55); } #${APP_ID} .iu-dialog h3 { color:var(--iu-text); margin: 0 0 8px; font-size: 16px; } #${APP_ID} .iu-dialog p { margin: 0 0 14px; color: var(--iu-muted); font-size: 13px; } #${APP_ID} .iu-dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; } #${APP_ID} .iu-dialog-actions [data-extra] { margin-right: auto; } #${APP_ID} .iu-form { display: grid; gap: 8px; max-height: 50vh; overflow-y: auto; padding-right: 4px; } #${APP_ID} .iu-field { display: grid; grid-template-columns: 1fr 110px; align-items: center; gap: 10px; font-size: 12px; color: var(--iu-muted); } #${APP_ID} .iu-field input { height: 32px; padding: 0 10px; border: 1px solid var(--iu-line); border-radius: 6px; background: var(--iu-bg-2); color: var(--iu-text); } #${APP_ID} .iu-field input:focus { border-color: var(--iu-accent); } #${APP_ID} .iu-toast { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); padding: 8px 14px; background: rgba(32,30,26,0.96); border: 1px solid var(--iu-line); border-radius: 999px; font-size: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.35); pointer-events: none; animation: iu-pop 0.18s ease-out; } #${APP_ID} .iu-pill { position: absolute; display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; background: var(--iu-bg); border: 1px solid var(--iu-line); color: var(--iu-text); border-radius: 999px; box-shadow: 0 12px 30px rgba(0,0,0,0.4); font-size: 12px; font-weight: 500; transition: background 0.15s; cursor: pointer; } #${APP_ID} .iu-pill:hover { background: var(--iu-bg-2); } #${APP_ID} .iu-pill-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--iu-muted); } #${APP_ID} .iu-pill-dot--active { background: var(--iu-accent); animation: iu-pulse 1.4s infinite; } #${APP_ID} .iu-pill-dot--error { background: var(--iu-danger-text); } @keyframes iu-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } } @media (max-width: 480px) { #${APP_ID} .iu-panel { width: calc(100vw - 16px) !important; max-height: calc(100vh - 16px) !important; left: 8px !important; right: 8px !important; top: 8px !important; bottom: 8px !important; } #${APP_ID} .iu-list { max-height: none; flex: 1 1 auto; } } @media (prefers-reduced-motion: reduce) { #${APP_ID} *, #${APP_ID} *::before, #${APP_ID} *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
-/* Light lilac reference layout: functional account dashboard, not financial data. */
-#${APP_ID}{--iu-bg:#e8e2ff;--iu-bg-2:#f5f1ff;--iu-bg-3:#ece5fc;--iu-line:#8e77b626;--iu-line-strong:#8e77b64a;--iu-text:#25232d;--iu-muted:#7d748e;--iu-accent:#9863d6;--iu-accent-2:#ab76e8;--iu-gradient:linear-gradient(130deg,#d4b2fa,#a677e3);color-scheme:light;background:#f1eeff}
-#${APP_ID} .iu-panel{inset:26px!important;left:26px!important;top:26px!important;width:calc(100vw - 52px)!important;height:calc(100vh - 52px)!important;grid-template-columns:72px minmax(0,1fr) 280px;grid-template-rows:72px minmax(0,1fr);border:2px solid #cbbbeb;border-radius:30px;background:#e4ddfb;box-shadow:0 18px 80px #b6a2d52b;overflow:hidden}
-#${APP_ID} .iu-sidebar{grid-column:1;grid-row:1/3;padding:18px 12px;background:linear-gradient(170deg,#e6ddfe 25%,#d4b0f8 65%,#cabdf1);gap:14px;border:0;align-items:center;overflow:hidden}
-#${APP_ID} .iu-side-mark{width:39px;height:39px;flex:none;color:#292731;border:3px solid #292731;border-radius:14px;background:none;font-size:26px;box-shadow:inset 0 0 0 3px #e6ddfe}
-#${APP_ID} .iu-sidebar>strong{writing-mode:vertical-rl;font-size:15px;letter-spacing:-.3px;height:116px;margin:0 0 18px;color:#292731;font-weight:700}
-#${APP_ID} .iu-side-caption,#${APP_ID} .iu-side-footer{display:none}
-#${APP_ID} .iu-side-active,#${APP_ID} .iu-sidebar>button{width:38px;height:38px;padding:0;display:grid;place-items:center;flex:none;border-radius:50%;font-size:0;background:#f8f4ffb0;box-shadow:none;color:#28252f}
-#${APP_ID} .iu-side-active{background:#292731;color:#fff}
-#${APP_ID} .iu-side-active:before{content:'⌂';font-size:24px}
-#${APP_ID} [data-nav-log]:before{content:'▤';font-size:20px}
-#${APP_ID} [data-nav-settings]:before{content:'⚙';font-size:21px}
-#${APP_ID} .iu-sidebar>button:hover{background:#fff;color:#72529a}
-#${APP_ID} .iu-header{grid-column:2;grid-row:1;padding:16px 24px;background:transparent;border:0;gap:10px}
-#${APP_ID} .iu-brand-text strong{font-size:17px;font-weight:650;letter-spacing:-.6px}
-#${APP_ID} .iu-brand-text span{font-size:10px;color:#796b90}
-#${APP_ID} .iu-brand-dot{background:#332d3c;box-shadow:none;width:9px;height:9px}
-#${APP_ID} .iu-header-actions{gap:5px}
-#${APP_ID} .iu-header-actions button{background:#f8f4ffb0;border:0;border-radius:50%;width:30px;height:30px;color:#514660}
-#${APP_ID} .iu-body{grid-column:2;grid-row:2;min-width:0;overflow:auto;background:none}
-#${APP_ID} .iu-inspector{grid-column:3;grid-row:1/3;display:flex;flex-direction:column;padding:25px 22px;background:linear-gradient(165deg,#ce9afa 0%,#b28be5 48%,#9388bc 100%);color:#fff;border-radius:0 26px 26px 0;min-height:0;overflow:auto;gap:18px}
-#${APP_ID} .iu-inspector-tabs{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;color:#ffffffa8;margin-bottom:2px}
-#${APP_ID} .iu-inspector-tabs strong{font-size:14px;color:white;font-weight:600}
-#${APP_ID} .iu-gauge{position:relative;width:214px;height:214px;flex:none;align-self:center;margin:8px 0 6px;background:repeating-conic-gradient(from -135deg,#fff9 0deg 1deg,transparent 1deg 6deg);border-radius:50%;display:grid;place-items:center}
-#${APP_ID} .iu-gauge:before{content:'';position:absolute;inset:22px;border-radius:50%;background:linear-gradient(165deg,#c697f0,#b18be0)}
-#${APP_ID} .iu-gauge-text{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px}
-#${APP_ID} .iu-gauge-text strong{font-size:42px;font-weight:300;line-height:1.1;letter-spacing:-2px;color:white}
-#${APP_ID} .iu-gauge-text span{font-size:11px;color:#ffffffe0}
-#${APP_ID} .iu-inspector label,#${APP_ID} .iu-inspector h3{font-size:12px;font-weight:500;margin:0;color:white}
-#${APP_ID} .iu-inspector-info{padding-top:15px;border-top:1px solid #ffffff30;display:flex;flex-direction:column;gap:10px}
-#${APP_ID} .iu-inspector-value{font-size:12px;padding:12px;border:1px solid #ffffff75;border-radius:20px;color:white;background:#ffffff08}
-#${APP_ID} .iu-inspector-row{display:flex;justify-content:space-between;gap:10px;font-size:10px;padding:11px 0;border-bottom:1px solid #ffffff2c;color:#ffffffd9}
-#${APP_ID} .iu-inspector-row strong{font-size:10px;font-weight:500;color:white}
-#${APP_ID} .iu-inspector .iu-inspector-primary{margin-top:auto;border:0;border-radius:25px;background:#25252c;color:white;padding:14px 15px;font-size:12px;font-weight:550;min-height:44px}
-#${APP_ID} .iu-inspector .iu-inspector-primary:disabled{opacity:.4;cursor:not-allowed}
-#${APP_ID} .iu-inspector-secondary{display:flex;gap:8px}
-#${APP_ID} .iu-inspector-secondary button{flex:1;background:transparent;border:1px solid #ffffff80;color:white;padding:9px 5px;border-radius:18px;font-size:10px}
-#${APP_ID} .iu-welcome{padding:8px 24px 30px;gap:13px;max-width:none;margin:0;justify-content:flex-start;min-height:0}
-#${APP_ID} .iu-welcome:after{display:none!important}
-#${APP_ID} .iu-welcome-top{padding:0;margin:0;border:0}
-#${APP_ID} .iu-welcome-top>span{color:#7d6c95;font-size:9px;letter-spacing:1px}
-#${APP_ID} .iu-welcome-top>small{background:#ffffff8a;border:0;color:#7f62a5;font-size:9px;padding:5px 9px}
-#${APP_ID} .iu-welcome h2{font-size:30px;line-height:1.15;letter-spacing:-1.2px;font-weight:600;margin-top:4px;max-width:540px}
-#${APP_ID} .iu-welcome p{font-size:11px;line-height:1.65;color:#7a6c8c;max-width:620px}
-#${APP_ID} .iu-idle-metrics{width:100%;margin:5px 0 8px}
-#${APP_ID} .iu-stats{gap:10px;margin:0 0 16px;grid-template-columns:repeat(3,minmax(0,1fr))}
-#${APP_ID} .iu-stats>div{position:relative;overflow:hidden;min-height:145px;padding:22px 17px;border:1px solid #ffffff28;border-radius:22px;background:linear-gradient(155deg,#dfbcfa 0%,#bf8df1 52%,#a18acf 100%);box-shadow:inset 0 1px 0 #ffffff50}
-#${APP_ID} .iu-stats>div:nth-child(2){background:linear-gradient(155deg,#dcb5f7,#bc8dee 57%,#a58bcf)}
-#${APP_ID} .iu-stats>div:after{position:absolute;right:-6px;bottom:-24px;content:'◉';color:#f5e8ff65;font-size:115px;line-height:1;transform:rotate(-18deg);text-shadow:3px 3px 0 #8f60bd33}
-#${APP_ID} .iu-stats>div:nth-child(2):after{content:'◔';font-size:130px;right:0;bottom:-30px;transform:rotate(-35deg)}
-#${APP_ID} .iu-stats>div:nth-child(3):after{content:'↗';font-size:122px;right:2px;bottom:-23px;transform:rotate(-8deg);color:#fff7}
-#${APP_ID} .iu-stats small{position:relative;z-index:1;color:#ffffffde;font-size:10px;letter-spacing:0;margin:0}
-#${APP_ID} .iu-stats strong{position:relative;z-index:1;display:block;margin:12px 0 0;color:#fff;font-weight:300;font-size:39px;letter-spacing:-1.5px;line-height:1}
-#${APP_ID} .iu-scope{margin:8px 0 0;gap:9px}
-#${APP_ID} .iu-scope legend{color:#7d6c95;font-size:9px;letter-spacing:1px;margin-bottom:10px}
-#${APP_ID} .iu-scope-card{background:#f7f3ffb8;border:1px solid #c3aedc;box-shadow:none;min-height:109px;padding:16px 12px;border-radius:19px;gap:8px}
-#${APP_ID} .iu-scope-card.is-active{background:#fdfaff;border-color:#ab7adc;box-shadow:inset 0 0 0 1px #ab7adc}
-#${APP_ID} .iu-scope-card:hover{background:#fff;border-color:#ad83d6}
-#${APP_ID} .iu-scope-card strong{font-size:12px;color:#352b44;letter-spacing:-.2px}
-#${APP_ID} .iu-scope-card small{color:#8a7b9b;font-size:10px;line-height:1.5}
-#${APP_ID} .iu-scope-card input{width:13px;height:13px;accent-color:#9e6ecf;margin-top:2px}
-#${APP_ID} .iu-btn{background:#f9f5ff;border-color:#cbb9e1;color:#473554;border-radius:20px;font-size:11px}
-#${APP_ID} .iu-btn--primary{background:#29252f;border-color:#29252f;color:white;box-shadow:none}
-#${APP_ID} .iu-btn--primary:hover:not(:disabled){background:#4b385e;border-color:#4b385e}
-#${APP_ID} .iu-btn--danger{background:#9d4968;border-color:#9d4968;color:#fff}
-#${APP_ID} .iu-btn--lg{margin-top:5px;padding:11px 20px;min-width:175px}
-#${APP_ID} .iu-results{padding:7px 22px 0;min-height:0}
-#${APP_ID} .iu-results-summary{color:#7c6a90;font-size:10px;gap:5px;margin-bottom:7px}
-#${APP_ID} .iu-results-summary>span{color:#5e427f}
-#${APP_ID} .iu-notice{padding:8px 11px;margin:0 0 12px;background:#f7f2ff80;border:1px solid #bba2d345;border-radius:13px}
-#${APP_ID} .iu-notice p{font-size:9px;color:#8c789d}
-#${APP_ID} .iu-search-row{padding:4px 0 10px}
-#${APP_ID} .iu-search{height:36px;background:#f9f5ffb0;border:1px solid #ccbae0;border-radius:18px;color:#4c3d5e;font-size:11px;padding:0 14px}
-#${APP_ID} .iu-list{background:#f7f3ff;border:0;border-radius:22px 22px 0 0;min-height:115px}
-#${APP_ID} .iu-row{padding:12px 15px;border-color:#c6b9d640;gap:8px;grid-template-columns:18px 32px minmax(0,1fr) auto}
-#${APP_ID} .iu-row:hover{background:#eee5fb}
-#${APP_ID} .iu-row--selected,#${APP_ID} .iu-row--selected:hover{background:#e9ddf9;box-shadow:inset 3px 0 #a777d6}
-#${APP_ID} .iu-row-name{font-size:12px}
-#${APP_ID} .iu-row-name>a{color:#342741}
-#${APP_ID} .iu-row-sub{color:#8c7d9b;font-size:10px}
-#${APP_ID} .iu-avatar{width:32px;height:32px;background:linear-gradient(140deg,#dec8f8,#bc9add)}
-#${APP_ID} .iu-row-check{accent-color:#9863cf;width:14px;height:14px}
-#${APP_ID} .iu-actionbar{background:#f7f3ff;border:0;border-top:1px solid #c6b9d640;border-radius:0 0 22px 22px;padding:12px 14px;margin-bottom:20px;gap:8px}
-#${APP_ID} .iu-actionbar-left,#${APP_ID} .iu-actionbar-right{gap:7px}
-#${APP_ID} .iu-muted{color:#8d7a9b;font-size:10px}
-#${APP_ID} .iu-progress{background:#f8f4ff;width:calc(100% - 44px);padding:28px;border:0;border-radius:24px;box-shadow:none;margin:28px auto}
-#${APP_ID} .iu-progress-head h2{font-size:23px;color:#392c45}
-#${APP_ID} .iu-progress-head p{color:#887396}
-#${APP_ID} .iu-current{background:#ede4fa;color:#47334e}
-#${APP_ID} .iu-bar{background:#e2d2f2}
-#${APP_ID} .iu-dialog{background:#fbf8ff;border:1px solid #cbb6e4;color:#352940;border-radius:23px;box-shadow:0 20px 80px #4c316c33}
-#${APP_ID} .iu-dialog h3{color:#352940}
-#${APP_ID} .iu-dialog p,#${APP_ID} .iu-field{color:#887496}
-#${APP_ID} .iu-field input{background:#f2eafa;color:#473452;border-color:#cebae0}
-#${APP_ID} .iu-toast{background:#29242f;color:#fff;border:0;box-shadow:0 6px 24px #5b3b7a22}
-#${APP_ID} .iu-pill{background:#f5edff;color:#654280;border-color:#c4a8de}
-@media(max-width:1080px){#${APP_ID} .iu-panel{grid-template-columns:64px minmax(0,1fr)}#${APP_ID} .iu-inspector{display:none}#${APP_ID} .iu-welcome{padding:12px 26px 30px}#${APP_ID} .iu-stats>div{min-height:125px}}
-@media(max-width:700px){#${APP_ID} .iu-panel{inset:8px!important;left:8px!important;top:8px!important;width:calc(100vw - 16px)!important;height:calc(100vh - 16px)!important;border-radius:22px;display:flex!important}#${APP_ID} .iu-sidebar{display:none}#${APP_ID} .iu-inspector{display:none}#${APP_ID} .iu-header{padding:14px;min-height:68px}#${APP_ID} .iu-header-actions button{width:27px;height:27px}#${APP_ID} .iu-welcome{padding:8px 15px 24px;gap:12px}#${APP_ID} .iu-welcome h2{font-size:28px;letter-spacing:-1px}#${APP_ID} .iu-welcome-top{gap:6px;flex-direction:row;align-items:center}#${APP_ID} .iu-welcome-top>span{font-size:8px}#${APP_ID} .iu-welcome-top>small{font-size:8px;padding:4px 6px}#${APP_ID} .iu-stats{gap:6px}#${APP_ID} .iu-stats>div{padding:14px 10px;min-height:112px;border-radius:17px}#${APP_ID} .iu-stats small{font-size:8px}#${APP_ID} .iu-stats strong{font-size:29px}#${APP_ID} .iu-scope{grid-template-columns:1fr;gap:8px}#${APP_ID} .iu-scope-card{min-height:88px;border-radius:17px}#${APP_ID} .iu-results{padding:7px 13px 0}#${APP_ID} .iu-actionbar{padding:10px 11px}#${APP_ID} .iu-progress{width:calc(100% - 26px);padding:22px}}
-
-
+} function pruneSelectionToDisplayed() { if (!state.selected.size) return; const visible = new Set(getDisplayUsers().map((u) => u.id)); state.selected.forEach((id) => { if (!visible.has(id)) state.selected.delete(id); }); } function normalizeUser(raw) { return { id: String(raw.id || raw.pk || raw.pk_id || ""), username: String(raw.username || ""), full_name: String(raw.full_name || ""), profile_pic_url: String(raw.profile_pic_url || raw.profile_pic_url_hd || ""), is_verified: Boolean(raw.is_verified), is_private: Boolean(raw.is_private), follows_viewer: Boolean(raw.follows_viewer ?? raw.friendship_status?.followed_by ?? raw.followed_by) }; } function dedupe(list) { const seen = new Set(); return list.filter((u) => { if (!u.id || seen.has(u.id)) return false; seen.add(u.id); return true; }); } function isDefaultAvatar(user) { const url = user.profile_pic_url || ""; return /44884218_345707102882519|464760996_1254146839119862/.test(url); } function getCookie(name) { const match = document.cookie.match(new RegExp("(^|; )" + name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "=([^;]*)")); return match ? decodeURIComponent(match[2]) : null; } function sleep(ms) { return new Promise((resolve) => setTimeout(resolve, Math.max(0, ms))); } function interruptibleSleep(ms) { return new Promise((resolve) => { let timer = null; let settled = false; const finish = (expired) => { if (settled) return; settled = true; if (timer) clearTimeout(timer); if (wakeSleep === finish) wakeSleep = null; resolve(expired); }; wakeSleep = finish; timer = setTimeout(() => finish(true), Math.max(0, ms)); }); } function wakeUp() { if (typeof wakeSleep === "function") wakeSleep(false); } function visibilityNote() { return typeof document !== "undefined" && document.hidden ? t("keepTabVisible") : ""; } function onVisibilityChange() { if (state.mode !== "scanning") return; state.progress.note = visibilityNote(); updateProgressDOM(); } function randomBetween(min, max) { const lo = Math.min(min, max); const hi = Math.max(min, max); return Math.floor(Math.random() * (hi - lo)) + lo; } async function waitWhile(predicate, interval = 1000) { while (predicate()) await interruptibleSleep(interval); } async function sleepWithCountdown(ms, reasonKey) { state.waitReason = reasonKey; let remaining = Math.max(0, ms); while (remaining > 0) { if (state.scanCancelled || state.unfollowCancelled) break; if (state.scanPaused || state.unfollowPaused) { state.waitUntil = 0; updateCountdownDOM(); await waitWhile(() => (state.scanPaused || state.unfollowPaused) && !state.scanCancelled && !state.unfollowCancelled); continue; } state.waitUntil = Date.now() + remaining; updateCountdownDOM(); const before = Date.now(); const expired = await interruptibleSleep(remaining); remaining = expired ? 0 : Math.max(0, remaining - (Date.now() - before)); } state.waitUntil = 0; state.waitReason = ""; updateCountdownDOM(); } function startCountdown() { if (countdownTimer) return; countdownTimer = setInterval(updateCountdownDOM, 500); } function stopCountdown() { if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; } } function updateCountdownDOM() { const node = document.querySelector(`#${APP_ID} [data-countdown]`); if (!node) return; if (!state.waitUntil) { node.textContent = ""; return; } const remaining = Math.max(0, Math.ceil((state.waitUntil - Date.now()) / 1000)); const reason = state.waitReason || "nextActionIn"; node.textContent = t(reason, { seconds: remaining }); } function progressCounter(current, total) { if (total) return t("ofTotal", { current: formatCount(current), total: formatCount(total) }); return t("ofUnknown", { current: formatCount(current) }); } function setBar(root, percent, valueText, known) { const bar = root.querySelector("[data-progress-bar]"); if (bar) bar.style.width = percent + "%"; const box = root.querySelector("[data-bar]"); if (!box) return; if (known) box.setAttribute("aria-valuenow", String(percent)); else box.removeAttribute("aria-valuenow"); box.setAttribute("aria-valuetext", valueText); } function updatePillDOM() { if (!state.minimized) return; const pillLabelEl = document.querySelector(`#${APP_ID} [data-pill-label]`); if (pillLabelEl) pillLabelEl.textContent = pillLabel(); const dot=document.querySelector(`#${APP_ID} .iu-pill-dot`);if(dot)dot.className="iu-pill-dot "+pillStateClass(); } function updateProgressDOM() { updateInspector(); if(state.minimized){updatePillDOM();return;} const root = document.querySelector(`#${APP_ID} [data-body]`); if (!root) return; const { current, total, label, note } = state.progress; const percent = total ? Math.min(100, Math.round((current / total) * 100)) : 0; const counter = progressCounter(current, total); setBar(root, percent, counter, Boolean(total)); const counterEl = root.querySelector("[data-progress-counter]"); if (counterEl) counterEl.textContent = counter; const labelEl = root.querySelector("[data-progress-label]"); if (labelEl) labelEl.textContent = state.scanPaused ? t("paused") : t(label); const noteEl = root.querySelector("[data-progress-note]"); if (noteEl) noteEl.textContent = note || ""; updatePillDOM(); } function updateUnfollowDOM() { updateInspector(); if(state.minimized){updatePillDOM();return;} const root = document.querySelector(`#${APP_ID} [data-body]`); if (!root) return; const { current, total, note } = state.progress; const percent = total ? Math.min(100, Math.round((current / total) * 100)) : 0; const summary = unfollowSummary(); setBar(root, percent, summary, Boolean(total)); const counterEl = root.querySelector("[data-progress-counter]"); if (counterEl) counterEl.textContent = summary; const labelEl = root.querySelector("[data-progress-label]"); if (labelEl) labelEl.textContent = unfollowTitle(); const noteEl = root.querySelector("[data-progress-note]"); if (noteEl) noteEl.textContent = note || ""; const last = state.log[state.log.length - 1]; const currentEl = root.querySelector("[data-current]"); if (currentEl) { currentEl.hidden = !last; if (last) { const userEl = currentEl.querySelector("[data-current-user]"); if (userEl) userEl.textContent = "@" + last.user.username; const tagEl = currentEl.querySelector("[data-current-tag]"); if (tagEl) { tagEl.textContent = last.ok ? "✓" : "✕"; tagEl.title = last.reason || ""; tagEl.classList.toggle("iu-tag--green", last.ok); tagEl.classList.toggle("iu-tag--red", !last.ok); } } } updatePillDOM(); } function toast(message) { const root = document.getElementById(APP_ID); if (!root) return; root.querySelector(".iu-toast")?.remove(); if (toastTimer) { clearTimeout(toastTimer); toastTimer = null; } const node = document.createElement("div"); node.className = "iu-toast"; node.setAttribute("role", "status"); node.setAttribute("aria-live", "polite"); node.textContent = message; root.appendChild(node); toastTimer = setTimeout(() => { node.remove(); toastTimer = null; }, 3500); } function clamp(value, min, max) { return Math.min(Math.max(value, min), max); } function escapeHTML(value) { return String(value ?? "").replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch])); } function escapeAttr(value) { return escapeHTML(value); } const CSS = `
+#${APP_ID}, #${APP_ID} * { box-sizing: border-box; margin: 0; padding: 0; }
 #${APP_ID} {
-  --iu-font: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  letter-spacing: -0.015em;
+  --iu-bg: #141219;
+  --iu-bg-2: #1e1926;
+  --iu-bg-3: #2a2336;
+  --iu-line: rgba(255, 255, 255, 0.08);
+  --iu-line-strong: rgba(255, 255, 255, 0.16);
+  --iu-text: #f7f5fa;
+  --iu-muted: #a39baa;
+  --iu-accent: #a855f7;
+  --iu-accent-2: #c084fc;
+  --iu-gradient: linear-gradient(135deg, #ec4899 0%, #a855f7 50%, #6366f1 100%);
+  --iu-danger: #e11d48;
+  --iu-danger-text: #fb7185;
+  --iu-success: #10b981;
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483647;
+  color: var(--iu-text);
+  color-scheme: dark;
+  font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
-#${APP_ID} * {
-  font-family: var(--iu-font) !important;
+#${APP_ID} > * { pointer-events: auto; }
+#${APP_ID} button, #${APP_ID} input, #${APP_ID} a { font: inherit; color: inherit; }
+#${APP_ID} a { text-decoration: none; }
+#${APP_ID} button { cursor: pointer; }
+#${APP_ID} [hidden] { display: none !important; }
+
+#${APP_ID} .iu-list, #${APP_ID} .iu-form, #${APP_ID} .iu-welcome {
+  scrollbar-width: thin;
+  scrollbar-color: var(--iu-line-strong) transparent;
 }
-#${APP_ID} .iu-new-scan {
-  margin-left: auto;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: #f3ecfc;
-  border: 1px solid #d4c2ed;
-  color: #553e6d;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 1px 3px rgba(152, 99, 214, 0.08);
+#${APP_ID} .iu-list::-webkit-scrollbar, #${APP_ID} .iu-form::-webkit-scrollbar, #${APP_ID} .iu-welcome::-webkit-scrollbar {
+  width: 6px;
 }
-#${APP_ID} .iu-new-scan:hover {
-  background: #ffffff;
-  border-color: #9863d6;
-  color: #9863d6;
-  box-shadow: 0 4px 12px rgba(152, 99, 214, 0.2);
-  transform: translateY(-1px);
+#${APP_ID} .iu-list::-webkit-scrollbar-track, #${APP_ID} .iu-form::-webkit-scrollbar-track, #${APP_ID} .iu-welcome::-webkit-scrollbar-track {
+  background: transparent;
 }
+#${APP_ID} .iu-list::-webkit-scrollbar-thumb, #${APP_ID} .iu-form::-webkit-scrollbar-thumb, #${APP_ID} .iu-welcome::-webkit-scrollbar-thumb {
+  background: var(--iu-line-strong);
+  border-radius: 3px;
+}
+
+#${APP_ID} :focus-visible { outline: 2px solid var(--iu-accent); outline-offset: 2px; }
+
 #${APP_ID} .iu-panel {
-  box-shadow: 0 24px 90px rgba(152, 99, 214, 0.22), 0 4px 20px rgba(0, 0, 0, 0.06) !important;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease !important;
+  position: fixed !important;
+  inset: 0 !important;
+  margin: auto !important;
+  width: 780px !important;
+  max-width: calc(100vw - 32px) !important;
+  height: 580px !important;
+  max-height: calc(100vh - 32px) !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 230px !important;
+  grid-template-rows: 56px minmax(0, 1fr) !important;
+  background: var(--iu-bg) !important;
+  border: 1px solid var(--iu-line-strong) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  overflow: hidden !important;
+  animation: iu-pop 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
-#${APP_ID} .iu-btn {
+
+#${APP_ID} .iu-sidebar { display: none !important; }
+
+#${APP_ID} .iu-header {
+  grid-column: 1 / 3 !important;
+  grid-row: 1 !important;
+  height: 56px !important;
+  padding: 0 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  border-bottom: 1px solid var(--iu-line) !important;
+  background: var(--iu-bg) !important;
+  cursor: grab;
+  user-select: none;
+}
+#${APP_ID} .iu-header.iu-dragging { cursor: grabbing; }
+#${APP_ID} .iu-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+#${APP_ID} .iu-brand-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--iu-gradient); flex-shrink: 0; }
+#${APP_ID} .iu-brand-text { min-width: 0; }
+#${APP_ID} .iu-brand-text strong { display: block; font-size: 14px; font-weight: 700; color: var(--iu-text); }
+#${APP_ID} .iu-brand-text span { display: block; font-size: 11px; color: var(--iu-muted); }
+#${APP_ID} .iu-header-actions { display: flex; gap: 6px; flex-shrink: 0; }
+#${APP_ID} .iu-header-actions button {
+  width: 30px; height: 30px; display: grid; place-items: center; border: 1px solid var(--iu-line); background: var(--iu-bg-2); border-radius: 8px; color: var(--iu-muted); transition: all 0.15s; font-size: 11px; font-weight: 600;
+}
+#${APP_ID} .iu-header-actions button:hover { background: var(--iu-bg-3); color: var(--iu-text); border-color: var(--iu-line-strong); }
+#${APP_ID} .iu-header-actions svg { display: block; }
+
+#${APP_ID} .iu-body {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  background: var(--iu-bg) !important;
+}
+
+#${APP_ID} .iu-inspector {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 16px 14px !important;
+  background: var(--iu-bg-2) !important;
+  border-left: 1px solid var(--iu-line) !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  gap: 12px !important;
+}
+#${APP_ID} .iu-inspector-tabs {
+  display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--iu-muted);
+}
+#${APP_ID} .iu-inspector-tabs strong {
+  font-size: 12px; color: var(--iu-text); font-weight: 600;
+}
+#${APP_ID} .iu-gauge {
+  width: 110px; height: 110px; margin: 4px auto; flex: none; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle, rgba(168,85,247,0.15) 0%, rgba(20,18,24,0.5) 70%); border: 2px solid var(--iu-accent); box-shadow: 0 0 16px rgba(168, 85, 247, 0.2);
+}
+#${APP_ID} .iu-gauge-text {
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px;
+}
+#${APP_ID} .iu-gauge-text strong {
+  font-size: 30px; font-weight: 700; color: #ffffff; line-height: 1; letter-spacing: -1px;
+}
+#${APP_ID} .iu-gauge-text span {
+  font-size: 10px; color: var(--iu-muted); font-weight: 500;
+}
+#${APP_ID} .iu-inspector-info {
+  display: flex; flex-direction: column; gap: 4px; padding-top: 8px; border-top: 1px solid var(--iu-line);
+}
+#${APP_ID} .iu-inspector-info label {
+  font-size: 10px; font-weight: 600; color: var(--iu-muted); text-transform: uppercase; letter-spacing: 0.5px;
+}
+#${APP_ID} .iu-inspector-value {
+  font-size: 11px; padding: 6px 10px; border: 1px solid var(--iu-line); border-radius: 8px; color: var(--iu-text); background: var(--iu-bg-3);
+}
+#${APP_ID} .iu-inspector-row {
+  display: flex; justify-content: space-between; gap: 6px; font-size: 10px; padding: 5px 0; border-bottom: 1px solid var(--iu-line); color: var(--iu-muted);
+}
+#${APP_ID} .iu-inspector-row strong {
+  font-weight: 600; color: var(--iu-text);
+}
+#${APP_ID} .iu-inspector-primary {
+  margin-top: auto !important;
+  background: var(--iu-gradient) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 10px 14px !important;
+  font-size: 12px !important;
   font-weight: 600 !important;
-  letter-spacing: -0.01em !important;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 14px rgba(168, 85, 247, 0.3) !important;
+  transition: opacity 0.15s, transform 0.15s !important;
+  min-height: 38px !important;
 }
-#${APP_ID} .iu-btn--primary {
-  background: linear-gradient(135deg, #2f2937, #1e1b24) !important;
-  box-shadow: 0 4px 14px rgba(35, 30, 43, 0.25) !important;
-}
-#${APP_ID} .iu-btn--primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #443b50, #2c2734) !important;
-  box-shadow: 0 6px 20px rgba(35, 30, 43, 0.35) !important;
+#${APP_ID} .iu-inspector-primary:hover:not(:disabled) {
+  opacity: 0.92 !important;
   transform: translateY(-1px) !important;
 }
-#${APP_ID} .iu-row {
-  transition: background 0.15s ease, transform 0.15s ease !important;
+#${APP_ID} .iu-inspector-primary:disabled {
+  opacity: 0.35 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
 }
-#${APP_ID} .iu-row:hover {
-  background: #ede3fa !important;
+#${APP_ID} .iu-inspector-secondary {
+  display: flex; gap: 6px;
 }
-#${APP_ID} .iu-row--selected {
-  background: #e6d7f8 !important;
-  box-shadow: inset 4px 0 0 #9863d6 !important;
+#${APP_ID} .iu-inspector-secondary button {
+  flex: 1; background: var(--iu-bg-3); border: 1px solid var(--iu-line); color: var(--iu-muted); padding: 7px; border-radius: 8px; font-size: 10px; font-weight: 500; cursor: pointer;
+}
+#${APP_ID} .iu-inspector-secondary button:hover {
+  background: var(--iu-bg); color: var(--iu-text);
+}
+
+#${APP_ID} .iu-welcome {
+  padding: 20px 22px; display: flex; flex-direction: column; gap: 12px; min-height: 0; overflow-y: auto;
+}
+#${APP_ID} .iu-welcome-top {
+  display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--iu-muted);
+}
+#${APP_ID} .iu-welcome-top small {
+  padding: 2px 8px; border-radius: 999px; background: var(--iu-bg-2); border: 1px solid var(--iu-line); font-size: 10px; color: var(--iu-muted);
+}
+#${APP_ID} .iu-welcome-icon {
+  width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; background: rgba(168, 85, 247, 0.12); color: var(--iu-accent); margin: 0 auto;
+}
+#${APP_ID} .iu-welcome-icon--error { background: rgba(225, 29, 72, 0.12); color: var(--iu-danger-text); }
+#${APP_ID} .iu-welcome h2 {
+  font-size: 18px; font-weight: 700; color: var(--iu-text); letter-spacing: -0.4px;
+}
+#${APP_ID} .iu-welcome p {
+  font-size: 12px; color: var(--iu-muted); line-height: 1.5;
+}
+#${APP_ID} .iu-welcome-actions {
+  display: flex; gap: 8px; margin-top: 4px;
+}
+#${APP_ID} .iu-stats {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 4px 0 6px;
+}
+#${APP_ID} .iu-stats > div {
+  background: var(--iu-bg-2); border: 1px solid var(--iu-line); border-radius: 10px; padding: 10px 12px;
+}
+#${APP_ID} .iu-stats small {
+  font-size: 10px; font-weight: 600; color: var(--iu-muted); text-transform: uppercase; letter-spacing: 0.5px;
+}
+#${APP_ID} .iu-stats strong {
+  display: block; font-size: 20px; font-weight: 700; color: var(--iu-text); margin-top: 3px;
+}
+#${APP_ID} .iu-scope {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; border: none; margin: 0; padding: 0;
+}
+#${APP_ID} .iu-scope legend {
+  font-size: 10px; font-weight: 600; color: var(--iu-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
+}
+#${APP_ID} .iu-scope-card {
+  display: flex; gap: 8px; align-items: flex-start; padding: 10px 12px; background: var(--iu-bg-2); border: 1px solid var(--iu-line); border-radius: 10px; cursor: pointer; transition: all 0.15s;
+}
+#${APP_ID} .iu-scope-card:hover {
+  background: var(--iu-bg-3); border-color: var(--iu-line-strong);
+}
+#${APP_ID} .iu-scope-card.is-active {
+  background: rgba(168, 85, 247, 0.08); border-color: var(--iu-accent); box-shadow: inset 0 0 0 1px var(--iu-accent);
+}
+#${APP_ID} .iu-scope-card strong {
+  display: block; font-size: 12px; font-weight: 600; color: var(--iu-text);
+}
+#${APP_ID} .iu-scope-card small {
+  display: block; font-size: 10px; color: var(--iu-muted); margin-top: 2px; line-height: 1.35;
+}
+#${APP_ID} .iu-scope-card input {
+  accent-color: var(--iu-accent); margin-top: 2px;
+}
+
+#${APP_ID} .iu-results {
+  flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; overflow: hidden;
+}
+#${APP_ID} .iu-results-summary {
+  display: flex; align-items: center; justify-content: space-between; padding: 10px 16px 6px; font-size: 12px; color: var(--iu-muted);
+}
+#${APP_ID} .iu-results-summary span {
+  font-weight: 600; color: var(--iu-text);
+}
+#${APP_ID} .iu-new-scan {
+  font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--iu-bg-2); border: 1px solid var(--iu-line); color: var(--iu-accent-2); cursor: pointer; transition: all 0.15s;
+}
+#${APP_ID} .iu-new-scan:hover {
+  background: var(--iu-bg-3); border-color: var(--iu-accent);
+}
+#${APP_ID} .iu-search-row {
+  padding: 6px 16px;
 }
 #${APP_ID} .iu-search {
-  transition: all 0.2s ease !important;
+  width: 100%; height: 34px; padding: 0 12px; border: 1px solid var(--iu-line); border-radius: 8px; background: var(--iu-bg-2); color: var(--iu-text); font-size: 12px; transition: all 0.15s;
 }
 #${APP_ID} .iu-search:focus {
-  background: #ffffff !important;
-  border-color: #9863d6 !important;
-  box-shadow: 0 0 0 3px rgba(152, 99, 214, 0.18) !important;
-  outline: none !important;
+  border-color: var(--iu-accent); background: var(--iu-bg-3); outline: none; box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2);
+}
+#${APP_ID} .iu-list {
+  flex: 1 1 auto; min-height: 100px; overflow-y: auto; overscroll-behavior: contain; border-top: 1px solid var(--iu-line); border-bottom: 1px solid var(--iu-line);
+}
+#${APP_ID} .iu-list-empty {
+  padding: 30px 20px; text-align: center; color: var(--iu-muted); font-size: 13px;
+}
+#${APP_ID} .iu-row {
+  display: grid; grid-template-columns: 18px 32px minmax(0, 1fr) auto; gap: 10px; padding: 8px 16px; align-items: center; cursor: pointer; border-bottom: 1px solid var(--iu-line); transition: background 0.1s;
+}
+#${APP_ID} .iu-row:hover { background: var(--iu-bg-2); }
+#${APP_ID} .iu-row--selected { background: rgba(168, 85, 247, 0.12); box-shadow: inset 3px 0 0 var(--iu-accent); }
+#${APP_ID} .iu-row--selected:hover { background: rgba(168, 85, 247, 0.18); }
+#${APP_ID} .iu-row-check { width: 15px; height: 15px; accent-color: var(--iu-accent); cursor: pointer; }
+#${APP_ID} .iu-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; background: var(--iu-bg-3); }
+#${APP_ID} .iu-row-text { min-width: 0; }
+#${APP_ID} .iu-row-name { font-size: 12px; font-weight: 600; color: var(--iu-text); display: flex; align-items: center; gap: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#${APP_ID} .iu-row-name a { color: var(--iu-text); text-decoration: none; }
+#${APP_ID} .iu-row-name a:hover { color: var(--iu-accent-2); }
+#${APP_ID} .iu-row-sub { font-size: 11px; color: var(--iu-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#${APP_ID} .iu-row-actions { display: flex; gap: 4px; align-items: center; }
+#${APP_ID} .iu-icon-btn {
+  display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 6px; border: none; background: transparent; color: var(--iu-muted); transition: all 0.15s;
+}
+#${APP_ID} .iu-icon-btn:hover { background: var(--iu-bg-3); color: var(--iu-text); }
+#${APP_ID} .iu-tag {
+  display: inline-flex; align-items: center; flex-shrink: 0; padding: 1px 5px; border-radius: 4px; font-size: 10px; font-weight: 600; background: var(--iu-bg-3); color: var(--iu-muted);
+}
+#${APP_ID} .iu-tag--blue { background: rgba(168, 85, 247, 0.15); color: var(--iu-accent-2); }
+#${APP_ID} .iu-tag--green { background: rgba(16, 185, 129, 0.15); color: var(--iu-success); }
+#${APP_ID} .iu-tag--red { background: rgba(225, 29, 72, 0.15); color: var(--iu-danger-text); }
+
+#${APP_ID} .iu-actionbar {
+  flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 16px; background: var(--iu-bg-2); border-top: 1px solid var(--iu-line);
+}
+#${APP_ID} .iu-actionbar-left, #${APP_ID} .iu-actionbar-right { display: flex; align-items: center; gap: 8px; }
+
+#${APP_ID} .iu-progress {
+  padding: 24px; display: flex; flex-direction: column; gap: 14px;
+}
+#${APP_ID} .iu-progress-head h2 { font-size: 16px; font-weight: 600; color: var(--iu-text); }
+#${APP_ID} .iu-progress-head p { font-size: 12px; color: var(--iu-muted); margin-top: 2px; }
+#${APP_ID} .iu-bar { height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.1); overflow: hidden; }
+#${APP_ID} .iu-bar > span { display: block; height: 100%; background: var(--iu-gradient); transition: width 0.3s ease; }
+#${APP_ID} .iu-progress-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--iu-muted); }
+#${APP_ID} .iu-current { display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--iu-bg-2); border-radius: 8px; font-size: 12px; }
+#${APP_ID} .iu-current strong { color: var(--iu-text); }
+#${APP_ID} .iu-blocked { padding: 10px; border-radius: 8px; font-size: 12px; color: var(--iu-danger-text); background: rgba(225, 29, 72, 0.12); border: 1px solid rgba(225, 29, 72, 0.3); }
+#${APP_ID} .iu-progress-actions { display: flex; gap: 8px; }
+
+#${APP_ID} .iu-notice {
+  margin: 8px 16px; padding: 10px 12px; border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 8px; background: rgba(245, 158, 11, 0.08); font-size: 12px;
+}
+#${APP_ID} .iu-notice strong { display: block; margin-bottom: 2px; color: #fbbf24; font-weight: 600; }
+#${APP_ID} .iu-notice p { margin: 0; color: var(--iu-muted); font-size: 11px; line-height: 1.4; }
+#${APP_ID} .iu-notice-actions { display: flex; gap: 6px; margin-top: 8px; }
+
+#${APP_ID} .iu-btn {
+  border: 1px solid var(--iu-line); background: var(--iu-bg-2); color: var(--iu-text); padding: 7px 12px; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s;
+}
+#${APP_ID} .iu-btn:hover:not(:disabled) { background: var(--iu-bg-3); border-color: var(--iu-line-strong); }
+#${APP_ID} .iu-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+#${APP_ID} .iu-btn--primary { background: var(--iu-accent); border-color: var(--iu-accent); color: #ffffff; }
+#${APP_ID} .iu-btn--primary:hover:not(:disabled) { background: var(--iu-accent-2); border-color: var(--iu-accent-2); }
+#${APP_ID} .iu-btn--danger { background: var(--iu-danger); border-color: var(--iu-danger); color: #ffffff; }
+#${APP_ID} .iu-btn--danger:hover:not(:disabled) { background: #be123c; border-color: #be123c; }
+#${APP_ID} .iu-btn--ghost { background: transparent; }
+#${APP_ID} .iu-btn--lg { padding: 9px 18px; font-size: 13px; font-weight: 600; }
+#${APP_ID} .iu-btn--small { padding: 5px 9px; font-size: 11px; }
+
+#${APP_ID} .iu-overlay {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); display: grid; place-items: center; padding: 16px; z-index: 2147483647; backdrop-filter: blur(2px);
 }
 #${APP_ID} .iu-dialog {
-  box-shadow: 0 30px 100px rgba(76, 49, 108, 0.35) !important;
-  animation: iu-modal-pop 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  width: 100%; max-width: 380px; background: var(--iu-bg); border: 1px solid var(--iu-line-strong); border-radius: 14px; padding: 18px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); animation: iu-pop 0.18s ease-out;
 }
-@keyframes iu-modal-pop {
-  from { opacity: 0; transform: scale(0.95) translateY(8px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+#${APP_ID} .iu-dialog h3 { color: var(--iu-text); margin: 0 0 8px; font-size: 15px; font-weight: 600; }
+#${APP_ID} .iu-dialog p { margin: 0 0 12px; color: var(--iu-muted); font-size: 12px; line-height: 1.45; }
+#${APP_ID} .iu-dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+#${APP_ID} .iu-dialog-actions [data-extra] { margin-right: auto; }
+#${APP_ID} .iu-form { display: grid; gap: 8px; max-height: 50vh; overflow-y: auto; padding-right: 4px; }
+#${APP_ID} .iu-field { display: grid; grid-template-columns: 1fr 110px; align-items: center; gap: 10px; font-size: 12px; color: var(--iu-muted); }
+#${APP_ID} .iu-field input { height: 32px; padding: 0 10px; border: 1px solid var(--iu-line); border-radius: 6px; background: var(--iu-bg-2); color: var(--iu-text); }
+#${APP_ID} .iu-field input:focus { border-color: var(--iu-accent); }
+
+#${APP_ID} .iu-toast {
+  position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); padding: 8px 16px; background: var(--iu-bg-3); border: 1px solid var(--iu-line-strong); border-radius: 999px; font-size: 12px; color: var(--iu-text); box-shadow: 0 6px 20px rgba(0,0,0,0.4); z-index: 2147483647; animation: iu-pop 0.18s ease-out;
 }
+#${APP_ID} .iu-pill {
+  position: fixed; display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; background: var(--iu-bg); border: 1px solid var(--iu-line-strong); color: var(--iu-text); border-radius: 999px; box-shadow: 0 12px 30px rgba(0,0,0,0.5); font-size: 12px; font-weight: 500; cursor: pointer; z-index: 2147483647;
+}
+#${APP_ID} .iu-pill:hover { background: var(--iu-bg-2); }
+#${APP_ID} .iu-pill-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--iu-muted); }
+#${APP_ID} .iu-pill-dot--active { background: var(--iu-accent); animation: iu-pulse 1.4s infinite; }
+#${APP_ID} .iu-pill-dot--error { background: var(--iu-danger-text); }
+@keyframes iu-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+@keyframes iu-pop { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+
+@media (max-width: 768px) {
+  #${APP_ID} .iu-panel {
+    inset: 8px !important; margin: 0 !important; width: calc(100vw - 16px) !important; height: calc(100vh - 16px) !important; display: flex !important; flex-direction: column !important; border-radius: 14px !important;
+  }
+  #${APP_ID} .iu-sidebar { display: none !important; }
+  #${APP_ID} .iu-inspector { display: none !important; }
+  #${APP_ID} .iu-body { flex: 1 1 auto !important; min-height: 0 !important; }
+  #${APP_ID} .iu-scope { grid-template-columns: 1fr !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #${APP_ID} *, #${APP_ID} *::before, #${APP_ID} *::after {
+    animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important;
+  }
+}
+
 `; if (globalThis.__IU_TEST__) { globalThis.__IU_TEST__({ addFollowBackStatus, evaluateUnfollowResponse, responseDiagnostics, pruneSelectionToDisplayed, fetchFriendshipList, friendshipListUrl, igFetch, createCheckpoint, loadCheckpoint, loadTimings, waitBeforeNextScanPage, startScan, showResults, renderResultsView, getDisplayUsers, startUnfollow, unmount, state, interruptibleSleep, sleepWithCountdown, unfollowUser, normalizeUser, isDefaultAvatar, parseRetryAfter, I18N, t }); return; } cleanupExisting(); injectStyles(); mount(); })();

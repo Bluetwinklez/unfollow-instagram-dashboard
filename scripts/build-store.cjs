@@ -7,7 +7,7 @@ const files=['manifest.json','service-worker.js','platform.js','content.js','hel
 for(const name of files)fs.copyFileSync(path.join(source,name),path.join(out,name));
 fs.cpSync(path.join(source,'icons'),path.join(out,'icons'),{recursive:true});
 const manifest=JSON.parse(fs.readFileSync(path.join(out,'manifest.json'),'utf8'));
-manifest.version='2.8.8';delete manifest.host_permissions;
+manifest.version='2.8.9';delete manifest.host_permissions;
 fs.writeFileSync(path.join(out,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
 let sw=fs.readFileSync(path.join(out,'service-worker.js'),'utf8');
 sw=sw.replace('importScripts("log-bridge-config.js");','');
@@ -24,14 +24,14 @@ fs.writeFileSync(path.join(out,'logs.js'),logs);
 let help=fs.readFileSync(path.join(out,'help.html'),'utf8');
 help=help.replace(/ Paketteki <strong>CANLI-LOG-BASLAT\.cmd<\/strong>[\s\S]*?Python 3 gerektirir\./,' Günlüğü indir düğmesiyle tanı kaydını dışa aktarabilirsin.');
 help=help.replace(/ İsteğe bağlı günlük yardımcısı[\s\S]*?alır\./,'');
-help=help.replace(/Özel kullanım sürümü · [\d.]+/,'Mağaza sürümü · 2.8.8');
+help=help.replace(/Özel kullanım sürümü · [\d.]+/,'Mağaza sürümü · 2.8.9');
 help=help.replace('</footer>',' · <a href="privacy.html">Gizlilik politikası</a></footer>');
 fs.writeFileSync(path.join(out,'help.html'),help);
-let content=fs.readFileSync(path.join(out,'content.js'),'utf8').replaceAll('2.8.8-extension','2.8.8-extension');
+let content=fs.readFileSync(path.join(out,'content.js'),'utf8').replaceAll('2.8.9-extension','2.8.9-extension');
 fs.writeFileSync(path.join(out,'content.js'),content);
 const policy=`# Instagram Takip Yönetimi — Gizlilik Politikası
 
-Son güncelleme: 18 Ekim 2026. Kapsam: 2.8.8 mağaza sürümü.
+Son güncelleme: 18 Ekim 2026. Kapsam: 2.8.9 mağaza sürümü.
 
 ## İşlenen bilgiler ve amaç
 Eklenti, kullanıcı başlattığında Instagram'da takip edilen ve isteğe bağlı olarak takipçi hesaplarının kimliklerini, kullanıcı adlarını, görünen adlarını, profil fotoğrafı adreslerini ve takip durumlarını işler. Bu bilgiler listeleme, arama, seçim ve onaylanan takip bırakma işlemleri için kullanılır. Başka sekmelerin geçmişini, mesajları, konum, sağlık veya finans bilgilerini okumaz.
@@ -143,7 +143,7 @@ https://github.com/cobanov/instagram
 `;
 fs.writeFileSync(path.join(root,'CHROMEWEBSTORE.md'),listing);
 fs.writeFileSync(path.resolve('CHROMEWEBSTORE.md'),listing);
-fs.writeFileSync(path.join(root,'BASLA.txt'),`MAĞAZA HAZIRLIK DOSYALARI — 2.8.8\n\nChrome Developer Dashboard'a yalnızca instagram-magaza-2.8.8.zip dosyasını yükle. Hazırlık klasörünün tamamını yükleme. Manifest ZIP kökündedir.\n\nCHROMEWEBSTORE.md: açıklamalar, izin gerekçeleri, gizlilik beyanı ve kalan işler.\nGorseller: mağaza ekran görüntüleri ve tanıtım görseli.\nGIZLILIK-POLITIKASI.md / privacy.html: iletişim bilgisi eklenip herkese açık HTTPS adresinde yayımlanacak.\n\nDurum: taslak hazır; gönderim yapılmadı. Gerçek hesaptaki belirsiz yanıt, kaynak dağıtım izni ve yayıncı/iletişim/URL tamamlanmadan yayın onayı verilmiş sayılmaz.\nMağaza sürümü Python gerektirmez, kayıtları otomatik asistana göndermez. Canlı günlük JSON olarak indirilebilir.\n`);
+fs.writeFileSync(path.join(root,'BASLA.txt'),`MAĞAZA HAZIRLIK DOSYALARI — 2.8.9\n\nChrome Developer Dashboard'a yalnızca instagram-magaza-2.8.9.zip dosyasını yükle. Hazırlık klasörünün tamamını yükleme. Manifest ZIP kökündedir.\n\nCHROMEWEBSTORE.md: açıklamalar, izin gerekçeleri, gizlilik beyanı ve kalan işler.\nGorseller: mağaza ekran görüntüleri ve tanıtım görseli.\nGIZLILIK-POLITIKASI.md / privacy.html: iletişim bilgisi eklenip herkese açık HTTPS adresinde yayımlanacak.\n\nDurum: taslak hazır; gönderim yapılmadı. Gerçek hesaptaki belirsiz yanıt, kaynak dağıtım izni ve yayıncı/iletişim/URL tamamlanmadan yayın onayı verilmiş sayılmaz.\nMağaza sürümü Python gerektirmez, kayıtları otomatik asistana göndermez. Canlı günlük JSON olarak indirilebilir.\n`);
 const improvements=`\n\n## 2.8.8 geliştirmeleri\n- Instagram Web üzerinde çalışan /api/v1/friendships/destroy/ ve /web/friendships/ unfollow uç noktaları için otomatik çoklu deneme eklendi.\n- 404 dönen hesaplar için kuyruk durdurulmaz, continueOnFailure ile sıradaki hesaplara kesintisiz devam eder.\n`;
 for(const file of [path.join(root,'CHROMEWEBSTORE.md'),path.resolve('CHROMEWEBSTORE.md')])fs.appendFileSync(file,improvements);
 const audit=`\n\n## 2.8.8 hata denetimi\n- Bozuk ayar kayıtları ve geçersiz tarama kayıtları açılışı engellemez.\n- Aynı kullanıcıları yeni imleçlerle tekrarlayan sayfalar durdurulur.\n- Geçerli devam imleci yoksa eski listeyle birleştirmek yerine tarama baştan alınır.\n- Tarayıcı zamanlayıcısının sınırını aşan ayarlar reddedilir; kayıtlı süreler sınırlandırılır.\n- Okunamayan HTTP 200 liste yanıtı kesin oturum kapanması olarak etiketlenmez.\n- İşlem izni kontrolü sırasında iptal/duraklatma gelirse POST öncesi yeniden kontrol edilir.\n- Yedi yeni hata senaryosu ve gerçek Chromium içinde iptal yarışı testi geçti. Tüm Instagram istekleri testte taklit edildi.\n`;
