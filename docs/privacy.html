@@ -1,140 +1,27 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram Takip Yönetimi — Gizlilik Politikası</title>
-    <style>
-        :root {
-            --bg: #0f0c1b;
-            --card-bg: #18142a;
-            --primary: #a855f7;
-            --primary-light: #c084fc;
-            --text: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border: #2e264d;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.7;
-            padding: 2rem 1rem;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 2.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-        }
-        header {
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        h1 {
-            color: #fff;
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        .badge {
-            background: rgba(168, 85, 247, 0.15);
-            border: 1px solid var(--primary);
-            color: var(--primary-light);
-            font-size: 0.8rem;
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
-            font-weight: 600;
-        }
-        .meta {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-        h2 {
-            color: var(--primary-light);
-            font-size: 1.25rem;
-            margin-top: 1.75rem;
-            margin-bottom: 0.75rem;
-        }
-        p {
-            margin-bottom: 1rem;
-            color: #cbd5e1;
-        }
-        ul {
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
-            color: #cbd5e1;
-        }
-        li { margin-bottom: 0.5rem; }
-        a {
-            color: var(--primary-light);
-            text-decoration: underline;
-        }
-        .footer {
-            margin-top: 2.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>
-                <span>🛡️</span>
-                <span>Instagram Takip Yönetimi</span>
-                <span class="badge">Gizlilik Politikası</span>
-            </h1>
-            <div class="meta">Son güncelleme: 18 Ekim 2026 • Kapsam: Chrome Eklentisi (Manifest V3)</div>
-        </header>
+<!doctype html><html lang="tr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gizlilik Politikası</title><link rel="stylesheet" href="help.css"><main><pre style="white-space:pre-wrap;font:inherit;line-height:1.7"># Instagram Takip Yönetimi — Gizlilik Politikası
 
-        <section>
-            <h2>1. İşlenen Bilgiler ve Kullanım Amacı</h2>
-            <p>Eklenti, yalnızca kullanıcı tarama işlemini bizzat başlattığında Instagram üzerinde takip edilen ve isteğe bağlı olarak takipçi hesaplarının teknik kimliklerini (ID), kullanıcı adlarını, profil isimlerini, avatar resim bağlantılarını ve takip durumu bayraklarını işler.</p>
-            <p>Bu bilgiler yalnızca yerel arayüzde listeleme, arama, filtreleme, çoklu seçim ve kullanıcının tek tek onayladığı takip bırakma işlemleri için kullanılır. Eklenti hiçbir koşulda diğer sekmelerin tarama geçmişini, kişisel direkt mesajları (DM), konum, sağlık veya finansal bilgileri okumaz ve işlemez.</p>
-        </section>
+Son güncelleme: 18 Ekim 2026. Kapsam: 2.9.0 mağaza sürümü.
 
-        <section>
-            <h2>2. Oturum ve Kimlik Doğrulama Güvenliği</h2>
-            <p><strong>Eklenti hiçbir zaman Instagram şifrenizi istemez, görmez veya saklamaz.</strong> Tarayıcınızda halihazırda açık olan resmi Instagram oturumunuz kullanılır. Hesap kimliği ve CSRF güvenlik token'ı, tarayıcınızın kendi çerez deposundan yalnızca işlem esnasında Instagram API isteklerinin güvenlik başlığına eklenmek üzere okunur.</p>
-            <p>Tüm istekler doğrudan kullanıcının kendi tarayıcısından Instagram sunucularına iletilir. Oturum bilgileri veya kimlik belirteçleri geliştiriciye ya da herhangi bir üçüncü taraf sunucuya asla gönderilmez.</p>
-        </section>
+## İşlenen bilgiler ve amaç
+Eklenti, kullanıcı başlattığında Instagram'da takip edilen ve isteğe bağlı olarak takipçi hesaplarının kimliklerini, kullanıcı adlarını, görünen adlarını, profil fotoğrafı adreslerini ve takip durumlarını işler. Bu bilgiler listeleme, arama, seçim ve onaylanan takip bırakma işlemleri için kullanılır. Başka sekmelerin geçmişini, mesajları, konum, sağlık veya finans bilgilerini okumaz.
 
-        <section>
-            <h2>3. Yerel Saklama (Local Storage)</h2>
-            <p>Kullanıcı tercihleri (dil, bekleme süreleri, gizlenen hesap listesi vb.) ve yarım kalan tarama bilgileri tamamen cihazınızda (<code>chrome.storage.local</code>) saklanır. 24 saatten eski yarım kalmış tarama kayıtları otomatik olarak geçersiz sayılır ve temizlenir. Eklenti Chrome'dan kaldırıldığında yerel depolamadaki tüm veriler otomatik olarak silinir.</p>
-            <p>Tanı günlüğü (Live Log), hata teşhisi için zaman damgaları, HTTP durum kodları ve işlem adımları gibi en fazla 500 teknik kaydı tarayıcı oturumu boyunca saklar. Çerezler, şifreler veya gizli oturum bilgileri günlüğe yazılmaz.</p>
-        </section>
+## Oturum ve bağlantılar
+Şifrenizi istemez veya kaydetmez. Açık Instagram oturumu kullanılır. Hesap kimliği ve CSRF değeri Instagram çerezlerinden yalnızca işlem sırasında okunur; CSRF değeri yetkili Instagram isteğinin güvenlik başlığında kullanılır. Tarayıcı ilgili oturum çerezlerini Instagram isteklerine ekler. Oturum bilgileri geliştiriciye gönderilmez veya günlüğe yazılmaz.
+Takip edilen/takipçi listeleri ve takip işlemleri için Instagram'a istek gönderilir; profil fotoğrafları Instagram'ın sağladığı adreslerden yüklenir. Bu hizmetler Meta'nın kendi gizlilik politikasına tabidir: https://privacycenter.instagram.com/policy/
 
-        <section>
-            <h2>4. Veri Paylaşımı ve Satış Yasağı</h2>
-            <p>Bu eklenti; hiçbir geliştirici sunucusuna otomatik veri aktarımı yapmaz, uzaktan kod çalıştırmaz, üçüncü taraf analiz (analytics) veya reklam kütüphaneleri içermez. <strong>Kullanıcı verileri satılmaz, pazarlanamaz ve eklentinin tek amacı dışında kullanılamaz.</strong> Eklenti, Chrome Web Store User Data Policy ve Limited Use gereksinimlerine eksiksiz olarak uygundur.</p>
-        </section>
+## Yerel saklama
+Ayarlar, dil, gizlenen hesap kimlikleri ve yarım kalan tarama (hesap kimliği, liste ve sayfalama bilgileri) chrome.storage.local içinde saklanır. Yarım kalan kayıtlar 24 saatten eskiyse devam etmek için kullanılmaz; bu süre otomatik fiziksel silme garantisi değildir. Tamamlanan taramanın kontrol noktası temizlenir. Diğer yerel kayıtlar eklenti kaldırılınca silinir.
+Çalışma alanı tamamlanan taramaları, hesap kimliklerini/kullanıcı adlarını, isteğe bağlı koruma/favori/etiket/notları, kayıtlı seçimleri, inceleme oturumlarını, görevleri ve yerel iş akışlarını cihazda saklar. Tarama saklama sayısı ayarlanabilir. Bu veriler Ayarlar ekranından yedeklenebilir veya hesap bazında temizlenebilir. İşlem geçmişi en fazla 300 kaydı cihazda saklar; belirsiz işlemler otomatik yeniden başlatılmaz. Görevler ve simülasyonlar Instagram işlemi göndermez.
+Tanı günlüğü, zaman, sekme numarası, olay, HTTP durumu, yanıt türü, süre ve ilerleme gibi en fazla 500 olayı Chrome oturumu boyunca saklar. Çerezler, şifreler, kullanıcı adları, istek başlıkları ve ham yanıt gövdeleri tanı günlüğüne dahil edilmez. Günlük ekrandan temizlenebilir ve Chrome oturumu sona erdiğinde silinir.
 
-        <section>
-            <h2>5. Kullanıcı Kontrolü</h2>
-            <p>Tüm tarama ve takip bırakma eylemleri doğrudan kullanıcının açık tetiklemesi ve onayı ile gerçekleştirilir. Kullanıcı dilediği an işlemi duraklatabilir veya iptal edebilir.</p>
-        </section>
+## Dışa aktarma ve paylaşım
+Kullanıcı isterse tanı günlüğünü veya hesap adları/kimlikleri içeren işlem raporunu kendi cihazına indirir; kullanıcı adlarını panoya kopyalayabilir. Bu dosyalar eklenti kaldırılınca silinmez; kullanıcı tarafından silinir. Destek için bir dosyayı paylaşmak kullanıcının tercihidir.
+Bu sürüm geliştirici sunucusuna tanı kaydı göndermez, uzaktan kontrol sağlamaz, analiz veya reklam hizmeti içermez. Veriler satılmaz; reklam, kredi değerlendirmesi veya eklentinin tek amacı dışındaki işler için kullanılmaz. Verilerin kullanımı Chrome Web Store User Data Policy ve Limited Use koşullarıyla sınırlıdır.
 
-        <section>
-            <h2>6. İletişim ve Destek</h2>
-            <p>Gizlilik politikası veya eklentiyle ilgili sorularınız için GitHub depomuz üzerinden iletişime geçebilirsiniz:</p>
-            <p><a href="https://github.com/Bluetwinklez/unfollow-instagram-dashboard" target="_blank" rel="noopener noreferrer">https://github.com/Bluetwinklez/unfollow-instagram-dashboard</a></p>
-        </section>
+## Kontrol ve değişiklikler
+Tarama ve takip bırakma kullanıcı tarafından başlatılır. Takip bırakmak ayrıca onay gerektirir. Kullanıcı duraklatabilir veya iptal edebilir; gönderilmiş bir istek tamamlanmış olabilir. Eklentiyi kaldırmak eklentinin yerel verilerini siler. Veri uygulamaları değişirse politika ve mağaza açıklaması güncellenir.
 
-        <div class="footer">
-            © 2026 Instagram Takip Yönetimi. Bu bağımsız bir açık kaynak araç olup Instagram veya Meta ile resmi bir bağı yoktur.
-        </div>
-    </div>
-</body>
-</html>
+## İletişim
+Proje ve destek: https://github.com/Bluetwinklez/unfollow-instagram-dashboard/issues
+Yayıncı hesabının Chrome Web Mağazası iletişim ve doğrulama bilgileri geliştirici panelinden ayrıca yönetilir.
+</pre></main></html>

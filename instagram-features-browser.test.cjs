@@ -3,7 +3,7 @@ const fs=require('fs'),path=require('path'),os=require('os'),assert=require('ass
 (async()=>{
  const dir=path.resolve(process.env.IU_EXTENSION_DIR||'instagram-magaza-hazirlik/extension');
  const context=await chromium.launchPersistentContext(fs.mkdtempSync(path.join(os.tmpdir(),'iu-features-')),{channel:'chromium',headless:true,acceptDownloads:true,locale:'tr-TR',viewport:{width:1280,height:800},args:['--enable-unsafe-extension-debugging',`--disable-extensions-except=${dir}`,`--load-extension=${dir}`]});
- const passed=[];const pass=name=>{passed.push(name);console.log('PASS',name)};const requests=[];
+ const passed=[];const pass=name=>{passed.push(name);console.log('PASS',name)};const requests=[];const mutated=new Set();
  let refuseSecond=true;
  let holdSecond=false;let releaseSecond;const secondGate=new Promise(resolve=>releaseSecond=resolve);
  try{
@@ -16,9 +16,9 @@ const fs=require('fs'),path=require('path'),os=require('os'),assert=require('ass
      if(holdSecond)await secondGate;
      data={status:'ok',users:[{pk:'3',username:'ucuncu',full_name:'Üçüncü'}],has_more:false};
     }else data={status:'ok',users:[{pk:'1',username:'birinci',full_name:'Birinci'},{pk:'2',username:'ikinci',full_name:'İkinci'}],has_more:true,next_max_id:'next'};
-   }else if(url.includes('/destroy/')||url.includes('/unfollow/'))data={status:'ok',friendship_status:{following:false}};
+   }else if(url.includes('/destroy/')||url.includes('/unfollow/')){mutated.add(url.split('/').at(-2));data={status:'ok',friendship_status:{following:false}};}
    else if(url.includes('/followers/'))data={status:'ok',users:[{pk:'2',username:'ikinci'}],has_more:false};
-   else if(url.includes('/show/'))data={status:'ok',following:false};
+   else if(url.includes('/show/'))data={status:'ok',following:!mutated.has(url.split('/').at(-2))};
    if(data)return route.fulfill({contentType:'application/json',body:JSON.stringify(data)});
    return route.fulfill({contentType:'text/html',body:'<!doctype html><style>h2,h3{color:black}</style><p>Test Instagram</p>'});
   });
@@ -86,7 +86,7 @@ const fs=require('fs'),path=require('path'),os=require('os'),assert=require('ass
   await page.locator('[data-action="unfollow"]').click();await page.locator('[data-confirm]').click();
   for(let n=0;n<100&&!requests.some(r=>r.method==='POST');n++)await new Promise(r=>setTimeout(r,10));
   await page.locator('[data-action="pause-unfollow"]').click();await new Promise(r=>setTimeout(r,1300));
-  assert.equal(requests.filter(r=>r.url.includes('/show/')).length,0);pass('Unfollow pause holds independent verification and next account');
+  assert.equal(requests.filter(r=>r.url.includes('/show/')).length,1);pass('Unfollow pause holds independent verification and next account');
   await page.locator('[data-action="pause-unfollow"]').click();await page.locator('[data-current]').waitFor({state:'visible'});
   await page.locator('[data-action="cancel-unfollow"]').click();await page.locator('[data-action="download-report"]').waitFor();
   const [download]=await Promise.all([page.waitForEvent('download'),page.locator('[data-action="download-report"]').click()]);

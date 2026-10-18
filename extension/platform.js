@@ -39,6 +39,10 @@
   });
 
   globalThis.__iuPlatform = {
+    async openWorkspace(){try{await chrome.runtime.sendMessage({type:"IU_WORKSPACE_OPEN"})}catch{}},
+    async saveSnapshot(snapshot){try{const result=await chrome.runtime.sendMessage({type:"IU_WORKSPACE_CAPTURE",snapshot});if(!result?.ok)await this.log({event:"storage.error"});}catch{await this.log({event:"storage.error"});}},
+    async protectedIds(viewer){const stored=await chrome.storage.local.get("iu_workspace_v1");const value=JSON.parse(stored.iu_workspace_v1||"{}");return Object.entries(value.accounts?.[viewer]?.meta||{}).filter(([,meta])=>meta.protected===true).map(([id])=>id);},
+    async isProtected(viewer,id){const stored=await chrome.storage.local.get("iu_workspace_v1");let value;try{value=JSON.parse(stored.iu_workspace_v1||"{}")}catch{throw Error("Invalid workspace protection data")};return value.accounts?.[viewer]?.meta?.[id]?.protected===true;},
     async log(entry) {
       try { await chrome.runtime.sendMessage({type:"IU_LOG_APPEND",entry}); }
       catch { /* Diagnostics must never retry or interrupt account actions. */ }

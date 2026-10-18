@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "scope": "Current public source; patterns and sensitive filename exclusion; secret values never printed",
+  "filesScanned": 111,
+  "findings": [],
+  "privateIgnoredConfiguration": "Excluded from Git and release; local helper configuration is retained only outside public packages",
+  "attribution": "CREDITS.md and LICENSE-NOTICE.md retained as source provenance"
+}

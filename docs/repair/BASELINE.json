@@ -1,0 +1,29 @@
+{
+  "baselineCommit": "3ae3fa3a02b7b3adddae9ad34bd72026d24a7c51",
+  "version": "2.8.12",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "archive": "takip-paneli-chrome-2.8.12.zip",
+  "archiveSha256": "34d5c6bb6a861ab7c9c1b9e396a047c97d87b65532b45886fb4a9d3c2bdb7418",
+  "files": {
+    "CREDITS.md": "4a8afc2744900c089496a0fd466d14226e8c736c3f21af86b0c946a9cf65ba46",
+    "content.js": "ee202d8a00652aff88535fbf3724b2d8f71b2c2df70f2c2d86a74f2df279a0b8",
+    "help.css": "21808db6477327214b7acacc8636667eabbe61cade52e8f930235477d4723e17",
+    "help.html": "69a347466a28338d46c79149f8363ff95b0b60f9907874714895349657cc716c",
+    "help.js": "0e7463c5ff99acd7fdf3d266881ce2df408da71c5a8a38d637cf474bdae81b73",
+    "icons/icon-128.png": "56d258ba56d52c69140d64f1f173a2da281372cee977a8385f105aaed673b309",
+    "icons/icon-16.png": "5f243f7cdd1b35c4987c378582aecf0045544c07dd8c2feeabcf2c71a1430985",
+    "icons/icon-32.png": "d0f6a100efcc453dd6654bb34d19e9b9df4f3e9cb6e2369ea33ac24dc5877c0f",
+    "icons/icon-48.png": "7f620a84e13805891577625f72bf73ddd67fa90918fc1cdb124e26e56c177d76",
+    "logs.css": "a855bd90313d1fea74ad5e20b2ffa441541b310b0a59a434f61e1db8efdffccc",
+    "logs.html": "750881d1915783acd3cccb33db6eb9ea6e5b230743c341b6ac1a8f60d12bc421",
+    "logs.js": "e59bfd6ae0476a60bdb2054059e802a6694c46500de717466fde3e1aeb556fbb",
+    "manifest.json": "3e6057ee7f6823ab9bcd012db0177dc593188edf0a533183a46820aea3fc103b",
+    "platform.js": "2e18564604ba4a6ade6290b4f1f0925a842926fdd5cda70b11c79c24feeb19e8",
+    "privacy.html": "80b5506dc74ea7af22d00a09bb6cd767552cd77e2594924ac2ac8d838cd5d17d",
+    "service-worker.js": "e9311446eaf98c0c0bd9fefe5f3b667d2c7fac8bcbd14ab5e49e878b78960922"
+  }
+}

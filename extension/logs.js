@@ -3,12 +3,12 @@ let entries=[];
 let refreshRevision=0;
 const labels={"request.start":"İstek başladı","request.end":"Yanıt alındı","request.error":"Bağlantı hatası","operation.start":"İşlem başladı","operation.end":"İşlem bitti","operation.error":"İşlem beklenmedik biçimde durdu","operation.busy":"Diğer sekmede işlem var","scan.page":"Liste sayfası alındı","scan.error":"Tarama durdu","scan.pause":"Tarama duraklatıldı","scan.resume":"Taramaya devam","scan.cancel":"Tarama iptali","unfollow.pause":"İşlem duraklatıldı","unfollow.resume":"İşleme devam","unfollow.cancel":"İşlem iptali","unfollow.result":"Takip bırakma doğrulama sonucu","panel.close":"Panel kapatıldı","storage.error":"Kayıt yazılamadı"};
 const routes={following:"Takip edilen listesi",followers:"Takipçi listesi",unfollow:"Takip bırakma",verify:"Takip doğrulaması",other:"Diğer"};
-const outcomes={complete:"Doğrulandı / tamamlandı",cancelled:"İptal edildi",stopped:"Durduruldu / doğrulanamadı",results:"Tarama tamamlandı",idle:"İşlem bekleniyor",running:"Sürüyor"};
+const outcomes={complete:"Doğrulandı / tamamlandı",cancelled:"İptal edildi",stopped:"Durduruldu / doğrulanamadı",results:"Tarama tamamlandı",idle:"İşlem bekleniyor",running:"Sürüyor",completed_with_errors:"Tamamlandı; başarısız işlemler var",complete_no_changes:"Yeni takip bırakma yapılmadı"};
 function render(){
  const body=document.getElementById("rows");const fragment=document.createDocumentFragment();
  const visible=entries.filter(e=>!document.getElementById("errors").checked||e.level==="error"||e.level==="warn");
  for(const entry of visible){const row=document.createElement("tr");row.className=entry.level;
-  const detail=[entry.method,routes[entry.route],entry.status?"HTTP "+entry.status:"",entry.responseKind,entry.redirected?"Yönlendirildi":"",entry.durationMs!=null?entry.durationMs+" ms":"",entry.reason,outcomes[entry.outcome]].filter(Boolean).join(" · ");
+  const detail=[entry.method,routes[entry.route],entry.status?"HTTP "+entry.status:"",entry.responseKind,entry.redirected?"Yönlendirildi":"",entry.durationMs!=null?entry.durationMs+" ms":"",entry.code,entry.reason,outcomes[entry.outcome]].filter(Boolean).join(" · ");
   const progress=[entry.loaded!=null?entry.loaded+(entry.total!=null?" / "+entry.total:""):"",entry.confirmed!=null?entry.confirmed+" doğrulandı":""].filter(Boolean).join(" · ");
   for(const value of [new Date(entry.at).toLocaleTimeString("tr-TR"),String(entry.tabId),labels[entry.event]||entry.event,detail,progress]){const cell=document.createElement("td");cell.textContent=value;row.appendChild(cell)}fragment.appendChild(row);
  }

@@ -10,7 +10,7 @@ function setup(handler) {
  const document={cookie:'csrftoken=test; ds_user_id=99',hidden:false,getElementById(){return null},querySelector(){return null},removeEventListener(){}};
  const sandbox={location:{hostname:'www.instagram.com'},navigator:{language:'tr'},document,window:{},localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v),removeItem:k=>store.delete(k)},console:{error(){},warn(){}},AbortController,
   setTimeout(fn,ms){if(ms>=30000)return 1;queueMicrotask(fn);return 1},clearTimeout(){},
-  async fetch(url,init={}){calls.push({url,init});return handler(url,init,{api,document,calls})},
+  async fetch(url,init={}){calls.push({url,init});const id=url.match(/\/show\/(\d+)/)?.[1];if(id&&!calls.some(c=>c.init.method==='POST'&&c.url.endsWith('/'+id+'/')))return response({status:'ok',following:true});return handler(url,init,{api,document,calls})},
   __IU_TEST__(x){api=x}};
  vm.runInNewContext(source,sandbox);
  api.state.viewerId='99';
@@ -20,11 +20,11 @@ function targets(api,count=2){api.state.users=Array.from({length:count},(_,i)=>(
 const tests=[];
 function test(name,fn){tests.push({name,fn})}
 test('ambiguous POST stops without fallback or next account',async()=>{
- const {api,calls}=setup(()=>response({status:'uncertain'}));targets(api);api.state.timings.continueOnFailure=false;await api.startUnfollow();
- assert.equal(calls.length,1);assert.equal(api.state.log.length,1);assert.equal(api.state.users.length,2);
+ const {api,calls}=setup(()=>response({status:'uncertain'}));targets(api);await api.startUnfollow();
+ assert.equal(calls.length,2);assert.equal(api.state.log.length,1);assert.equal(api.state.users.length,2);
 });
 test('network failure does not retry mutation',async()=>{
- const {api,calls}=setup(()=>{throw new Error('offline')});targets(api);api.state.timings.continueOnFailure=false;await api.startUnfollow();assert.equal(calls.length,1);
+ const {api,calls}=setup(()=>{throw new Error('offline')});targets(api);await api.startUnfollow();assert.equal(calls.length,2);
 });
 test('changed account before starting sends nothing',async()=>{
  const {api,calls,document}=setup(()=>response({status:'ok'}));targets(api);document.cookie='ds_user_id=100; csrftoken=new';await api.startUnfollow();assert.equal(calls.length,0);
@@ -52,7 +52,7 @@ test('missing profile total does not require unsupported metadata endpoint',asyn
  const {api}=setup(()=>response({status:'ok',users:[{pk:'1',username:'one'}],has_more:false}));await api.startScan();assert.equal(api.state.mode,'results');assert.ok(api.state.coverage);
 });
 test('server refusal stops at first account',async()=>{
- const {api,calls}=setup(()=>response({message:'feedback_required'},403));targets(api);await api.startUnfollow();assert.equal(calls.length,1);assert.equal(api.state.log.filter(l=>l.ok).length,0);
+ const {api,calls}=setup(()=>response({message:'feedback_required'},403));targets(api);await api.startUnfollow();assert.equal(calls.length,2);assert.equal(api.state.log.filter(l=>l.ok).length,0);
 });
 test('account switch during verification never counts success',async()=>{
  const {api,calls}=setup((url,init,{document})=>{
@@ -68,6 +68,6 @@ test('missing cursor while more pages are promised cannot unlock results',async(
  const {api}=setup(()=>response({status:'ok',users:[{pk:'1',username:'one'}],has_more:true}));await assert.rejects(api.fetchFriendshipList('99','following',()=>{},{total:1}));
 });
 test('confirmed success removes only confirmed account',async()=>{
- const {api,calls}=setup((url,init)=>response(init.method==='POST'?{status:'ok',friendship_status:{following:false}}:{status:'ok',following:false}));targets(api,1);await api.startUnfollow();assert.equal(api.state.users.length,0);assert.equal(calls.length,2);
+ const {api,calls}=setup((url,init)=>response(init.method==='POST'?{status:'ok',friendship_status:{following:false}}:{status:'ok',following:false}));targets(api,1);await api.startUnfollow();assert.equal(api.state.users.length,0);assert.equal(calls.length,3);
 });
 (async()=>{let failures=0;for(const {name,fn} of tests){try{await fn();console.log('PASS '+name)}catch(e){failures++;console.error('FAIL '+name+': '+e.message)}}if(failures)process.exitCode=1;console.log(`${tests.length-failures}/${tests.length} passed; no real network`);})();

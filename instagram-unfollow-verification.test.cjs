@@ -12,7 +12,7 @@ async function scenario(verification, expectedOK, status = 200, targetCount = 1)
   console:{error(){},warn(){}},AbortController,
   setTimeout(fn){queueMicrotask(fn);return 1},clearTimeout(){},
   async fetch(url,init={}) {
-   calls.push({url,method:init.method||'GET',cache:init.cache});
+   calls.push({url,method:init.method||'GET',cache:init.cache});const id=url.match(/\/show\/(\d+)/)?.[1];if(id&&!calls.some(c=>c.method==='POST'&&c.url.endsWith('/'+id+'/')))return {status:200,ok:true,text:async()=>JSON.stringify({status:'ok',following:true})};
    if(init.method==='POST') return {status:200,text:async()=>JSON.stringify({status:'ok',friendship_status:{following:false}})};
    if(verification instanceof Error) throw verification;
    return {status,ok:status>=200&&status<300,text:async()=>JSON.stringify(verification)};
@@ -27,14 +27,14 @@ async function scenario(verification, expectedOK, status = 200, targetCount = 1)
   api.state.users.push({id:'43',username:'second',follows_viewer:false});
   api.state.selected.add('43');
  }
- api.state.timings.continueOnFailure=false; await api.startUnfollow();
+  await api.startUnfollow();
  assert.equal(api.state.log[0].ok,expectedOK,'POST success must not override verification');
  assert.equal(api.state.users.length,expectedOK?0:targetCount,'Keep unverified accounts in results');
  assert.equal(api.state.log.length,1,'Stop before processing more accounts on uncertain outcome');
  assert.equal(api.state.selected.has('42'),!expectedOK);
  assert.equal(calls.filter(x=>x.method==='POST').length,1,'Do not repeat mutation');
- assert.equal(calls.filter(x=>x.method==='GET').length,1,'Verify relationship independently');
- assert.equal(calls[1].cache,'no-store');
+ assert.equal(calls.filter(x=>x.method==='GET').length,2,'Precheck and verify relationship independently');
+ assert.equal(calls.at(-1).cache,'no-store');
  return {api,calls};
 }
 (async()=>{

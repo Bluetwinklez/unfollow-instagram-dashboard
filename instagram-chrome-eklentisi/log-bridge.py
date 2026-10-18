@@ -11,7 +11,7 @@ CONFIG = json.loads((ROOT / "log-bridge-settings.json").read_text(encoding="utf-
 TOKEN = CONFIG["token"]
 LOG = ROOT.parent / "instagram-canli-log.jsonl"
 WRITE_LOCK = threading.Lock()
-ALLOWED = {"at", "tabId", "event", "level", "method", "route", "status", "durationMs", "loaded", "total", "confirmed", "reason", "outcome", "requestId", "responseKind", "redirected"}
+ALLOWED = {"at", "tabId", "event", "level", "method", "route", "status", "durationMs", "loaded", "total", "confirmed", "reason", "outcome", "requestId", "responseKind", "redirected", "code"}
 
 class Handler(BaseHTTPRequestHandler):
     def setup(self):
