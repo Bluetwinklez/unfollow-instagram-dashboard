@@ -5,7 +5,7 @@
 - [x] Ön ilişki kontrolü + tek POST + bağımsız doğrulama uygulandı.
 - [x] Koruma, kimlik, sahiplik ve iptal gönderim sınırında tekrar denetleniyor.
 - [x] Yerel dashboard, kurallar, simülasyon, görevler, yedek ve destek raporu test edildi.
-- [x] 25/25 otomatik test paketi geçti; gerçek Instagram yanıtları taklit edildi.
+- [x] 26/26 otomatik test paketi GitHub Actions üzerinde geçti; gerçek Instagram yanıtları taklit edildi.
 - [x] İzinler activeTab, scripting, storage ile sınırlı.
 - [x] Özel anahtar/config/log dosyaları paket allowlist dışında.
 - [x] OAuth yardımcısı state/PKCE ve loopback ile onarıldı.

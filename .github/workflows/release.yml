@@ -1,0 +1,54 @@
+name: Verified prerelease package
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'release/2.10.0'
+permissions:
+  contents: write
+concurrency:
+  group: release-2.10.0
+  cancel-in-progress: false
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - run: npm test
+      - name: Restore generated benchmark before exact-revision packaging
+        run: |
+          # The benchmark is a machine-dependent test output, not a package input.
+          # All other changes remain subject to the clean-tree packaging gate.
+          git restore -- docs/repair/PERFORMANCE.json
+      - run: node scripts/audit-release.cjs
+      - run: python scripts/package-release.py "$RUNNER_TEMP/release"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-release-2.10.0
+          path: |
+            ${{ runner.temp }}/release/*
+            instagram-magaza-hazirlik/TUM-*
+      - name: Publish complete prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          if gh release view v2.10.0 >/dev/null 2>&1; then
+            echo 'Release already exists; refusing to replace published assets.'
+            exit 1
+          fi
+          gh release create v2.10.0 --target "$GITHUB_SHA" --draft --prerelease --title 'Takip Paneli 2.10.0 — Polaris ve yerel çalışma alanı' --notes-file docs/RELEASE-2.10.0.md
+          gh release upload v2.10.0 "$RUNNER_TEMP/release/takip-paneli-chrome-2.10.0.zip" "$RUNNER_TEMP/release/takip-paneli-source-2.10.0.zip" "$RUNNER_TEMP/release/SHA256SUMS.txt"
+          gh release edit v2.10.0 --draft=false --prerelease
