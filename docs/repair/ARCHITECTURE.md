@@ -56,7 +56,7 @@ Kurallar üç değerli değerlendirilir: true/false/bilinmiyor. AND/OR/NOT için
 | Kalıcı niyet ve yeniden başlatmada tekrar koruması | Uygulandı; otomatik test edildi. |
 | Koruma/favori/not/etiket, seçim, inceleme | Uygulandı; gerçek Chromium, sentetik verilerle test edildi. |
 | Oturum/görev/yerel hatırlatma | Uygulandı; tarayıcı süreç yeniden başlatma ve offline test edildi. OS bildirim izni eklenmedi. |
-| Kural/iş akışı/simülasyon | Uygulandı. Görsel yerleşim sürüklenir; bağlantı ve gelişmiş kural düzenleme JSON ile yapılır. |
+| Kural/iş akışı/simülasyon | Uygulandı. Görsel yerleşim sürüklenir; bağlantılar Çıkış/Giriş ile kurulur. Basit kurallar formdan, iç içe/öncelikli kurallar gelişmiş JSON ile düzenlenir. |
 | Analitik/tarama kıyaslama/dışa aktarma | Uygulandı; eksik veriler sıfır kabul edilmez. |
 | Yedek/içe alma/veri yalıtımı | Uygulandı; şema, kota, bozuk veri ve eşzamanlı yazma test edildi. |
 | Sağlık, destek, başlangıç rehberi, yardım | Uygulandı; sağlık testi yerel worker içindir, Instagram erişim testi değildir. |
@@ -84,3 +84,8 @@ Bu turda bu canlı adımlar yapılmadı. Var olan kullanıcı hesabında toplu i
 ## Güvenlik kapsamı
 
 Dağıtım yalnızca activeTab/scripting/storage ister. Public paket özel loopback yardımcısı/config/token içermez. Anahtar örüntüsü taraması bütün bilinen sır türlerini yakalama garantisi vermez; paket allowlist, kaynak inceleme ve Git ignore ile birlikte kullanılır. GitHub Secrets değerleri okunmadı. Kaynak atıfları lisans bildirimi olarak korundu; kişisel reklam imzası eklenmedi.
+
+
+## İkinci tamamlama turu
+
+2.10.0 değişiklikleri, yeni test kapsamı ve dış engeller [COMPLETION-AUDIT.md](COMPLETION-AUDIT.md) içinde listelenir. Kurtarmada bozuk asıl kayıt tek kopya karantinada korunur; Ayarlar üzerinden indirilebilir veya açık onayla silinebilir. İşlem geçmişi temizleme, worker üzerinde aktif kilit kontrolü yapar ve belirsiz kayıtları korur.

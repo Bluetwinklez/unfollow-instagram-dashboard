@@ -7,6 +7,17 @@ const send=(message,url='https://www.instagram.com/')=>new Promise(resolve=>{con
  const r=await send({type:'IU_LOG_APPEND',entry:{event:'request.end',method:'GET',route:'following',status:429,durationMs:35,headers:{cookie:'secret'},body:'secret',url:'https://www.instagram.com/private?token=secret'}});
  assert.equal(r.ok,true);assert.equal(data.iu_live_log_v1.length,1);assert.equal(data.iu_live_log_v1[0].status,429);assert.ok(!JSON.stringify(data).includes('secret'));
  assert.equal((await send({type:'IU_LOG_APPEND',entry:{event:'request.end',status:200}},'https://evil.example/')).ok,false);
+ await send({type:'IU_LOG_APPEND',entry:{event:'request.end',contentType:'text/html',finalRoute:'destroy',redirected:false}});
+ assert.equal(data.iu_live_log_v1.at(-1).contentType,'text/html');assert.equal(data.iu_live_log_v1.at(-1).finalRoute,'destroy');
+ await send({type:'IU_LOG_APPEND',entry:{event:'request.end',contentType:'private-token',finalRoute:'https://example.com/?token=secret'}});
+ assert.equal(data.iu_live_log_v1.at(-1).contentType,undefined);assert.equal(data.iu_live_log_v1.at(-1).finalRoute,undefined);assert.ok(!JSON.stringify(data).includes('secret'));
+ await send({type:'IU_LOG_APPEND',entry:{event:'request.end',stage:'mutation',requestPath:'/api/v1/friendships/destroy/{id}/',responseLength:1234,csrfHeaderPresent:true,formBodyPresent:true,htmlSignals:['login-form','secret','login-form'],errorKind:'timeout'}});
+ const detailed=data.iu_live_log_v1.at(-1);assert.equal(detailed.stage,'mutation');assert.equal(detailed.responseLength,1234);assert.equal(detailed.csrfHeaderPresent,true);assert.deepEqual(Array.from(detailed.htmlSignals),['login-form']);assert.ok(!JSON.stringify(data).includes('secret'));
+ await send({type:'IU_LOG_APPEND',entry:{event:'request.error',stage:'secret',requestPath:'/private/secret',htmlSignals:['private'],errorKind:'secret',csrfHeaderPresent:'secret'}});
+ const rejected=data.iu_live_log_v1.at(-1);assert.equal(rejected.stage,undefined);assert.equal(rejected.requestPath,undefined);assert.equal(rejected.errorKind,undefined);assert.equal(rejected.csrfHeaderPresent,undefined);assert.ok(!JSON.stringify(data).includes('secret'));
+ await send({type:'IU_LOG_APPEND',entry:{event:'request.end',responseHeaders:{'set-cookie':'secret','content-type':'text/html'},requestHeaders:{'x-csrftoken':'secret','x-asbd-id':'359341'},htmlStructure:'<html><body><form></form></body></html>'}});
+ const network=data.iu_live_log_v1.at(-1);assert.equal(network.responseHeaders['set-cookie'],'[REDACTED]');assert.equal(network.requestHeaders['x-asbd-id'],'359341');assert.match(network.htmlStructure,/<form>/);assert.ok(!JSON.stringify(data).includes('secret'));
+ await send({type:'IU_LOG_APPEND',entry:{event:'request.end',htmlStructure:'<form token="secret">'}});assert.equal(data.iu_live_log_v1.at(-1).htmlStructure,undefined);
  for(let i=0;i<505;i++)await send({type:'IU_LOG_APPEND',entry:{event:'scan.page',loaded:i}});
  assert.equal(data.iu_live_log_v1.length,500);assert.equal(data.iu_live_log_v1.at(-1).loaded,504);
  assert.equal((await send({type:'IU_LOG_CLEAR'})).ok,false);assert.equal((await send({type:'IU_LOG_CLEAR'},'chrome-extension://test/logs.html')).ok,true);assert.equal(data.iu_live_log_v1.length,0);

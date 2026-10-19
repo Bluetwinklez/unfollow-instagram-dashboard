@@ -12,5 +12,12 @@
       "status": "not-installed",
       "liveInstagram": false
     }
-  ]
+  ],
+  "manualChromeAttempt": {
+    "date": "2026-10-18",
+    "windowsControl": "access-denied",
+    "browserExtensionPage": "blocked-by-browser-security-policy",
+    "workaroundAttempted": false,
+    "liveInstagram": false
+  }
 }

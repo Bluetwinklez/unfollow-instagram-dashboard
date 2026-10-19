@@ -1,6 +1,6 @@
 {
   "name": "takip-paneli",
-  "version": "2.9.0",
+  "version": "2.10.0",
   "private": true,
   "description": "Local Instagram following manager with optional follow-back comparison.",
   "scripts": {

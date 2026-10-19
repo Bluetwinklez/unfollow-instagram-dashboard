@@ -2,7 +2,9 @@
 
 Instagram takip listesini incelemek, korunan hesapları ayırmak ve yerel bir çalışma alanında düzenlemek için Chrome Manifest V3 eklentisi. Türkçe/İngilizce, mor/koyu ve açık tema içerir.
 
-**Son geliştirme sürümü: 2.9.0.**
+**Son geliştirme sürümü: 2.10.0.**
+
+**19 Ekim 2026 güncellemesi:** Polaris takip bırakma akışı, ayrıntılı ve filtrelenmiş ağ günlüğü, ek profil isteği olmadan sayfa oturum kimliği kontrolü ve uzun onay listesi için kaydırma düzeltmesi eklendi. Kullanıcı takip bırakma başarı bildirimi gördüğünü bildirdi; bağımsız gerçek hesap raporuyla kabul henüz tamamlanmadı. Güncel yerel koşu **21/26** paket geçti; beş tarayıcı paketi Windows'ta `spawn UNKNOWN` nedeniyle başlatılamadı. Bu değişiklikler nihai release veya mağaza kabulü değildir. [Protokol kanıtı ve sınırlar](docs/repair/POLARIS-UNFOLLOW-EVIDENCE.md), [ayrıntılı günlük](docs/repair/DETAILED-LOGGING.md).
 
 **Durum:** Onarım ve yerel çalışma alanı geliştirmeleri otomatik testlerle doğrulanır. Gerçek Instagram hesabında uçtan uca takip bırakmanın düzeldiği henüz kanıtlanmadı. Instagram'ın özel uç noktaları değişebilir; HTML veya HTTP 200 tek başına başarı değildir. Mağaza onayı ve kaynak yeniden dağıtım izni ayrıca tamamlanmalıdır.
 
@@ -63,12 +65,12 @@ Dashboard, kaydedilmiş taramalar üzerinde çalışır. İş akışı ve görev
 | Ekran | Özellikler |
 |---|---|
 | Genel bakış | Gerçek kayıtlardan istatistik, tarih aralığı ve metrik seçimiyle geçmiş grafiği. Eksik veri sıfır gibi gösterilmez. |
-| Hesaplar | Arama, sıralama, filtre/rule düzenleme, 200 satırlık sayfalama; görünen/tüm eşleşen seçim, ters seçim, kayıtlı seçimler. |
+| Hesaplar | Vurgulu arama, ok tuşlarıyla gezinme, sıralama, form veya gelişmiş JSON ile filtre düzenleme, 200 satırlık sayfalama; görünen/tüm eşleşen seçim, ters seçim, kayıtlı seçimler. |
 | Koruma | Hesabı işlemden hariç tutma, favori, etiket ve not; koruma listesini JSON aktarma/içe alma. |
 | İnceleme | Yerel inceleme kuyruğu, gözden geçirildi/atla/koru ve not ekleme. |
 | Oturumlar | Kaynak tarama, seçilen kimlikler, ilerleme ve notları kaydetme; devam/arşivleme. Otomatik POST devamı yok. |
 | Görevler | Öncelik, son tarih, erteleme, tamamla/arşivle. Uygulama açıkken yerel hatırlatma. |
-| İş akışları | Şablon, görsel düğümler, JSON bağlantı ve kural düzenleyicisi; AND/OR/NOT, öncelik/çatışma, döngü kontrolü. |
+| İş akışları | Altı hazır şablon, sürüklenen düğümler, Çıkış → Giriş ile görsel bağlantılar, basit kural formu ve gelişmiş JSON; AND/OR/NOT, öncelik/çatışma, döngü kontrolü. |
 | Simülasyon | Kayıtlı veri üzerinde sıfır Instagram isteğiyle değerlendirme. Yerel inceleme/bildirim/rapor etkileri ayrı onayla uygulanır. |
 | Geçmiş | Tarama karşılaştırması ve işlem geçmişi; kullanıcı adı değişse de kimlikle eşleştirme. Listede görünmemek, kasıtlı takip bırakma kanıtı değildir. |
 | Sağlık/destek | Depolama boyutu, sürüm, yerel worker bağlantısı, belirsiz kayıtlar, tanı sihirbazı ve alan seçmeli destek raporu. |
@@ -76,7 +78,7 @@ Dashboard, kaydedilmiş taramalar üzerinde çalışır. İş akışı ve görev
 
 ![İş akışı — sentetik test verisi](docs/screenshots/workspace-workflow.png)
 
-Düğümler sürüklenerek yerleştirilir; bağlantılar JSON düzenleyicisinden değiştirilir. Bilinmeyen profil niteliği kurallarda yanlışmış gibi değerlendirilmez. Deneysel öneriler yalnızca yerel veriyi kullanır; hesap riski veya takipçi niyeti tahmin etmez.
+Düğümler sürüklenerek yerleştirilir. Bağlantı eklemek için önce kaynak kartta Çıkış, sonra hedef kartta Giriş seç; bağlantı/adımları ayrı silebilirsin. Döngü reddedilir. Basit AND/OR koşulları formdan; iç içe gruplar, NOT ve öncelikli kural kümeleri gelişmiş JSON ile düzenlenir. Bilinmeyen profil niteliği kurallarda yanlışmış gibi değerlendirilmez. Deneysel öneriler yalnızca yerel veriyi kullanır; hesap riski veya takipçi niyeti tahmin etmez.
 
 ### Yedekleme, dışa aktarma ve geri alma
 
@@ -85,11 +87,11 @@ Düğümler sürüklenerek yerleştirilir; bağlantılar JSON düzenleyicisinden
 - İçe alma öncesinde şema, kimlikler, boyut ve hesap uyumu denetlenir; önizleme ve açık onay gerekir.
 - Son yerel hesap düzenlemesini **Geri al** ile geri alabilirsin. Instagram işlemleri geri alınmaz.
 - Eşzamanlı iki pencerenin eski veri üzerine yazması revizyon kontrolüyle engellenir; tekrar yüklemek gerekebilir.
-- Bozuk depolama otomatik sıfırlanmaz. Hata gösterilir; mevcut veri korunur. Geçerli yedek olmadan kurtarma garantisi yoktur.
+- Bozuk depolama otomatik sıfırlanmaz. Hata gösterilir; mevcut veri korunur. Kurtarma ekranı ham kaydı indirmeyi ve geçerli yedeği önizlemeyi sağlar; bozuk asıl kayıt karantinada saklanır. Ayarlar’dan bu kopyayı indirebilir veya açık onayla silebilirsin. Geçerli yedek olmadan kayıp veri yeniden üretilemez.
 
 ## Canlı günlük ve destek
 
-Instagram panelindeki **≡ Canlı günlük** tarayıcı içi kayıtları açar. Son 500 olay Chrome oturumunda tutulur; oturum kapanınca silinir. İşlem günlüğü ve çalışma alanı geçmişi farklıdır: son 300 işlem kaydı yerel kalıcı depoda tutulur.
+Instagram panelindeki **≡ Canlı günlük** tarayıcı içi kayıtları açar. Son 500 olay Chrome oturumunda tutulur; oturum kapanınca silinir. İşlem günlüğü ve çalışma alanı geçmişi farklıdır: son 300 işlem kaydı yerel kalıcı depoda tutulur. Kesinleşmiş geçmiş temizlenebilir; belirsiz kayıtlar tekrar gönderim koruması için korunur. Etkin işlem varken geçmiş temizleme reddedilir.
 
 **Hazır ZIP asistana otomatik canlı aktarım yapmaz.** Günlük/işlem raporunu indirip paylaşabilirsin. Destek raporunun önizlemesinde gereksiz alanları çıkar; not, kullanıcı listesi ve yedek dosyaları kişisel bilgi içerebilir. Ham yanıt gövdesi, çerez, CSRF ve erişim anahtarı rapora eklenmez.
 
@@ -108,6 +110,29 @@ Hazır paket yalnızca **activeTab, scripting, storage** izinlerini ister. Kalı
 
 Instagram `x-ig-app-id` ve `x-asbd-id` değerleri herkese açık istemci tanımlayıcılarıdır; kişisel API anahtarı değildir. OAuth sırları, refresh token ve özel log yapılandırmaları Git'e/pakete konmaz. GitHub Actions sırları yalnızca Secrets üzerinden sağlanır.
 
+## Sonradan tamamlanan ayrıntılar
+
+- Genel Bakış ve Tarama Geçmişi aynı tarih/metrik kontrollerini kullanır.
+- Onay ekranı seçilen, korumalı, önceden işlenen, belirsiz ve uygun hedefleri ayrı gösterir; son hedef listesi incelenebilir. Tahminî bitiş saati uydurulmaz.
+- `/` arama, `S` görünenleri seç, `X` temizle, `R` inceleme, oklarla inceleme ve `P` yerel koruma. Metin yazarken devreye girmez; ek kısayollar Ayarlar'dan kapatılabilir.
+- Varsayılan filtre, sıralama, dışa aktarma biçimi ve gösterilecek dashboard kartları hesap bazında saklanır.
+- Şeffaf öneriler; son taramadaki ilişkilere, belirsiz işlem kayıtlarına, eski seçimlere, 30 günden eski taramalara ve açık keep/remove etiket çakışmasına dayanır. Değişiklikler önizleme/onay ister.
+- Temizlik, tanı ve dışa aktarma hazırlığı şablonları ilgili yerel araçları açar. Kendi başlarına silme veya Instagram işlemi yapmaz.
+- Krea 2 Medium ile üretilen mor dashboard illüstrasyonu pakette yerel saklanır; çalışma sırasında Krea'ya istek gönderilmez.
+
+[İstek karşılaştırması ve kalan dış doğrulamalar](docs/repair/COMPLETION-AUDIT.md).
+
+### Asistanın okuyabileceği özel yerel log
+
+Mağaza paketinin tarayıcı günlüğü açıktır; otomatik dışarı aktarım yoktur. Özel geliştirme sürümündeki kimlik doğrulamalı yardımcı çalışıyor ve log üretiyorsa asistan bu komutla yalnızca güvenli özeti okuyabilir:
+
+```sh
+python scripts/live-log-monitor.py
+python scripts/live-log-monitor.py --seconds 60
+```
+
+Araç olay/HTTP sayıları ve dosya tazeliği gösterir; ham yanıt, çerez, anahtar ve hesap adı göstermez. `--path` ile özel log konumu seçilebilir. Dosyanın yeni olması bağlantı veya başarılı takip bırakma kanıtı değildir. Yardımcı bağlı değilse açıkça `available: false` döner. Asistan kapalıyken kesintisiz izleme servisi kurulmuş değildir.
+
 ## Dosya ağacı
 
 ```text
@@ -119,6 +144,7 @@ unfollow-instagram-dashboard/
 │   ├── service-worker.js           # Sekme kilidi, günlük, yerel depolama
 │   ├── platform.js                 # Chrome API köprüsü ve kimlik/sahiplik koruması
 │   ├── content.js                  # Çekirdekten üretilen Instagram paneli
+│   ├── workspace-art.png           # Yerel Krea illüstrasyonu
 │   ├── workspace-core.js           # Saf veri, kurallar, şema ve simülasyon
 │   ├── workspace.{html,css,js}      # Yerel dashboard
 │   ├── logs.{html,css,js}           # Tarayıcı içi canlı günlük
@@ -136,6 +162,7 @@ unfollow-instagram-dashboard/
 │   ├── test-fingerprint.cjs         # Test edilen girdilerin SHA-256 özeti
 │   ├── audit-release.cjs            # Hassas dosya, anahtar örüntüsü ve izin denetimi
 │   ├── package-release.py          # Temiz ve test edilmiş revizyondan ZIP üretir
+│   ├── live-log-monitor.py          # Özel yerel logun güvenli özeti
 │   └── cws-auth-helper.mjs          # Yerel OAuth state + PKCE yardımcısı
 ├── docs/
 │   ├── index.html                  # GitHub Pages
@@ -189,7 +216,7 @@ stateDiagram-v2
 
 ## Geliştirme ve test
 
-Gereksinimler: Node.js 24, Python 3, Playwright Chromium. Yüklü Chrome'un kişisel profili testlerde kullanılmaz.
+Gereksinimler: Node.js 24, Python 3, Playwright Chromium. Otomatik testler yüklü Chrome'un kişisel profilini kullanmaz.
 
 ```sh
 git clone https://github.com/Bluetwinklez/unfollow-instagram-dashboard.git
@@ -212,7 +239,7 @@ Paketleyici temiz Git revizyonu, sürüm eşitliği, bütün test sonuçları, d
 
 Testler HTML/boş/bozuk JSON, 401/403/404/429/5xx, ağ hatası, GraphQL hata/ilgisiz yanıt, belirsizlikte durma, iptal, kimlik, kilit, depolama kotası, çoklu pencere, koruma ve OAuth state/PKCE durumlarını kapsar. Gerçek Chromium'da arayüz, yeniden başlatma, çevrimdışı çalışma ve 10.000 hesapta sayfalama ayrıca test edilir. Performans ölçümü test bilgisayarına aittir; her cihaz için süre garantisi değildir.
 
-**Canlı test sınırı:** Instagram yanıtları otomatik testlerde taklit edilir. Yüklü Chrome 155 için eklenti worker'ı test başlatıcısında gözlenemedi; Brave kurulu değildi. Bunlar başarılı uyumluluk testi sayılmaz. [Uyumluluk sonucu](docs/repair/BROWSER-COMPATIBILITY.json), [performans ölçümü](docs/repair/PERFORMANCE.json).
+**Canlı test sınırı:** Instagram yanıtları otomatik testlerde taklit edilir. Yüklü Chrome 155 için önceki test başlatıcısında worker gözlenemedi. Son gerçek Chrome kontrolünde Windows erişimi reddedildi; tarayıcı güvenlik politikası chrome://extensions adresini engelledi. Engel aşılmadı. Brave kurulu değildi. Bunlar başarılı uyumluluk testi sayılmaz. [Uyumluluk sonucu](docs/repair/BROWSER-COMPATIBILITY.json), [performans ölçümü](docs/repair/PERFORMANCE.json).
 
 ## Chrome Web Mağazası'na yükleme
 

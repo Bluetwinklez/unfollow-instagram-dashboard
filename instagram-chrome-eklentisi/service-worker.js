@@ -111,8 +111,16 @@ async function handleOperation(message, sender) {
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+ if(message?.type==="IU_OPERATION_HISTORY_CLEAR"){
+  void(async()=>sendResponse(await queueOperation(async()=>{
+   if(sender.id!==chrome.runtime.id||sender.url!==chrome.runtime.getURL("workspace.html")||!/^\d+$/.test(String(message.accountId)))return {ok:false};
+   const owner=(await chrome.storage.session.get(OPERATION_KEY))[OPERATION_KEY];if(owner)return {ok:false,reason:"busy"};
+   const raw=(await chrome.storage.local.get("iu_operation_history_v1")).iu_operation_history_v1;let history;try{history=JSON.parse(raw||"[]")}catch{return {ok:false,reason:"invalid-history"}}if(!Array.isArray(history))return {ok:false};
+   const keep=history.filter(e=>e.accountId!==message.accountId||e.category==="uncertain");await chrome.storage.local.set({iu_operation_history_v1:JSON.stringify(keep)});return {ok:true,retainedUncertain:keep.filter(e=>e.accountId===message.accountId).length};
+  })))();return true;
+ }
  if(message?.type==="IU_HEALTH_PING"){sendResponse({ok:sender.id===chrome.runtime.id&&sender.url===chrome.runtime.getURL("workspace.html")});return false;}
-  if(["IU_WORKSPACE_OPEN","IU_WORKSPACE_CAPTURE","IU_WORKSPACE_COMMIT"].includes(message?.type)){
+  if(["IU_WORKSPACE_OPEN","IU_WORKSPACE_CAPTURE","IU_WORKSPACE_COMMIT","IU_WORKSPACE_RESTORE"].includes(message?.type)){
    void(async()=>sendResponse(await queueOperation(()=>handleWorkspace(message,sender))))();return true;
   }
 
@@ -129,16 +137,34 @@ const LOG_CODES=new Set(["NETWORK_FAILURE","NETWORK_TIMEOUT","REQUEST_ABORTED","
 const LOG_KEY = "iu_live_log_v1";
 const LOG_EVENTS = new Set(["request.start","request.end","request.error","operation.start","operation.end","operation.error","operation.busy","scan.page","scan.error","scan.pause","scan.resume","scan.cancel","unfollow.pause","unfollow.resume","unfollow.cancel","unfollow.result","panel.close","storage.error"]);
 
+function safeNetworkHeaders(headers){
+ const result={};
+ const rules={"content-type":/^(?:application\/(?:json|javascript|x-www-form-urlencoded)|text\/(?:html|plain|javascript))(?:;\s*charset=[a-z0-9-]+)?$/i,"content-length":/^\d{1,12}$/,"content-encoding":/^(?:gzip|br|zstd|deflate|identity)(?:,\s*(?:gzip|br|zstd|deflate|identity))*$/i,"x-ig-app-id":/^\d{1,20}[:,]?$/,"x-asbd-id":/^\d{1,10}$/,"accept":/^(?:\*\/\*|application\/json)$/,"retry-after":/^\d{1,8}$/,"x-content-type-options":/^nosniff$/i,"x-frame-options":/^(?:DENY|SAMEORIGIN)$/i,"cache-control":/^(?:(?:private|public|no-cache|no-store|must-revalidate|immutable|no-transform|s-maxage=\d+|max-age=\d+)(?:,\s*)?)+$/i};
+ const add=(value,name)=>{name=String(name).toLowerCase();if(!/^[a-z0-9-]{1,64}$/.test(name)||Object.keys(result).length>=80)return;result[name]=typeof value==="string"&&value.length<=160&&Object.prototype.hasOwnProperty.call(rules,name)&&rules[name].test(value)?value:"[REDACTED]";};
+ if(typeof headers?.forEach==="function")headers.forEach(add);else if(headers&&typeof headers==="object")for(const [name,value]of Object.entries(headers))add(value,name);
+ return result;
+}
+
 function cleanLog(raw, tabId) {
   if (!raw || !LOG_EVENTS.has(raw.event)) return null;
   const entry = { at: new Date().toISOString(), tabId, event: raw.event, level:"info" }; if(LOG_CODES.has(raw.code))entry.code=raw.code;
-  for (const field of ["status","durationMs","loaded","total","confirmed"]) {
+  for (const field of ["status","durationMs","loaded","total","confirmed","responseLength"]) {
     if (Number.isFinite(raw[field]) && raw[field] >= 0) entry[field] = Math.min(1e9, Math.round(raw[field]));
   }
+  for(const field of ["requestHeaders","responseHeaders"])if(raw[field]&&typeof raw[field]==="object")entry[field]=safeNetworkHeaders(raw[field]);
+  if(typeof raw.htmlStructure==="string"&&raw.htmlStructure.length<=4000&&/^(?:<\/?(?:html|head|title|meta|link|body|script|style|div|span|form|input|button|a|h1|h2|p|noscript|other)>)*$/.test(raw.htmlStructure))entry.htmlStructure=raw.htmlStructure;
   if (["GET","POST"].includes(raw.method)) entry.method = raw.method;
   if (["following","followers","unfollow","verify","other"].includes(raw.route)) entry.route = raw.route;
   if (["json","html","empty","text"].includes(raw.responseKind)) entry.responseKind = raw.responseKind;
   if (typeof raw.redirected === "boolean") entry.redirected = raw.redirected;
+  if (["application/json","text/html","text/javascript","application/javascript","text/plain","other"].includes(raw.contentType)) entry.contentType = raw.contentType;
+  if (["unavailable","graphql","destroy","show","login","challenge","home","other-instagram","other-origin"].includes(raw.finalRoute)) entry.finalRoute = raw.finalRoute;
+  if(raw.operationName==="usePolarisUnfollowMutation")entry.operationName=raw.operationName;
+  if (["precheck","mutation","verification","scan"].includes(raw.stage)) entry.stage=raw.stage;
+  if (["/api/graphql","/api/v1/friendships/destroy/{id}/","/api/v1/friendships/show/{id}/","/api/v1/friendships/{id}/following/","/api/v1/friendships/{id}/followers/","other"].includes(raw.requestPath)) entry.requestPath=raw.requestPath;
+  for(const field of ["credentialsIncluded","csrfHeaderPresent","formBodyPresent"])if(typeof raw[field]==="boolean")entry[field]=raw[field];
+  if(["timeout","response-too-large","account-changed","aborted","network"].includes(raw.errorKind))entry.errorKind=raw.errorKind;
+  if(Array.isArray(raw.htmlSignals))entry.htmlSignals=[...new Set(raw.htmlSignals.filter(value=>["login-form","challenge-form","instagram-app-shell","not-found-title"].includes(value)))];
   if (["complete","cancelled","stopped","results","idle","running","completed_with_errors","complete_no_changes"].includes(raw.outcome)) entry.outcome = raw.outcome;
   if (["rate","session","blocked","network","http","cancelled","incomplete","account","unknown","aborted","response"].includes(raw.reason)) entry.reason = raw.reason;
   if (typeof raw.requestId === "string" && /^[a-zA-Z0-9-]{1,40}$/.test(raw.requestId)) entry.requestId = raw.requestId;
@@ -196,6 +222,16 @@ async function handleWorkspace(message,sender){
  if(message.type==="IU_WORKSPACE_CAPTURE"&&!validSender(sender))return {ok:false};
  if(message.type==="IU_WORKSPACE_COMMIT"&&!fromPage)return {ok:false};
  const key=IUWorkspace.KEY;
+ if(message.type==="IU_WORKSPACE_RESTORE"){
+  if(!fromPage)return {ok:false};
+  const old=(await chrome.storage.local.get(key))[key];
+  if(old!==message.expectedRaw)return {ok:false,reason:"conflict"};
+  try{IUWorkspace.parse(old);return {ok:false,reason:"not-corrupt"}}catch{}
+  const replacement=IUWorkspace.parse(message.replacement);if(JSON.stringify(replacement).length>5_000_000)return {ok:false,reason:"quota"};
+  // One atomic storage call retains the corrupt original alongside the replacement.
+  await chrome.storage.local.set({iu_workspace_quarantine_v1:{at:new Date().toISOString(),raw:old},[key]:JSON.stringify(replacement)});
+  return {ok:true,revision:replacement.revision};
+ }
  const stored=await chrome.storage.local.get(key);const db=IUWorkspace.parse(stored[key]);
  if(message.type==="IU_WORKSPACE_CAPTURE")IUWorkspace.capture(db,message.snapshot);
  else{

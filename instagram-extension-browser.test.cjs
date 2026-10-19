@@ -21,7 +21,7 @@ const assert=require('assert/strict');
   else if(url.includes('/api/v1/friendships/99/following/')) {
    if(rateLimitList)return route.fulfill({status:429,contentType:'application/json',body:JSON.stringify({message:'Please wait a few minutes'})});
    if(holdScan){scanBegan();await scanGate;holdScan=false;}
-   json={status:'ok',users:[{pk:'1',username:'ornek_hesap',full_name:'Örnek Hesap'},{pk:'2',username:'gezgin_notlari',full_name:'Gezgin Notları'}],has_more:false,next_max_id:'terminal-cursor'};
+   json={status:'ok',users:[{pk:'1',username:'ornek_hesap',full_name:'Örnek Hesap'},{pk:'2',username:'gezgin_notlari',full_name:'Gezgin Notları'}].filter(u=>!mutated.has(String(u.pk))),has_more:false,next_max_id:'terminal-cursor'};
   }
   else if(url.includes('/api/v1/friendships/destroy/') || url.includes('/web/friendships/')){
    assert.ok(url.includes('/api/v1/friendships/destroy/'));assert.equal(request.postData(),'user_id='+url.split('/').at(-2));assert.equal(request.headers()['x-asbd-id'],'129477');
@@ -112,6 +112,7 @@ const assert=require('assert/strict');
  assert.equal(await page.locator('[data-select="2"]').isChecked(),true);
  await page.screenshot({path:storeAssets?path.join(storeAssets,'01-takip-listesi.png'):'instagram-eklenti-arayuz.png'});
  await page.locator('[data-action="unfollow"]').click();
+ await page.locator('.iu-operation-preview').waitFor();assert.match(await page.locator('.iu-operation-preview').innerText(),/Eligible remaining targets|Uygun ve kalan hedef/);assert.ok(await page.locator('.iu-final-review').innerText());
  if(storeAssets)await page.screenshot({path:path.join(storeAssets,'02-onay.png')});
  assert.equal(requests.filter(r=>r.method==='POST').length,0,'Confirmation is mandatory');
  await page.locator('[data-confirm]').click();
@@ -140,6 +141,13 @@ const assert=require('assert/strict');
  assert.ok(!failureText.includes('private-test-response'));
  assert.equal(requests.filter(r=>r.method==='POST').length,2,'Ambiguous mutation must not be retried');
  await page.locator('[data-action="back-results"]').click();
+ // A previous uncertain target must be excluded before any second confirmation.
+ await page.locator('[data-action="unfollow"]').click();
+ await page.waitForFunction(()=>document.querySelector('.iu-toast')?.textContent.includes('Uygun hedef yok')||document.querySelector('.iu-toast')?.textContent.includes('No eligible targets'));
+ assert.equal(await page.locator('.iu-dialog').count(),0);assert.equal(requests.filter(r=>r.method==='POST').length,2);
+ // A new completed scan makes an explicit retry reviewable; use only the still-followed uncertain target 1 for the cancellation race.
+ await page.locator('[data-action="new-scan"]').click();await page.locator('[data-action="scan"]').click();await page.locator('[data-row="1"]').waitFor();await page.locator('[data-select="1"]').check();
+ await worker.evaluate(async()=>{for(let n=0;n<200;n++){if(!(await chrome.storage.session.get(OPERATION_KEY))[OPERATION_KEY])return;await new Promise(r=>setTimeout(r,10))}throw Error('Scan ownership was not released')});
  // Cancel while the worker is checking ownership, before a POST can be sent.
  await worker.evaluate(()=>{
   const original=handleOperation;
@@ -153,8 +161,8 @@ const assert=require('assert/strict');
  mutationHTML=false;
  await page.locator('[data-action="unfollow"]').click();
  await page.locator('[data-confirm]').click();
- await page.locator('[data-action="cancel-unfollow"]').waitFor();
- await worker.evaluate(async()=>{for(let n=0;n<100&&!globalThis.auditCheckHeld;n++)await new Promise(r=>setTimeout(r,10));if(!globalThis.auditCheckHeld)throw Error('Ownership check was not held')});
+ await page.locator('[data-action="cancel-unfollow"]').waitFor({timeout:10000}).catch(async error=>{console.log('Cancellation test UI:',await page.locator('[data-body]').innerText());console.log('Cancellation test requests:',JSON.stringify(requests.slice(-8)));throw error});
+ const ownershipHeld=await worker.evaluate(async()=>{for(let n=0;n<300&&!globalThis.auditCheckHeld;n++)await new Promise(r=>setTimeout(r,10));return globalThis.auditCheckHeld});assert.ok(ownershipHeld,'Ownership check was not held; UI: '+await page.locator('[data-body]').innerText());
  await page.locator('[data-action="cancel-unfollow"]').click();
  await worker.evaluate(()=>globalThis.auditReleaseCheck());
  await page.locator('[data-action="back-results"]').waitFor();
@@ -199,7 +207,7 @@ const assert=require('assert/strict');
  await worker.evaluate(async()=>{const key=IUWorkspace.KEY,stored=await chrome.storage.local.get(key),db=IUWorkspace.parse(stored[key]),a=IUWorkspace.account(db,'99');a.meta['1']={protected:true};a.meta['2']={protected:true};db.revision++;await chrome.storage.local.set({[key]:JSON.stringify(db)})});
  const postsBeforeProtection=requests.filter(r=>r.method==='POST').length;
  await page.locator('[data-action="select-all"]').click();await page.locator('[data-action="unfollow"]').click();
- await page.locator('.iu-toast').filter({hasText:/korumalı/}).waitFor();assert.equal(await page.locator('.iu-dialog').count(),0);assert.equal(requests.filter(r=>r.method==='POST').length,postsBeforeProtection,'Workspace protection must prevent actual mutation dispatch');
+ await page.locator('.iu-toast').filter({hasText:/korumalı|Koruma ve önceki|protected|No eligible/}).waitFor();assert.equal(await page.locator('.iu-dialog').count(),0);assert.equal(requests.filter(r=>r.method==='POST').length,postsBeforeProtection,'Workspace protection must prevent actual mutation dispatch');
  console.log('PASS: real MV3 install, settings, scan, cross-tab lock, verification, report, live HTTP log UI/export, redaction, minimize and close. All Instagram requests intercepted.');
  }finally{await context.close();}
 })().catch(error=>{console.error(error);process.exit(1)});

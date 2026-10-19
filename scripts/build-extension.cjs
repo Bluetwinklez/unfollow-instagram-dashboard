@@ -1,6 +1,9 @@
 const fs=require('fs');
 const path=require('path');
 const dir=path.resolve('instagram-chrome-eklentisi');
+const version=require('../package.json').version;
+const manifestPath=path.join(dir,'manifest.json'),manifest=JSON.parse(fs.readFileSync(manifestPath,'utf8'));manifest.version=version;fs.writeFileSync(manifestPath,JSON.stringify(manifest,null,2)+'\n');
+const helpPath=path.join(dir,'help.html');fs.writeFileSync(helpPath,fs.readFileSync(helpPath,'utf8').replace(/Özel kullanım sürümü · [\d.]+/,'Özel kullanım sürümü · '+version));
 const bridgeSettings=path.join(dir,'log-bridge-settings.json');
 if(!fs.existsSync(bridgeSettings))fs.writeFileSync(bridgeSettings,JSON.stringify({token:require('crypto').randomBytes(32).toString('hex')})+'\n');
 const bridge=JSON.parse(fs.readFileSync(bridgeSettings,'utf8'));
@@ -18,16 +21,19 @@ source=source.replace('async function startUnfollow()', 'async function runUnfol
 source=source.replace('async function igRequest(url, init = {}) {','async function rawIgRequest(url, init = {}) {');
 const requestLogging=`async function igRequest(url, init = {}) {
  const requestId=crypto.randomUUID();const started=Date.now();
- const route=url.includes("/following/")?"following":url.includes("/followers/")?"followers":(url.includes("/destroy/")||url.includes("/unfollow/"))?"unfollow":url.includes("/show/")?"verify":"other";
+ const route=url.includes("/following/")?"following":url.includes("/followers/")?"followers":(url==="/api/graphql"||url.includes("/destroy/")||url.includes("/unfollow/"))?"unfollow":url.includes("/show/")?"verify":"other";
  const method=init.method||"GET";
- void globalThis.__iuPlatform.log({event:"request.start",requestId,route,method});
+ const stage=route==="unfollow"?"mutation":route==="verify"?(state.activeOperation?.phase==="prechecking"?"precheck":"verification"):"scan";
+ const requestPath=url==="/api/graphql"?"/api/graphql":route==="unfollow"?"/api/v1/friendships/destroy/{id}/":route==="verify"?"/api/v1/friendships/show/{id}/":route==="following"?"/api/v1/friendships/{id}/following/":route==="followers"?"/api/v1/friendships/{id}/followers/":"other";
+ const requestMeta={operationName:url==="/api/graphql"?"usePolarisUnfollowMutation":undefined,requestHeaders:safeNetworkHeaders(init.headers),stage,requestPath,credentialsIncluded:true,csrfHeaderPresent:Boolean(init.headers?.["x-csrftoken"]),formBodyPresent:typeof init.body==="string"&&/(?:^|&)user_id=/.test(init.body)};
+ void globalThis.__iuPlatform.log({event:"request.start",requestId,route,method,...requestMeta});
  try {
   const result=await rawIgRequest(url,init);
   let responseKind=result.text.trim()?"text":"empty";
   try{JSON.parse(result.text);responseKind="json";}catch{if(/^\\s*</.test(result.text))responseKind="html";}
-  void globalThis.__iuPlatform.log({event:"request.end",requestId,route,method,status:result.response.status,responseKind,redirected:Boolean(result.response.redirected),durationMs:Date.now()-started});
+  void globalThis.__iuPlatform.log({event:"request.end",requestId,route,method,...requestMeta,status:result.response.status,responseKind,...responseTransportDiagnostics(result.response,result.text),durationMs:Date.now()-started});
   return result;
- }catch(error){void globalThis.__iuPlatform.log({event:"request.error",requestId,route,method,reason:error?.name==="AbortError"?"aborted":"network",durationMs:Date.now()-started});throw error;}
+ }catch(error){void globalThis.__iuPlatform.log({event:"request.error",requestId,route,method,...requestMeta,errorKind:error?.code==="NETWORK_TIMEOUT"?"timeout":error?.code==="RESPONSE_TOO_LARGE"?"response-too-large":error?.kind==="account"?"account-changed":error?.name==="AbortError"?"aborted":"network",reason:error?.name==="AbortError"?"aborted":"network",durationMs:Date.now()-started});throw error;}
 }
 `;
 source=source.replace('async function rawIgRequest(url, init = {}) {',requestLogging+'async function rawIgRequest(url, init = {}) {');
@@ -36,7 +42,7 @@ if(!source.includes(scanErrorBoundary))throw new Error('Scan error logging bound
 source=source.replace(scanErrorBoundary,'void globalThis.__iuPlatform.log({event:"scan.error",reason:error?.kind||"unknown",status:error?.status}); '+scanErrorBoundary);
 const unfollowResultBoundary='persistOperationHistory();';
 if(!source.includes(unfollowResultBoundary))throw new Error('Unfollow result logging boundary missing');
-source=source.replace(unfollowResultBoundary,unfollowResultBoundary+` void globalThis.__iuPlatform.log({event:"unfollow.result",code:outcome.code,route:"unfollow",outcome:outcome.ok?"complete":"stopped",reason:outcome.ok?undefined:"response",confirmed:state.log.filter(entry=>entry.ok).length,loaded:state.log.length,total:targets.length,status:(outcome.diagnostics?.verification||outcome.diagnostics?.mutation)?.httpStatus,responseKind:(outcome.diagnostics?.verification||outcome.diagnostics?.mutation)?.responseKind});`);
+source=source.replace(unfollowResultBoundary,unfollowResultBoundary+` void globalThis.__iuPlatform.log({event:"unfollow.result",code:outcome.code,route:"unfollow",outcome:outcome.ok?"complete":"stopped",reason:outcome.ok?undefined:"response",confirmed:state.log.filter(entry=>entry.ok).length,loaded:state.log.length,total:targets.length,status:(outcome.diagnostics?.verification||outcome.diagnostics?.mutation||outcome.diagnostics?.precheck)?.httpStatus,responseKind:(outcome.diagnostics?.verification||outcome.diagnostics?.mutation||outcome.diagnostics?.precheck)?.responseKind});`);
 source=source.replace('checkpoint[cursorKey] = nextCursor; saveCheckpoint(checkpoint);','checkpoint[cursorKey] = nextCursor; saveCheckpoint(checkpoint); void globalThis.__iuPlatform.log({event:"scan.page",loaded:results.length,total});');
 for(const kind of ['scan','unfollow']){
  source=source.replace('state.'+kind+'Paused = !state.'+kind+'Paused;', 'state.'+kind+'Paused = !state.'+kind+'Paused; void globalThis.__iuPlatform.log({event:state.'+kind+'Paused?"'+kind+'.pause":"'+kind+'.resume"});');
@@ -49,8 +55,16 @@ source=source.replace('function showResults(checkpoint, complete) {','function s
 const confirmation='const count = state.selected.size; showDialog({ title: t("unfollowConfirmTitle", { count }),';
 if(!source.includes(confirmation))throw Error('Confirmation boundary missing');
 source=source.replace('function confirmUnfollow() {','async function confirmUnfollow() {');
-source=source.replace(confirmation,'let excluded=0; try { const protectedIds=new Set(await globalThis.__iuPlatform.protectedIds(state.viewerId)); for(const id of protectedIds)if(state.selected.delete(id))excluded++; } catch {toast(t("lockLost"));return;} state.protectedExcluded=excluded; renderBody(); if(!state.selected.size){toast(state.language===\"tr\"?\"Seçimdeki hesaplar korumalı; işlem yapılmadı.\":\"Selected accounts are protected; no action sent.\");return;} const count = state.selected.size; showDialog({ title: t("unfollowConfirmTitle", { count }),');
-source=source.replace('body: t("unfollowConfirmBody"),','body: t("unfollowConfirmBody")+(state.protectedExcluded? (state.language===\"tr\"?\" Korumalı olduğu için dışlanan: ":\" Protected accounts excluded: ")+state.protectedExcluded: \"\"),');
+source=source.replace(confirmation,`let excluded=0,previewHistory=[];const originalCount=state.selected.size;
+try {const protectedIds=new Set(await globalThis.__iuPlatform.protectedIds(state.viewerId));for(const id of protectedIds)if(state.selected.delete(id))excluded++;extensionStorage=await globalThis.__iuPlatform.createStorage([STORAGE_KEY,CHECKPOINT_KEY,"iu_operation_history_v1"],showStorageWarning);previewHistory=JSON.parse(extensionStorage.getItem("iu_operation_history_v1")||"[]");if(!Array.isArray(previewHistory))throw Error("INVALID_HISTORY");}catch{toast(t("lockLost"));return;}
+state.protectedExcluded=excluded;
+const latest=new Map();for(const row of previewHistory)if(row.accountId===state.viewerId)latest.set(row.targetId,row);
+const selectedUsers=state.users.filter(u=>state.selected.has(u.id)&&u.follows_viewer===false),already=selectedUsers.filter(u=>latest.get(u.id)?.category==="confirmed"&&(!state.scanCollectedAt||state.scanCollectedAt<=Date.parse(latest.get(u.id).at))),uncertain=selectedUsers.filter(u=>latest.get(u.id)?.category==="uncertain"),blockedUncertain=uncertain.filter(u=>!state.scanCollectedAt||state.scanCollectedAt<=Date.parse(latest.get(u.id).at));
+for(const user of [...already,...blockedUncertain])state.selected.delete(user.id);
+const eligible=selectedUsers.filter(u=>state.selected.has(u.id));renderBody();if(!eligible.length){toast(excluded===originalCount?(state.language==="tr"?"Seçimdeki hesaplar korumalı; uygun hedef yok.":"Selected accounts are protected; no eligible targets."):(state.language==="tr"?"Uygun hedef yok. Koruma ve önceki işlem kayıtlarını kontrol et.":"No eligible targets. Review protection and previous operations."));return;}
+state.operationPreview={selected:originalCount,protectedExcluded:excluded,alreadyProcessedExcluded:already.length,previousUncertain:uncertain.length,uncertainExcluded:blockedUncertain.length,eligible:eligible.length};
+const tr=state.language==="tr",previewHTML='<div class="iu-operation-preview"><dl>'+[[tr?'Seçilen':'Selected',originalCount],[tr?'Korumalı / dışlanan':'Protected / excluded',excluded],[tr?'Önceden doğrulanan / dışlanan':'Previously confirmed / excluded',already.length],[tr?'Önceki belirsiz kayıtlar':'Previous uncertain records',uncertain.length],[tr?'Taze tarama gerektiren / dışlanan':'Fresh scan required / excluded',blockedUncertain.length],[tr?'Uygun ve kalan hedef':'Eligible remaining targets',eligible.length]].map(([k,v])=>'<dt>'+escapeHTML(k)+'</dt><dd>'+v+'</dd>').join('')+'</dl><p>'+escapeHTML(tr?'Her hedef öncesi güncel ilişki kontrol edilir. Ağ ve molalar değişebildiğinden bitiş saati hesaplanmaz.':'Every target gets a fresh relationship check. Completion time is not estimated because requests and cooldowns vary.')+'</p><div class="iu-final-review">'+eligible.map(u=>'<div>@'+escapeHTML(u.username)+'</div>').join('')+'</div></div>';
+const count = eligible.length; showDialog({ contentHTML:previewHTML,title: t("unfollowConfirmTitle", { count }),`);
 // Response diagnostics and localized explanations are shared with the core.
 const operations=`let operationStarting = false;
 async function withExtensionOperation(kind, task) {
@@ -91,7 +105,7 @@ function downloadRunReport() {
  const skipped = state.users.filter(user => state.selected.has(user.id) && !logged.has(user.id));
  const report = {
   schemaVersion:2, extensionVersion:VERSION, scanScope:state.scanScope, exportedAt:new Date().toISOString(), accountId:state.viewerId,
-  outcome:state.unfollowOutcome, planned:state.progress.total,protectedExcluded:state.protectedExcluded||0,
+  outcome:state.unfollowOutcome, operationPreview:state.operationPreview||null,planned:state.progress.total,protectedExcluded:state.protectedExcluded||0,
   confirmed:confirmed.length, failed:state.log.filter(e=>e.category==="failed").length, uncertain:state.log.filter(e=>e.category==="uncertain").length, notConfirmed:state.log.filter(e=>e.category!=="confirmed"&&e.category!=="not_processed").length,
   notProcessed:skipped.length+state.log.filter(e=>e.category==="not_processed").length,
   accounts:[...state.log.map(entry => ({id:entry.user.id, username:entry.user.username, status:entry.ok?"confirmed":"not-confirmed",category:entry.category,code:entry.code,operationId:entry.operationId, reason:entry.reason||"",diagnostics:entry.diagnostics||null})),
@@ -135,7 +149,7 @@ source=source.replace('fail: state.log.filter((e) => !e.ok).length });','fail: s
 source=source.replace('const persisted = loadStored();',`Object.assign(I18N.tr,{workspace:"Çalışma alanı",otherOperation:"Başka bir Instagram sekmesinde işlem sürüyor. Önce o işlemi durdur veya bitmesini bekle.",lockLost:"Eklenti bağlantısı veya işlem izni kayboldu. Sayfayı yenileyip yeniden aç.",downloadReport:"Raporu indir",unfollowDoneBody:"{ok} doğrulandı · {failed} başarısız · {uncertain} belirsiz · {remaining} işlenmedi"});
 Object.assign(I18N.en,{workspace:"Workspace",otherOperation:"Another Instagram tab is busy. Stop that operation or wait for it to finish.",lockLost:"Extension connection or operation ownership was lost. Reload the page and reopen the tool.",downloadReport:"Download report",unfollowDoneBody:"{ok} confirmed · {failed} failed · {uncertain} uncertain · {remaining} not processed"});
 const persisted = loadStored();`);
-source=source.replace(/const VERSION = "[^"]+";/,'const VERSION = "2.9.0-extension";');
+source=source.replace(/const VERSION = "[^"]+";/,'const VERSION = "'+version+'-extension";');
 // Settings are a draft until Save, and success is shown only after storage flush.
 const restore='Object.assign(state.timings, DEFAULT_TIMINGS); dialog.querySelectorAll("[data-setting]").forEach((input) => { const key = input.getAttribute("data-setting"); if (input.type === "checkbox") input.checked = Boolean(state.timings[key]); else input.value = state.timings[key]; });';
 if(!source.includes(restore))throw new Error('Settings restore boundary missing');
@@ -193,4 +207,4 @@ const wrapper=`// Bundled local script. Runs only after an explicit extension ac
 })();
 `;
 fs.writeFileSync(path.join(dir,'content.js'),wrapper);
-console.log('Bundled v2.9.0 with redacted live diagnostics and optional authenticated loopback file logging.');
+console.log('Bundled v'+version+' with redacted live diagnostics and optional authenticated loopback file logging.');

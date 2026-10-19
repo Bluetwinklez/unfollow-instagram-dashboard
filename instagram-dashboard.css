@@ -90,3 +90,5 @@
 #${APP_ID} .iu-toast{background:#271d38;border-color:#b79aff40;color:#e7dcff}
 @media(max-width:1000px){#${APP_ID} .iu-welcome:after{opacity:.35}#${APP_ID} .iu-welcome h2{max-width:480px}#${APP_ID} .iu-header{padding-inline:24px}}
 @media(max-width:700px){#${APP_ID} .iu-header{padding-inline:16px}#${APP_ID} .iu-welcome{padding:24px 20px 32px}#${APP_ID} .iu-welcome h2{font-size:36px;letter-spacing:-1.5px}#${APP_ID} .iu-welcome:after{display:none}#${APP_ID} .iu-welcome-top{align-items:flex-start;flex-direction:column;padding-bottom:18px;margin-bottom:2px}#${APP_ID} .iu-scope-card{min-height:102px}#${APP_ID} .iu-stats>div{padding:14px 10px}#${APP_ID} .iu-new-scan{margin-left:0}}
+
+#iu-app .iu-operation-preview{font-size:12px}#iu-app .iu-operation-preview dl{display:grid;grid-template-columns:1fr auto;gap:4px}#iu-app .iu-operation-preview dd{margin:0}#iu-app .iu-final-review{max-height:160px;overflow:auto;border:1px solid var(--iu-line);padding:8px;border-radius:8px}

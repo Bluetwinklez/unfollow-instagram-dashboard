@@ -1,8 +1,7 @@
 {
+  "version": "2.10.0",
   "passed": true,
-  "scope": "Current public source; patterns and sensitive filename exclusion; secret values never printed",
-  "filesScanned": 111,
+  "filesScanned": 119,
   "findings": [],
-  "privateIgnoredConfiguration": "Excluded from Git and release; local helper configuration is retained only outside public packages",
-  "attribution": "CREDITS.md and LICENSE-NOTICE.md retained as source provenance"
+  "scope": "Public source and release allowlist. No secret values printed. Private helper configuration remains ignored and excluded."
 }

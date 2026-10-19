@@ -3,11 +3,11 @@ const root=path.resolve('instagram-magaza-hazirlik');
 const out=path.join(root,'extension');
 fs.mkdirSync(out,{recursive:true});fs.mkdirSync(path.join(root,'gorseller'),{recursive:true});
 const source=path.resolve('instagram-chrome-eklentisi');
-const files=['manifest.json','service-worker.js','platform.js','content.js','help.html','help.css','help.js','logs.html','logs.css','logs.js','workspace.html','workspace.js','workspace.css','workspace-core.js','CREDITS.md'];
+const files=['manifest.json','service-worker.js','platform.js','content.js','help.html','help.css','help.js','logs.html','logs.css','logs.js','workspace.html','workspace.js','workspace.css','workspace-core.js','workspace-art.png','CREDITS.md'];
 for(const name of files)fs.copyFileSync(path.join(source,name),path.join(out,name));
 fs.cpSync(path.join(source,'icons'),path.join(out,'icons'),{recursive:true});
 const manifest=JSON.parse(fs.readFileSync(path.join(out,'manifest.json'),'utf8'));
-manifest.version='2.9.0';delete manifest.host_permissions;
+manifest.version=require('../package.json').version;delete manifest.host_permissions;
 fs.writeFileSync(path.join(out,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
 let sw=fs.readFileSync(path.join(out,'service-worker.js'),'utf8').replace(/\r\n/g,'\n');
 sw=sw.replace('importScripts("log-bridge-config.js");','');
@@ -24,14 +24,14 @@ fs.writeFileSync(path.join(out,'logs.js'),logs);
 let help=fs.readFileSync(path.join(out,'help.html'),'utf8');
 help=help.replace(/ Paketteki <strong>CANLI-LOG-BASLAT\.cmd<\/strong>[\s\S]*?Python 3 gerektirir\./,' Günlüğü indir düğmesiyle tanı kaydını dışa aktarabilirsin.');
 help=help.replace(/ İsteğe bağlı günlük yardımcısı[\s\S]*?alır\./,'');
-help=help.replace(/Özel kullanım sürümü · [\d.]+/,'Mağaza sürümü · 2.9.0');
+help=help.replace(/Özel kullanım sürümü · [\d.]+/,'Mağaza sürümü · '+manifest.version);
 help=help.replace('</footer>',' · <a href="privacy.html">Gizlilik politikası</a></footer>');
 fs.writeFileSync(path.join(out,'help.html'),help);
-let content=fs.readFileSync(path.join(out,'content.js'),'utf8').replaceAll('2.9.0-extension','2.9.0-extension');
+let content=fs.readFileSync(path.join(out,'content.js'),'utf8');
 fs.writeFileSync(path.join(out,'content.js'),content);
 const policy=`# Instagram Takip Yönetimi — Gizlilik Politikası
 
-Son güncelleme: 18 Ekim 2026. Kapsam: 2.9.0 mağaza sürümü.
+Son güncelleme: 18 Ekim 2026. Kapsam: ${manifest.version} mağaza sürümü.
 
 ## İşlenen bilgiler ve amaç
 Eklenti, kullanıcı başlattığında Instagram'da takip edilen ve isteğe bağlı olarak takipçi hesaplarının kimliklerini, kullanıcı adlarını, görünen adlarını, profil fotoğrafı adreslerini ve takip durumlarını işler. Bu bilgiler listeleme, arama, seçim ve onaylanan takip bırakma işlemleri için kullanılır. Başka sekmelerin geçmişini, mesajları, konum, sağlık veya finans bilgilerini okumaz.
@@ -43,7 +43,8 @@ Takip edilen/takipçi listeleri ve takip işlemleri için Instagram'a istek gön
 ## Yerel saklama
 Ayarlar, dil, gizlenen hesap kimlikleri ve yarım kalan tarama (hesap kimliği, liste ve sayfalama bilgileri) chrome.storage.local içinde saklanır. Yarım kalan kayıtlar 24 saatten eskiyse devam etmek için kullanılmaz; bu süre otomatik fiziksel silme garantisi değildir. Tamamlanan taramanın kontrol noktası temizlenir. Diğer yerel kayıtlar eklenti kaldırılınca silinir.
 Çalışma alanı tamamlanan taramaları, hesap kimliklerini/kullanıcı adlarını, isteğe bağlı koruma/favori/etiket/notları, kayıtlı seçimleri, inceleme oturumlarını, görevleri ve yerel iş akışlarını cihazda saklar. Tarama saklama sayısı ayarlanabilir. Bu veriler Ayarlar ekranından yedeklenebilir veya hesap bazında temizlenebilir. İşlem geçmişi en fazla 300 kaydı cihazda saklar; belirsiz işlemler otomatik yeniden başlatılmaz. Görevler ve simülasyonlar Instagram işlemi göndermez.
-Tanı günlüğü, zaman, sekme numarası, olay, HTTP durumu, yanıt türü, süre ve ilerleme gibi en fazla 500 olayı Chrome oturumu boyunca saklar. Çerezler, şifreler, kullanıcı adları, istek başlıkları ve ham yanıt gövdeleri tanı günlüğüne dahil edilmez. Günlük ekrandan temizlenebilir ve Chrome oturumu sona erdiğinde silinir.
+Kurtarma sırasında bozuk ham kayıt tek bir yerel karantina kopyası olarak korunur. Ayarlar’dan indirilebilir veya açık onayla silinebilir; eklenti kaldırıldığında yerel kopya silinir. Kesinleşmiş işlem geçmişi temizlenebilir; belirsiz kayıtlar tekrar gönderim koruması için saklanır. Etkin işlem sırasında geçmiş temizleme reddedilir.
+Tanı günlüğü, zaman, sekme numarası, olay, HTTP durumu, yanıt türü, süre ve ilerleme gibi en fazla 500 olayı Chrome oturumu boyunca saklar. Çerezler, şifreler, token değerleri, kullanıcı adları ve ham yanıt gövdeleri tanı günlüğüne dahil edilmez. İstek/yanıt başlıklarının yalnızca izin listesindeki teknik değerleri kaydedilir; diğer değerler gizlenir. HTML için metin ve nitelik içermeyen sınırlı etiket yapısı ve sabit sayfa işaretleri saklanabilir. Günlük ekrandan temizlenebilir ve Chrome oturumu sona erdiğinde silinir.
 
 ## Dışa aktarma ve paylaşım
 Kullanıcı isterse tanı günlüğünü veya hesap adları/kimlikleri içeren işlem raporunu kendi cihazına indirir; kullanıcı adlarını panoya kopyalayabilir. Bu dosyalar eklenti kaldırılınca silinmez; kullanıcı tarafından silinir. Destek için bir dosyayı paylaşmak kullanıcının tercihidir.

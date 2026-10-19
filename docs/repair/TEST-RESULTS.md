@@ -1,13 +1,14 @@
-# Tüm özellik testleri — 2.9.0
+# Tüm özellik testleri — 2.10.0
 
-Tarih: 2026-10-18T12:42:40.546Z
+Tarih: 2026-10-19T10:21:09.868Z
 
-23/23 test paketi geçti.
+21/26 test paketi geçti.
 
 | Test paketi | Sonuç | Süre |
 |---|---|---|
-| instagram-safety.test.cjs | GEÇTİ | 0.2 sn |
+| instagram-safety.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-unfollow-verification.test.cjs | GEÇTİ | 0.1 sn |
+| instagram-polaris-unfollow.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-scan-compatibility.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-diagnostics.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-audit-regressions.test.cjs | GEÇTİ | 0.1 sn |
@@ -23,11 +24,13 @@ Tarih: 2026-10-18T12:42:40.546Z
 | instagram-repair-v5.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-workspace.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-workspace-storage.test.cjs | GEÇTİ | 0.1 sn |
+| Privacy-safe local log monitor | GEÇTİ | 0.2 sn |
 | Optional local helper: authentication, redaction and writing | GEÇTİ | 0.8 sn |
-| MV3 store build integration | GEÇTİ | 19.8 sn |
-| MV3 private build integration | GEÇTİ | 17.1 sn |
-| Browser feature matrix | GEÇTİ | 23.5 sn |
-| Local-first workspace browser integration | GEÇTİ | 11.0 sn |
+| MV3 store build integration | BAŞARISIZ | 0.4 sn |
+| MV3 private build integration | BAŞARISIZ | 0.4 sn |
+| Browser feature matrix | BAŞARISIZ | 0.5 sn |
+| Local-first workspace browser integration | BAŞARISIZ | 0.4 sn |
+| Missing feature completion browser regression | BAŞARISIZ | 0.4 sn |
 | Release security and permissions audit | GEÇTİ | 0.1 sn |
 
 ## Gerçek Chromium içindeki özellik grupları

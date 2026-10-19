@@ -7,7 +7,7 @@ const text=(s,max=1000)=>String(s??'').slice(0,max);
 function empty(){return {schemaVersion:SCHEMA,revision:0,accounts:{}}}
 function parse(raw){
  if(raw==null||raw==='')return empty();let value=raw;try{if(typeof raw==='string')value=JSON.parse(raw)}catch{throw Error('INVALID_WORKSPACE_DATA')}
- if(!value||value.schemaVersion!==SCHEMA||!value.accounts||Array.isArray(value.accounts)||!Number.isSafeInteger(value.revision))throw Error('INVALID_WORKSPACE_DATA');
+ if(!value||value.schemaVersion!==SCHEMA||!value.accounts||Array.isArray(value.accounts)||!Number.isSafeInteger(value.revision)||value.revision<0)throw Error('INVALID_WORKSPACE_DATA');
  for(const [key,data] of Object.entries(value.accounts))validateBackup({schemaVersion:1,accountId:key,account:data});return value;
 }
 function account(db,viewer){
@@ -105,10 +105,16 @@ function csv(users){const esc=v=>'"'+String(v??'').replace(/^(?:\s*[=+@-]|[\t\r]
 function validateBackup(value){
  if(!value||value.schemaVersion!==1||!/^\d+$/.test(String(value.accountId))||!value.account||Array.isArray(value.account)||JSON.stringify(value).length>5_000_000)throw Error('INVALID_BACKUP');
  const input=value.account;
+ if(input.preferences?.hiddenCards!=null&&(!Array.isArray(input.preferences.hiddenCards)||input.preferences.hiddenCards.some(v=>!Number.isInteger(v)||v<0||v>5)))throw Error('INVALID_PREFERENCES');
+ for(const key of ['compact','notifications','shortcuts'])if(input.preferences?.[key]!=null&&typeof input.preferences[key]!=='boolean')throw Error('INVALID_PREFERENCES');
  if(!input.preferences||!['dark','light'].includes(input.preferences.theme)||!['tr','en'].includes(input.preferences.language)||!Number.isInteger(input.preferences.retention)||input.preferences.retention<1||input.preferences.retention>20)throw Error('INVALID_PREFERENCES');
+ if(input.preferences.defaultSort!=null&&!['username-asc','username-desc','name-asc','relationship','protected','selected','firstObserved','lastObserved'].includes(input.preferences.defaultSort))throw Error('INVALID_PREFERENCES');
+ if(input.preferences.defaultFilter!=null&&!['all','nonfollowers','mutual','protected','favorites','selected','review','reviewed','new'].includes(input.preferences.defaultFilter))throw Error('INVALID_PREFERENCES');
+ if(input.preferences.exportFormat!=null&&!['JSON','CSV','TXT'].includes(input.preferences.exportFormat))throw Error('INVALID_PREFERENCES');
  for(const name of ['snapshots','selections','reviews','sessions','tasks','workflows','runs'])if(!Array.isArray(input[name])||input[name].length>10000)throw Error('INVALID_BACKUP');
  if(!input.meta||typeof input.meta!=='object'||Array.isArray(input.meta)||!input.preferences||typeof input.preferences!=='object')throw Error('INVALID_BACKUP');
  for(const [key,m] of Object.entries(input.meta))if(!/^\d+$/.test(key)||!m||typeof m!=='object'||m.notes!=null&&typeof m.notes!=='string'||m.labels!=null&&(!Array.isArray(m.labels)||m.labels.some(v=>typeof v!=='string')))throw Error('INVALID_METADATA');
+ for(const m of Object.values(input.meta)){for(const field of ['protected','favorite','reviewed'])if(Object.hasOwn(m,field)&&typeof m[field]!=='boolean')throw Error('INVALID_METADATA');if(m.notes!=null&&m.notes.length>4000||m.labels!=null&&(m.labels.length>20||m.labels.some(v=>v.length>500)))throw Error('INVALID_METADATA')}
  for(const s of input.snapshots){if(s.accountId!==String(value.accountId)||!s.complete||!Array.isArray(s.users)||typeof s.id!=='string'||!Number.isFinite(Date.parse(s.at))||s.followerIds!=null&&(!Array.isArray(s.followerIds)||s.followerIds.some(id=>typeof id!=='string'||!/^\d+$/.test(id))))throw Error('INVALID_SNAPSHOT');for(const u of s.users)if(!u||typeof u.id!=='string'||!/^\d+$/.test(u.id)||typeof u.username!=='string')throw Error('INVALID_SNAPSHOT')}
  for(const w of input.workflows)validateWorkflow(w);
  for(const run of input.runs)if(!run||typeof run.id!=='string'||typeof run.name!=='string'||!Number.isFinite(Date.parse(run.at))||!Number.isSafeInteger(run.matched)||run.matched<0||!['simulation','local-apply'].includes(run.mode))throw Error('INVALID_RUN');
@@ -128,6 +134,29 @@ function decide(rules,user){
  const top=matches.filter(r=>r.priority===matches[0].priority),conflict=top.some(r=>r.decision!==top[0].decision);
  return {include:conflict?null:top[0].decision==='include',conflict,priority:top[0].priority};
 }
-const api={KEY,SCHEMA,id,copy,text,empty,parse,account,capture,rows,analytics,filter,validateRule,evaluate,compare,template,validateWorkflow,simulate,csv,validateBackup,ruleConflicts,decide};
+
+function connect(workflow,from,to){
+ if(!workflow.nodes.some(n=>n.id===from)||!workflow.nodes.some(n=>n.id===to)||from===to||workflow.nodes.find(n=>n.id===to).type==='start'||workflow.nodes.find(n=>n.id===from).type==='end'||workflow.edges.some(e=>e.from===from&&e.to===to))throw Error('INVALID_CONNECTION');
+ const stack=[to],seen=new Set();while(stack.length){const n=stack.pop();if(n===from)throw Error('CYCLIC_WORKFLOW');if(seen.has(n))continue;seen.add(n);stack.push(...workflow.edges.filter(e=>e.from===n).map(e=>e.to))}
+ return {...copy(workflow),edges:[...copy(workflow.edges),{from,to}]};
+}
+function recommendations(a,operations=[],now=Date.now()){
+ const users=rows(a),ids=new Set(users.map(u=>u.id)),snapshot=a.snapshots.at(-1),items=[];
+ const add=(kind,records,reason,action,reversible=true)=>{if(records.length)items.push({kind,ids:records,reason,action,reversible,requiresApproval:true})};
+ add('nonfollowers',users.filter(u=>u.relationship==='nonfollowers'&&!u.protected).map(u=>u.id),'stored_relationship','review');
+ add('uncertain',operations.filter(e=>e.category==='uncertain').map(e=>String(e.targetId)),'unverified_operation','history',false);
+ add('stale-selections',a.selections.filter(s=>s.ids.some(id=>!ids.has(id))).map(s=>s.id),'missing_from_latest_snapshot','cleanup');
+ add('old-snapshots',a.snapshots.filter(s=>now-Date.parse(s.at)>30*86400000&&s!==snapshot).map(s=>s.id),'older_than_30_days','cleanup');
+ add('conflicting-labels',users.filter(u=>u.labels.some(v=>v.toLowerCase()==='keep')&&u.labels.some(v=>v.toLowerCase()==='remove')).map(u=>u.id),'keep_and_remove_labels','review');
+ return items;
+}
+function workspaceTemplate(kind){
+ const workflow=template(kind,{op:'eq',field:kind==='protection'?'protected':'relationship',value:kind==='protection'?true:'nonfollowers'});
+ if(kind==='quick')workflow.nodes.find(n=>n.type==='condition').rule={op:'eq',field:'reviewed',value:false};
+ if(['cleanup','diagnostic','export'].includes(kind)){workflow.nodes=workflow.nodes.filter(n=>!['condition','review'].includes(n.type));workflow.nodes.find(n=>n.type==='report').reportKind=kind;workflow.edges=workflow.nodes.slice(1).map((n,i)=>({from:workflow.nodes[i].id,to:n.id}))}
+ return workflow;
+}
+
+const api={KEY,SCHEMA,connect,recommendations,workspaceTemplate,id,copy,text,empty,parse,account,capture,rows,analytics,filter,validateRule,evaluate,compare,template,validateWorkflow,simulate,csv,validateBackup,ruleConflicts,decide};
 if(typeof module==='object'&&module.exports)module.exports=api;root.IUWorkspace=api;
 })(globalThis);
