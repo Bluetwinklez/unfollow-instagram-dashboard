@@ -1,0 +1,33 @@
+name: Mark verified 2.10.0 as latest
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'release/latest-2.10.0'
+permissions:
+  contents: write
+jobs:
+  latest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify existing assets and update release labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          gh release view v2.10.0 --json isDraft,assets --jq 'select(.isDraft == false) | .assets[].name' > "$RUNNER_TEMP/asset-names.txt"
+          grep -Fx 'takip-paneli-chrome-2.10.0.zip' "$RUNNER_TEMP/asset-names.txt"
+          grep -Fx 'takip-paneli-source-2.10.0.zip' "$RUNNER_TEMP/asset-names.txt"
+          grep -Fx 'SHA256SUMS.txt' "$RUNNER_TEMP/asset-names.txt"
+          gh release download v2.10.0 --dir "$RUNNER_TEMP/release"
+          (cd "$RUNNER_TEMP/release" && sha256sum -c SHA256SUMS.txt)
+          gh release edit v2.10.0 --prerelease=false --latest --notes-file docs/RELEASE-2.10.0.md
+          for tag in v2.8.12 v2.9.0; do
+            gh release view "$tag" --json body --jq .body > "$RUNNER_TEMP/old-body.txt"
+            printf '> Güncel sürüm: [2.10.0 ve kurulum dosyaları](https://github.com/Bluetwinklez/unfollow-instagram-dashboard/releases/tag/v2.10.0).\n\n' > "$RUNNER_TEMP/archive-notes.txt"
+            cat "$RUNNER_TEMP/old-body.txt" >> "$RUNNER_TEMP/archive-notes.txt"
+            gh release edit "$tag" --title "Takip Paneli $tag — eski sürüm arşivi" --notes-file "$RUNNER_TEMP/archive-notes.txt"
+          done
