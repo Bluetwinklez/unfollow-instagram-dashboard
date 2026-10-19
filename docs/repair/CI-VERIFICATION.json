@@ -1,11 +1,12 @@
 {
+  "artifactId": 12180826386,
   "passed": 26,
-  "artifactId": 12179418292,
-  "total": 26,
-  "realInstagram": false,
-  "workflowRun": "https://github.com/Bluetwinklez/unfollow-instagram-dashboard/actions/runs/39237278722",
-  "fingerprintMatchesLocal": true,
+  "artifactDigest": "sha256:1c43c85792df3537840eab1dbae9abe7e858101df2660a3c321428ac6c1e5b4e",
   "unchanged": true,
-  "artifactDigest": "sha256:455b45da4a24d942835cb74aae53f4fa1a7bd0aaafd96307dc15e83f2655791b",
-  "commit": "e5c6378c4b9cedd3c07b19080a55a25eeb567037"
+  "commit": "bffb7e2953fb7cebf0ebd7de1f5405bf8f633167",
+  "release": "https://github.com/Bluetwinklez/unfollow-instagram-dashboard/releases/tag/v2.10.0",
+  "realInstagram": false,
+  "total": 26,
+  "downloadedAssetHashesVerified": true,
+  "workflowRun": "https://github.com/Bluetwinklez/unfollow-instagram-dashboard/actions/runs/39239536266"
 }

@@ -1,37 +1,37 @@
 # Tüm özellik testleri — 2.10.0
 
-Tarih: 2026-10-19T10:26:32.609Z
+Tarih: 2026-10-19T10:45:45.154Z
 
 26/26 test paketi geçti.
 
 | Test paketi | Sonuç | Süre |
 |---|---|---|
 | instagram-safety.test.cjs | GEÇTİ | 0.1 sn |
-| instagram-unfollow-verification.test.cjs | GEÇTİ | 0.0 sn |
+| instagram-unfollow-verification.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-polaris-unfollow.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-scan-compatibility.test.cjs | GEÇTİ | 0.0 sn |
-| instagram-diagnostics.test.cjs | GEÇTİ | 0.0 sn |
-| instagram-audit-regressions.test.cjs | GEÇTİ | 0.0 sn |
+| instagram-diagnostics.test.cjs | GEÇTİ | 0.1 sn |
+| instagram-audit-regressions.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-timing.test.cjs | GEÇTİ | 0.0 sn |
 | instagram-scope.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-extension.test.cjs | GEÇTİ | 0.0 sn |
 | instagram-extension-lock.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-extension-platform.test.cjs | GEÇTİ | 0.0 sn |
-| instagram-live-log.test.cjs | GEÇTİ | 0.0 sn |
-| instagram-log-view.test.cjs | GEÇTİ | 0.0 sn |
+| instagram-live-log.test.cjs | GEÇTİ | 0.1 sn |
+| instagram-log-view.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-release-proof.test.cjs | GEÇTİ | 0.2 sn |
-| instagram-oauth.test.cjs | GEÇTİ | 0.1 sn |
+| instagram-oauth.test.cjs | GEÇTİ | 0.2 sn |
 | instagram-repair-v5.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-workspace.test.cjs | GEÇTİ | 0.1 sn |
 | instagram-workspace-storage.test.cjs | GEÇTİ | 0.0 sn |
 | Privacy-safe local log monitor | GEÇTİ | 0.1 sn |
-| Optional local helper: authentication, redaction and writing | GEÇTİ | 0.1 sn |
-| MV3 store build integration | GEÇTİ | 21.2 sn |
-| MV3 private build integration | GEÇTİ | 15.4 sn |
-| Browser feature matrix | GEÇTİ | 21.7 sn |
-| Local-first workspace browser integration | GEÇTİ | 4.6 sn |
-| Missing feature completion browser regression | GEÇTİ | 3.8 sn |
-| Release security and permissions audit | GEÇTİ | 0.0 sn |
+| Optional local helper: authentication, redaction and writing | GEÇTİ | 0.7 sn |
+| MV3 store build integration | GEÇTİ | 21.5 sn |
+| MV3 private build integration | GEÇTİ | 21.5 sn |
+| Browser feature matrix | GEÇTİ | 21.0 sn |
+| Local-first workspace browser integration | GEÇTİ | 5.1 sn |
+| Missing feature completion browser regression | GEÇTİ | 3.4 sn |
+| Release security and permissions audit | GEÇTİ | 0.1 sn |
 
 ## Gerçek Chromium içindeki özellik grupları
 
