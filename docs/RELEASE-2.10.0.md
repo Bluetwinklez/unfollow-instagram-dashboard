@@ -1,6 +1,6 @@
 # Takip Paneli 2.10.0 — Polaris ve yerel çalışma alanı
 
-Bu bir **ön sürümdür**. Kullanıcı takip bırakma başarı bildirimi gördüğünü bildirdi; bağımsız gerçek hesap kabulü ve mağaza incelemesi ayrıca açıktır.
+Kullanıcı takip bırakma başarı bildirimi gördüğünü bildirdi; bağımsız gerçek hesap kabulü ve mağaza incelemesi ayrıca açıktır.
 
 ## Değişiklikler
 

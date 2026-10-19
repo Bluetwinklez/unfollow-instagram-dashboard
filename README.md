@@ -2,9 +2,9 @@
 
 Instagram takip listesini incelemek, korunan hesapları ayırmak ve yerel bir çalışma alanında düzenlemek için Chrome Manifest V3 eklentisi. Türkçe/İngilizce, mor/koyu ve açık tema içerir.
 
-**Son geliştirme sürümü: 2.10.0.**
+**Güncel sürüm: 2.10.0.**
 
-**19 Ekim 2026 güncellemesi:** Polaris takip bırakma akışı, ayrıntılı ve filtrelenmiş ağ günlüğü, ek profil isteği olmadan sayfa oturum kimliği kontrolü ve uzun onay listesi için kaydırma düzeltmesi eklendi. Kullanıcı takip bırakma başarı bildirimi gördüğünü bildirdi; bağımsız gerçek hesap raporuyla kabul henüz tamamlanmadı. GitHub Actions üzerinde **26/26** paket geçti; test parmak izleri kaynakla eşleşiyor. Yerel Windows koşusunda beş tarayıcı paketi `spawn UNKNOWN` nedeniyle başlatılamamıştı. 2.10.0 ön sürümü mağaza kabulü değildir. [CI kanıtı](docs/repair/CI-VERIFICATION.json). [Protokol kanıtı ve sınırlar](docs/repair/POLARIS-UNFOLLOW-EVIDENCE.md), [ayrıntılı günlük](docs/repair/DETAILED-LOGGING.md).
+**19 Ekim 2026 güncellemesi:** Polaris takip bırakma akışı, ayrıntılı ve filtrelenmiş ağ günlüğü, ek profil isteği olmadan sayfa oturum kimliği kontrolü ve uzun onay listesi için kaydırma düzeltmesi eklendi. Kullanıcı takip bırakma başarı bildirimi gördüğünü bildirdi; bağımsız gerçek hesap raporuyla kabul henüz tamamlanmadı. GitHub Actions üzerinde **26/26** paket geçti; test parmak izleri kaynakla eşleşiyor. Yerel Windows koşusunda beş tarayıcı paketi `spawn UNKNOWN` nedeniyle başlatılamamıştı. [CI kanıtı](docs/repair/CI-VERIFICATION.json). [Protokol kanıtı ve sınırlar](docs/repair/POLARIS-UNFOLLOW-EVIDENCE.md), [ayrıntılı günlük](docs/repair/DETAILED-LOGGING.md).
 
 **Durum:** Onarım ve yerel çalışma alanı geliştirmeleri otomatik testlerle doğrulanır. Gerçek Instagram hesabında uçtan uca takip bırakmanın düzeldiği henüz kanıtlanmadı. Instagram'ın özel uç noktaları değişebilir; HTML veya HTTP 200 tek başına başarı değildir. Mağaza onayı ve kaynak yeniden dağıtım izni ayrıca tamamlanmalıdır.
 
@@ -20,7 +20,7 @@ Instagram takip listesini incelemek, korunan hesapları ayırmak ve yerel bir ç
 
 Mağazadan kurulum için yukarıdaki bağlantıyı kullan. ZIP ile elle kurulum için:
 
-[2.10.0 ön sürümü](https://github.com/Bluetwinklez/unfollow-instagram-dashboard/releases/tag/v2.10.0) dosyalarını kullan:
+[2.10.0 sürümü](https://github.com/Bluetwinklez/unfollow-instagram-dashboard/releases/tag/v2.10.0) dosyalarını kullan:
 
 | Dosya | Ne işe yarar? |
 |---|---|
