@@ -8,6 +8,10 @@ Instagram takip listesini incelemek, korunan hesapları ayırmak ve yerel bir ç
 
 **Durum:** Onarım ve yerel çalışma alanı geliştirmeleri otomatik testlerle doğrulanır. Gerçek Instagram hesabında uçtan uca takip bırakmanın düzeldiği henüz kanıtlanmadı. Instagram'ın özel uç noktaları değişebilir; HTML veya HTTP 200 tek başına başarı değildir. Mağaza onayı ve kaynak yeniden dağıtım izni ayrıca tamamlanmalıdır.
 
+![Canlı oturumda takip bırakma ilerlemesi ve duraklatma kontrolleri](docs/screenshots/unfollow-progress-live.jpg)
+
+19 Ekim 2026'da açık eklenti ekranından alınmıştır: 35/954 ilerlemesi, mola sayacı ve duraklat/iptal kontrolleri.
+
 ![Yerel çalışma alanı — sentetik test verisi](docs/screenshots/workspace-overview.png)
 
 ## İndirme ve doğru klasör
