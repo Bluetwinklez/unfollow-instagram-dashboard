@@ -1,0 +1,11 @@
+{
+  "passed": 26,
+  "artifactId": 12179418292,
+  "total": 26,
+  "realInstagram": false,
+  "workflowRun": "https://github.com/Bluetwinklez/unfollow-instagram-dashboard/actions/runs/39237278722",
+  "fingerprintMatchesLocal": true,
+  "unchanged": true,
+  "artifactDigest": "sha256:455b45da4a24d942835cb74aae53f4fa1a7bd0aaafd96307dc15e83f2655791b",
+  "commit": "e5c6378c4b9cedd3c07b19080a55a25eeb567037"
+}

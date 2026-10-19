@@ -1,162 +1,162 @@
 {
   "version": "2.10.0",
-  "at": "2026-10-19T10:21:09.868Z",
+  "at": "2026-10-19T10:26:32.609Z",
   "realInstagram": false,
   "results": [
     {
       "name": "instagram-safety.test.cjs",
       "passed": true,
-      "durationMs": 142,
+      "durationMs": 74,
       "output": "PASS ambiguous POST stops without fallback or next account\nPASS network failure does not retry mutation\nPASS changed account before starting sends nothing\nPASS changed account after first POST cannot produce success or next POST\nPASS closing aborts pending mutation and retains uncertainty\nPASS short list with known total is not accepted as complete\nPASS server-limited lists never enable results\nPASS complete matching scan succeeds with viewer binding\nPASS repeated cursor prevents scan completion\nPASS missing profile total does not require unsupported metadata endpoint\nPASS server refusal stops at first account\nPASS account switch during verification never counts success\nPASS count check also supports empty following list\nPASS missing cursor while more pages are promised cannot unlock results\nPASS confirmed success removes only confirmed account\n15/15 passed; no real network\n"
     },
     {
       "name": "instagram-unfollow-verification.test.cjs",
       "passed": true,
-      "durationMs": 84,
+      "durationMs": 43,
       "output": "PASS: 9 scenarios; independently verified success, retained accounts, stop on uncertainty. No real network.\n"
     },
     {
       "name": "instagram-polaris-unfollow.test.cjs",
       "passed": true,
-      "durationMs": 107,
+      "durationMs": 54,
       "output": "PASS: 15 Polaris scenarios; page session binding, missing/conflicting actor, ZERO profile requests, strict response verification, one mutation, no fallback/retry and no secret persistence. Synthetic network only.\n"
     },
     {
       "name": "instagram-scan-compatibility.test.cjs",
       "passed": true,
-      "durationMs": 103,
+      "durationMs": 34,
       "output": "PASS: original list-only scan works when metadata endpoint rejects, unknown total disclosed, real 429 preserved, HTML not misclassified.\n"
     },
     {
       "name": "instagram-diagnostics.test.cjs",
       "passed": true,
-      "durationMs": 129,
+      "durationMs": 47,
       "output": "PASS: ambiguous responses stop without repeated POST; transport diagnostics classify final routes and content type without storing URLs, bodies or secrets.\n"
     },
     {
       "name": "instagram-audit-regressions.test.cjs",
       "passed": true,
-      "durationMs": 93,
+      "durationMs": 41,
       "output": "PASS null settings cannot prevent startup\nPASS non-array hidden list cannot prevent startup\nPASS invalid checkpoint timestamp and user records are ignored\nPASS duplicate users under changing cursors stop after second page\nPASS unusable saved cursor restarts without retaining stale seeds\nPASS timer-overflow settings cannot turn long waits into immediate actions\nPASS HTTP 200 HTML is an unknown response, not proven sign-out\n7/7 audit regressions passed\n"
     },
     {
       "name": "instagram-timing.test.cjs",
       "passed": true,
-      "durationMs": 72,
+      "durationMs": 35,
       "output": "PASS: six mocked unfollows; five 4–4.8s delays, one 5-minute cooldown after fifth POST, six independent verification waits; production defaults unchanged. Virtual timers, no real network.\n"
     },
     {
       "name": "instagram-scope.test.cjs",
       "passed": true,
-      "durationMs": 115,
+      "durationMs": 50,
       "output": "PASS: all-following scan, full nonfollowers comparison, mutual exclusion from mutation, partial follower failure hides results, scope-bound resume skips completed following list.\n"
     },
     {
       "name": "instagram-extension.test.cjs",
       "passed": true,
-      "durationMs": 74,
+      "durationMs": 30,
       "output": "PASS: MV3, permissions, PNG sizes, CSP-safe bundle, isolated injection, wrong/restricted-page handling.\n[Instagram Takip Yönetimi] Panel açılamadı: restricted\n"
     },
     {
       "name": "instagram-extension-lock.test.cjs",
       "passed": true,
-      "durationMs": 102,
+      "durationMs": 50,
       "output": "PASS: concurrent tab lock, owner-only release, worker restart, stale lock recovery, origin validation.\n"
     },
     {
       "name": "instagram-extension-platform.test.cjs",
       "passed": true,
-      "durationMs": 99,
+      "durationMs": 32,
       "output": "PASS: ordered writes, remove-after-set, visible storage failure, singleton listener and lock lifecycle.\n"
     },
     {
       "name": "instagram-live-log.test.cjs",
       "passed": true,
-      "durationMs": 85,
+      "durationMs": 43,
       "output": "PASS: live logs preserve HTTP status, redact undeclared fields, reject other origins, cap at 500 and restrict clearing.\n"
     },
     {
       "name": "instagram-log-view.test.cjs",
       "passed": true,
-      "durationMs": 96,
+      "durationMs": 47,
       "output": "PASS: log read failure recovery, out-of-order read protection, unconfirmed outcome/progress, denied clear handling and truthful browser-only status.\n"
     },
     {
       "name": "instagram-release-proof.test.cjs",
       "passed": true,
-      "durationMs": 290,
+      "durationMs": 160,
       "output": "PASS: same-version runtime changes invalidate test proof; ignored credentials/docs and equivalent line endings do not; stale reports cannot package.\n"
     },
     {
       "name": "instagram-oauth.test.cjs",
       "passed": true,
-      "durationMs": 187,
+      "durationMs": 123,
       "output": "PASS: OAuth loopback binding, state rejection, PKCE, single token exchange and failed exchange cannot display success.\n"
     },
     {
       "name": "instagram-repair-v5.test.cjs",
       "passed": true,
-      "durationMs": 129,
+      "durationMs": 62,
       "output": "PASS: default/explicit preference safety, HTML/empty/network/promotion/errors, text/javascript JSON, exact POST payload/headers, no blind retry, operation history and distinct failed/uncertain outcomes.\n"
     },
     {
       "name": "instagram-workspace.test.cjs",
       "passed": true,
-      "durationMs": 125,
-      "output": "PASS: workspace account isolation, snapshots/analytics, unknown-safe rules, conflicts, workflow validation/simulation isolation, backup schema, CSV safety and 100–10,000 account performance.\n[{\"count\":100,\"ms\":14.24},{\"count\":1000,\"ms\":2.62},{\"count\":5000,\"ms\":7.01},{\"count\":10000,\"ms\":15.78}]\n"
+      "durationMs": 63,
+      "output": "PASS: workspace account isolation, snapshots/analytics, unknown-safe rules, conflicts, workflow validation/simulation isolation, backup schema, CSV safety and 100–10,000 account performance.\n[{\"count\":100,\"ms\":6.31},{\"count\":1000,\"ms\":1.82},{\"count\":5000,\"ms\":3.61},{\"count\":10000,\"ms\":10.06}]\n"
     },
     {
       "name": "instagram-workspace-storage.test.cjs",
       "passed": true,
-      "durationMs": 76,
+      "durationMs": 36,
       "output": "PASS: serialized workspace commits, stale revision rejection, trusted-page checks, account isolation and storage failure preserve existing data.\n"
     },
     {
       "name": "Privacy-safe local log monitor",
       "passed": true,
-      "durationMs": 195,
-      "output": ".\r\n----------------------------------------------------------------------\r\nRan 1 test in 0.009s\r\n\r\nOK\r\n"
+      "durationMs": 89,
+      "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.002s\n\nOK\n"
     },
     {
       "name": "Optional local helper: authentication, redaction and writing",
       "passed": true,
-      "durationMs": 829,
-      "output": ".\r\n----------------------------------------------------------------------\r\nRan 1 test in 0.545s\r\n\r\nOK\r\n"
+      "durationMs": 141,
+      "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.021s\n\nOK\n"
     },
     {
       "name": "MV3 store build integration",
-      "passed": false,
-      "durationMs": 424,
-      "output": "browserType.launchPersistentContext: spawn UNKNOWN\nCall log:\n\u001b[2m  - <launching> C:\\Users\\Administrator\\AppData\\Local\\ms-playwright\\chromium-1234\\chrome-win64\\chrome.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --enable-unsafe-extension-debugging --disable-extensions-except=C:\\Users\\Administrator\\Desktop\\claude\\unfollow-instagram-dashboard-publish\\instagram-magaza-hazirlik\\extension --load-extension=C:\\Users\\Administrator\\Desktop\\claude\\unfollow-instagram-dashboard-publish\\instagram-magaza-hazirlik\\extension --user-data-dir=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\iu-extension-test-yQtq7D --remote-debugging-pipe about:blank\u001b[22m\n\n    at async C:\\Users\\Administrator\\Desktop\\claude\\unfollow-instagram-dashboard-publish\\instagram-extension-browser.test.cjs:8:16 {\n  log: [\n    '  - <launching> C:\\\\Users\\\\Administrator\\\\AppData\\\\Local\\\\ms-playwright\\\\chromium-1234\\\\chrome-win64\\\\chrome.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --enable-unsafe-extension-debugging --disable-extensions-except=C:\\\\Users\\\\Administrator\\\\Desktop\\\\claude\\\\unfollow-instagram-dashboard-publish\\\\instagram-magaza-hazirlik\\\\extension --load-extension=C:\\\\Users\\\\Administrator\\\\Desktop\\\\claude\\\\unfollow-instagram-dashboard-publish\\\\instagram-magaza-hazirlik\\\\extension --user-data-dir=C:\\\\Users\\\\ADMINI~1\\\\AppData\\\\Local\\\\Temp\\\\iu-extension-test-yQtq7D --remote-debugging-pipe about:blank'\n  ],\n  name: 'Error'\n}\n"
+      "passed": true,
+      "durationMs": 21189,
+      "output": "Loaded: chrome-extension://leagolfbaopdhmpmejiddalndmgmlkfd/service-worker.js\nTab target: tab 6973A2A8A80490A8E518AF005648913F\nPage: error Failed to load resource: the server responded with a status of 429 (Too Many Requests)\nPASS: real MV3 install, settings, scan, cross-tab lock, verification, report, live HTTP log UI/export, redaction, minimize and close. All Instagram requests intercepted.\n"
     },
     {
       "name": "MV3 private build integration",
-      "passed": false,
-      "durationMs": 426,
-      "output": "browserType.launchPersistentContext: spawn UNKNOWN\nCall log:\n\u001b[2m  - <launching> C:\\Users\\Administrator\\AppData\\Local\\ms-playwright\\chromium-1234\\chrome-win64\\chrome.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --enable-unsafe-extension-debugging --disable-extensions-except=C:\\Users\\Administrator\\Desktop\\claude\\unfollow-instagram-dashboard-publish\\instagram-chrome-eklentisi --load-extension=C:\\Users\\Administrator\\Desktop\\claude\\unfollow-instagram-dashboard-publish\\instagram-chrome-eklentisi --user-data-dir=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\iu-extension-test-Js2rzZ --remote-debugging-pipe about:blank\u001b[22m\n\n    at async C:\\Users\\Administrator\\Desktop\\claude\\unfollow-instagram-dashboard-publish\\instagram-extension-browser.test.cjs:8:16 {\n  log: [\n    '  - <launching> C:\\\\Users\\\\Administrator\\\\AppData\\\\Local\\\\ms-playwright\\\\chromium-1234\\\\chrome-win64\\\\chrome.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --enable-unsafe-extension-debugging --disable-extensions-except=C:\\\\Users\\\\Administrator\\\\Desktop\\\\claude\\\\unfollow-instagram-dashboard-publish\\\\instagram-chrome-eklentisi --load-extension=C:\\\\Users\\\\Administrator\\\\Desktop\\\\claude\\\\unfollow-instagram-dashboard-publish\\\\instagram-chrome-eklentisi --user-data-dir=C:\\\\Users\\\\ADMINI~1\\\\AppData\\\\Local\\\\Temp\\\\iu-extension-test-Js2rzZ --remote-debugging-pipe about:blank'\n  ],\n  name: 'Error'\n}\n"
+      "passed": true,
+      "durationMs": 15433,
+      "output": "Loaded: chrome-extension://dbafioinobkokgeemelgbecdohcfeocl/service-worker.js\nTab target: tab 8B1CCABD6A532581CCBC598615ABF2C6\nPage: error Failed to load resource: the server responded with a status of 429 (Too Many Requests)\nPASS: real MV3 install, settings, scan, cross-tab lock, verification, report, live HTTP log UI/export, redaction, minimize and close. All Instagram requests intercepted.\n"
     },
     {
       "name": "Browser feature matrix",
-      "passed": false,
-      "durationMs": 451,
-      "output": "browserType.launchPersistentContext: spawn UNKNOWN\nCall log:\n\u001b[2m  - <launching> C:\\Users\\Administrator\\AppData\\Local\\ms-playwright\\chromium-1234\\chrome-win64\\chrome.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --enable-unsafe-extension-debugging --disable-extensions-except=C:\\Users\\Administrator\\Desktop\\claude\\unfollow-instagram-dashboard-publish\\instagram-magaza-hazirlik\\extension --load-extension=C:\\Users\\Administrator\\Desktop\\claude\\unfollow-instagram-dashboard-publish\\instagram-magaza-hazirlik\\extension --user-data-dir=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\iu-features-LG1RdB --remote-debugging-pipe about:blank\u001b[22m\n\n    at async C:\\Users\\Administrator\\Desktop\\claude\\unfollow-instagram-dashboard-publish\\instagram-features-browser.test.cjs:5:16 {\n  log: [\n    '  - <launching> C:\\\\Users\\\\Administrator\\\\AppData\\\\Local\\\\ms-playwright\\\\chromium-1234\\\\chrome-win64\\\\chrome.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --enable-unsafe-extension-debugging --disable-extensions-except=C:\\\\Users\\\\Administrator\\\\Desktop\\\\claude\\\\unfollow-instagram-dashboard-publish\\\\instagram-magaza-hazirlik\\\\extension --load-extension=C:\\\\Users\\\\Administrator\\\\Desktop\\\\claude\\\\unfollow-instagram-dashboard-publish\\\\instagram-magaza-hazirlik\\\\extension --user-data-dir=C:\\\\Users\\\\ADMINI~1\\\\AppData\\\\Local\\\\Temp\\\\iu-features-LG1RdB --remote-debugging-pipe about:blank'\n  ],\n  name: 'Error'\n}\n"
+      "passed": true,
+      "durationMs": 21719,
+      "output": "PASS TR/EN language switch survives reload\nPASS Both optional scan choices are visible\nPASS Mobile viewport fits screen without horizontal panel overflow\nPASS Settings persist across reload; Escape closes dialog\nPASS Headings stay readable under conflicting site CSS\nPASS Reference dashboard side panel starts scan\nPASS Scan pause prevents next page request\nPASS Side panel pause and resume operate the active scan\nPASS Minimized panel updates from scan progress to completed result\nPASS Interrupted scan persists and resumes after reload without reloading first page; checkpoint clears on completion\nPASS Side gauge reflects actual selected accounts\nPASS Nonfollowers mode lists and selects only non-mutual accounts\nPASS New scan can switch back to all-following mode\nPASS No removed filters reappear\nPASS Keyboard Enter and Space toggle row selection\nPASS Copy all and copy selected write expected usernames to clipboard\nPASS Profile links point to intended account in new tab\nPASS Select all and clear selection\nPASS Side panel unfollow requires the same confirmation dialog\nPASS Destructive confirmation starts on cancel and traps keyboard focus\nPASS Dismiss confirmation sends no mutation\nPASS Unfollow pause holds independent verification and next account\nPASS Resume verifies first account; cancel prevents next account; report counts remaining correctly\nPASS Minimize and expand preserve remaining results\nPASS Live log filters, autoscroll toggle and clearing\nPASS Bundled privacy page opens\nPASS Close removes panel\nPASS Live log updates after clearing when new events arrive\n28/28 browser feature groups passed; all Instagram requests mocked.\n"
     },
     {
       "name": "Local-first workspace browser integration",
-      "passed": false,
-      "durationMs": 441,
-      "output": "browserType.launchPersistentContext: spawn UNKNOWN\nCall log:\n\u001b[2m  - <launching> C:\\Users\\Administrator\\AppData\\Local\\ms-playwright\\chromium-1234\\chrome-win64\\chrome.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --disable-extensions-except=C:\\Users\\Administrator\\Desktop\\claude\\unfollow-instagram-dashboard-publish\\extension --load-extension=C:\\Users\\Administrator\\Desktop\\claude\\unfollow-instagram-dashboard-publish\\extension --user-data-dir=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\iu-workspace-browser-g1Vvuc --remote-debugging-pipe about:blank\u001b[22m\n\n    at async C:\\Users\\Administrator\\Desktop\\claude\\unfollow-instagram-dashboard-publish\\instagram-workspace-browser.test.cjs:4:16 {\n  log: [\n    '  - <launching> C:\\\\Users\\\\Administrator\\\\AppData\\\\Local\\\\ms-playwright\\\\chromium-1234\\\\chrome-win64\\\\chrome.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --disable-extensions-except=C:\\\\Users\\\\Administrator\\\\Desktop\\\\claude\\\\unfollow-instagram-dashboard-publish\\\\extension --load-extension=C:\\\\Users\\\\Administrator\\\\Desktop\\\\claude\\\\unfollow-instagram-dashboard-publish\\\\extension --user-data-dir=C:\\\\Users\\\\ADMINI~1\\\\AppData\\\\Local\\\\Temp\\\\iu-workspace-browser-g1Vvuc --remote-debugging-pipe about:blank'\n  ],\n  name: 'Error'\n}\n"
+      "passed": true,
+      "durationMs": 4570,
+      "output": "PASS: actual MV3 workspace onboarding, snapshot persistence, protection, notes/labels XSS safety, selection, review, sessions, palette, tasks, workflow simulation, backup, support redaction, account isolation, restart, TR/EN, theme and mobile layout. Zero Instagram requests.\nPASS: local workspace tasks survive a full Chromium process restart and remain usable offline.\n"
     },
     {
       "name": "Missing feature completion browser regression",
-      "passed": false,
-      "durationMs": 431,
-      "output": "browserType.launchPersistentContext: spawn UNKNOWN\nCall log:\n\u001b[2m  - <launching> C:\\Users\\Administrator\\AppData\\Local\\ms-playwright\\chromium-1234\\chrome-win64\\chrome.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --disable-extensions-except=C:\\Users\\Administrator\\Desktop\\claude\\unfollow-instagram-dashboard-publish\\extension --load-extension=C:\\Users\\Administrator\\Desktop\\claude\\unfollow-instagram-dashboard-publish\\extension --user-data-dir=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\iu-completion-JQMnHz --remote-debugging-pipe about:blank\u001b[22m\n\n    at async C:\\Users\\Administrator\\Desktop\\claude\\unfollow-instagram-dashboard-publish\\instagram-workspace-completion.test.cjs:4:16 {\n  log: [\n    '  - <launching> C:\\\\Users\\\\Administrator\\\\AppData\\\\Local\\\\ms-playwright\\\\chromium-1234\\\\chrome-win64\\\\chrome.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --disable-extensions-except=C:\\\\Users\\\\Administrator\\\\Desktop\\\\claude\\\\unfollow-instagram-dashboard-publish\\\\extension --load-extension=C:\\\\Users\\\\Administrator\\\\Desktop\\\\claude\\\\unfollow-instagram-dashboard-publish\\\\extension --user-data-dir=C:\\\\Users\\\\ADMINI~1\\\\AppData\\\\Local\\\\Temp\\\\iu-completion-JQMnHz --remote-debugging-pipe about:blank'\n  ],\n  name: 'Error'\n}\n"
+      "passed": true,
+      "durationMs": 3763,
+      "output": "PASS: chart ranges/metrics, highlights, keyboard protection, visual graph editing/cycle rejection, five templates, persisted defaults, export preference, cross-account in-flight write isolation and corrupt-store recovery/quarantine. Zero Instagram requests.\n"
     },
     {
       "name": "Release security and permissions audit",
       "passed": true,
-      "durationMs": 138,
+      "durationMs": 42,
       "output": "{\"passed\":true,\"trackedFiles\":123,\"manifestVersion\":\"2.10.0\",\"permissions\":[\"activeTab\",\"scripting\",\"storage\"],\"scope\":\"Current tracked source and browser-only extension; token values are never printed.\"}\n"
     }
   ],

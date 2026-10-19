@@ -4,7 +4,7 @@ Instagram takip listesini incelemek, korunan hesapları ayırmak ve yerel bir ç
 
 **Son geliştirme sürümü: 2.10.0.**
 
-**19 Ekim 2026 güncellemesi:** Polaris takip bırakma akışı, ayrıntılı ve filtrelenmiş ağ günlüğü, ek profil isteği olmadan sayfa oturum kimliği kontrolü ve uzun onay listesi için kaydırma düzeltmesi eklendi. Kullanıcı takip bırakma başarı bildirimi gördüğünü bildirdi; bağımsız gerçek hesap raporuyla kabul henüz tamamlanmadı. Güncel yerel koşu **21/26** paket geçti; beş tarayıcı paketi Windows'ta `spawn UNKNOWN` nedeniyle başlatılamadı. Bu değişiklikler nihai release veya mağaza kabulü değildir. [Protokol kanıtı ve sınırlar](docs/repair/POLARIS-UNFOLLOW-EVIDENCE.md), [ayrıntılı günlük](docs/repair/DETAILED-LOGGING.md).
+**19 Ekim 2026 güncellemesi:** Polaris takip bırakma akışı, ayrıntılı ve filtrelenmiş ağ günlüğü, ek profil isteği olmadan sayfa oturum kimliği kontrolü ve uzun onay listesi için kaydırma düzeltmesi eklendi. Kullanıcı takip bırakma başarı bildirimi gördüğünü bildirdi; bağımsız gerçek hesap raporuyla kabul henüz tamamlanmadı. GitHub Actions üzerinde **26/26** paket geçti; test parmak izleri kaynakla eşleşiyor. Yerel Windows koşusunda beş tarayıcı paketi `spawn UNKNOWN` nedeniyle başlatılamamıştı. 2.10.0 ön sürümü mağaza kabulü değildir. [CI kanıtı](docs/repair/CI-VERIFICATION.json). [Protokol kanıtı ve sınırlar](docs/repair/POLARIS-UNFOLLOW-EVIDENCE.md), [ayrıntılı günlük](docs/repair/DETAILED-LOGGING.md).
 
 **Durum:** Onarım ve yerel çalışma alanı geliştirmeleri otomatik testlerle doğrulanır. Gerçek Instagram hesabında uçtan uca takip bırakmanın düzeldiği henüz kanıtlanmadı. Instagram'ın özel uç noktaları değişebilir; HTML veya HTTP 200 tek başına başarı değildir. Mağaza onayı ve kaynak yeniden dağıtım izni ayrıca tamamlanmalıdır.
 
@@ -12,7 +12,7 @@ Instagram takip listesini incelemek, korunan hesapları ayırmak ve yerel bir ç
 
 ## İndirme ve doğru klasör
 
-[GitHub Releases](https://github.com/Bluetwinklez/unfollow-instagram-dashboard/releases) sayfasındaki son sürümün dosyalarını kullan:
+[2.10.0 ön sürümü](https://github.com/Bluetwinklez/unfollow-instagram-dashboard/releases/tag/v2.10.0) dosyalarını kullan:
 
 | Dosya | Ne işe yarar? |
 |---|---|

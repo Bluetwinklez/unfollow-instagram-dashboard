@@ -14,7 +14,7 @@ GitHub deposu mağaza değildir. İlk mağaza öğesi, listeleme ve yayıncı do
 
 ## GitHub Actions
 
-Akış: checkout → npm ci → Chromium kurulumu → build → 25 test paketi → güvenlik taraması → temiz ZIP → Web Store API yükleme.
+Akış: checkout → npm ci → Chromium kurulumu → build → 26 test paketi → güvenlik taraması → temiz ZIP → Web Store API yükleme.
 
 `cws-publish.yml`, v* etiketi veya Actions menüsünden çalışır. Varsayılan publish=false yalnızca taslak yükler. publish=true inceleme gönderimi ister. Aynı sürüm numarasıyla tekrar yükleme kabul edilmeyebilir; yayımlanmış sürümü yerinde değiştirmek yerine son tamamlanmış sürüm numarası artırılır. Ara geliştirme adımlarında release açılmaz.
 

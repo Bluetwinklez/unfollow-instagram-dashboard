@@ -19,5 +19,14 @@
     "browserExtensionPage": "blocked-by-browser-security-policy",
     "workaroundAttempted": false,
     "liveInstagram": false
+  },
+  "githubCI": {
+    "platform": "ubuntu-latest",
+    "realInstagram": false,
+    "status": "passed",
+    "browser": "Playwright Chromium",
+    "suites": 26,
+    "url": "https://github.com/Bluetwinklez/unfollow-instagram-dashboard/actions/runs/39237278722",
+    "commit": "e5c6378c4b9cedd3c07b19080a55a25eeb567037"
   }
 }
