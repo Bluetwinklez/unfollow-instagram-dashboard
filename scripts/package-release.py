@@ -22,7 +22,7 @@ if set(manifest["permissions"]) != {"activeTab", "scripting", "storage"} or mani
     raise SystemExit("Release must contain the browser-only build.")
 
 allowed = {"manifest.json", "content.js", "platform.js", "service-worker.js", "CREDITS.md", "privacy.html"}
-allowed.add("workspace-core.js")
+allowed.update({"workspace-core.js","workspace-art.png"})
 for stem in ("help", "logs", "workspace"):
     allowed.update(stem + suffix for suffix in (".html", ".css", ".js"))
 allowed.update(manifest["icons"].values())

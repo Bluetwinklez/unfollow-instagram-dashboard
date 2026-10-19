@@ -14,5 +14,20 @@ function fixture(post,verification){let api;const calls=[];
  await api.startUnfollow();assert.equal(api.state.log[0].ok,false);assert.equal(api.state.log[0].diagnostics.verification.responseKind,'html');assert.deepEqual(calls,['GET','POST','GET']);assert.ok(!JSON.stringify(api.state.log).includes('private response'));
  api.state.search='iki';api.pruneSelectionToDisplayed();assert.deepEqual([...api.state.selected],['2']);
  api.state.search='yok';api.pruneSelectionToDisplayed();assert.equal(api.state.selected.size,0);
- console.log('PASS: ambiguous HTML/empty/text/null preserve HTTP metadata, stop without repeated POST, redact bodies; search prunes invisible selection.');
+ const diagnosticSource=fs.readFileSync('instagram-tum-takipleri-birak.js','utf8');
+ for(const [url,expected] of [['https://www.instagram.com/api/v1/friendships/destroy/1/?token=private','destroy'],['https://www.instagram.com/accounts/login/?next=private','login'],['https://www.instagram.com/challenge/secret/','challenge'],['https://www.instagram.com/','home'],['https://example.com/private','other-origin']]) {
+  let transport;
+  vm.runInNewContext(diagnosticSource,{URL,location:{hostname:'www.instagram.com'},navigator:{language:'tr'},document:{cookie:'',getElementById(){return null}},localStorage:{getItem(){return null}},__IU_TEST__(x){transport=x.responseTransportDiagnostics}});
+  const detail=transport({url,redirected:false,headers:{get(){return 'text/html; charset=utf-8'}}});
+  assert.equal(detail.finalRoute,expected);assert.equal(detail.contentType,'text/html');assert.ok(!JSON.stringify(detail).includes('private'));assert.ok(!JSON.stringify(detail).includes('secret'));
+  const html='<html><form action="/accounts/login/?token=secret"><input name="password" value="private"></form><script>PolarisProfileRoot</script></html>';
+  const hints=transport({url,headers:{get(){return 'text/html'}}},html);
+  assert.deepEqual(Array.from(hints.htmlSignals),['login-form','instagram-app-shell']);assert.equal(hints.responseLength,html.length);
+  assert.ok(!JSON.stringify(hints).includes('secret'));assert.ok(!JSON.stringify(hints).includes('private'));
+  assert.ok(hints.htmlStructure.includes('<form><input></form>'));assert.ok(!hints.htmlStructure.includes('token'));
+  const headers=transport({url,headers:{'content-type':'text/html','set-cookie':'secret','x-fb-lsd':'private','x-asbd-id':'359341','constructor':'private'}}).responseHeaders;
+  assert.equal(headers['content-type'],'text/html');assert.equal(headers['x-asbd-id'],'359341');assert.equal(headers['set-cookie'],'[REDACTED]');assert.equal(headers['x-fb-lsd'],'[REDACTED]');assert.equal(headers.constructor,'[REDACTED]');assert.ok(!JSON.stringify(headers).includes('secret'));assert.ok(!JSON.stringify(headers).includes('private'));
+  assert.equal(transport({url},'{"text":"Polaris login private"}').htmlSignals.length,0,'JSON text must not become HTML evidence');
+ }
+ console.log('PASS: ambiguous responses stop without repeated POST; transport diagnostics classify final routes and content type without storing URLs, bodies or secrets.');
 })().catch(e=>{console.error(e);process.exit(1)});

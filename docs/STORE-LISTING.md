@@ -1,6 +1,6 @@
 # Chrome Web Store — listeleme metni ve yayın notları
 
-Sürüm: 2.9.0. Durum: entegrasyon doğrulaması gereken geliştirme sürümü. Bu metin mağaza kabulü veya canlı takip bırakma başarısı kanıtı değildir.
+Sürüm: 2.10.0. Durum: entegrasyon doğrulaması gereken geliştirme sürümü. Bu metin mağaza kabulü veya canlı takip bırakma başarısı kanıtı değildir.
 
 ## Kısa açıklama
 

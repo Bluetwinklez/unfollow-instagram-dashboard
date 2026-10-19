@@ -1,6 +1,6 @@
 <!doctype html><html lang="tr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gizlilik Politikası</title><link rel="stylesheet" href="help.css"><main><pre style="white-space:pre-wrap;font:inherit;line-height:1.7"># Instagram Takip Yönetimi — Gizlilik Politikası
 
-Son güncelleme: 18 Ekim 2026. Kapsam: 2.9.0 mağaza sürümü.
+Son güncelleme: 18 Ekim 2026. Kapsam: 2.10.0 mağaza sürümü.
 
 ## İşlenen bilgiler ve amaç
 Eklenti, kullanıcı başlattığında Instagram'da takip edilen ve isteğe bağlı olarak takipçi hesaplarının kimliklerini, kullanıcı adlarını, görünen adlarını, profil fotoğrafı adreslerini ve takip durumlarını işler. Bu bilgiler listeleme, arama, seçim ve onaylanan takip bırakma işlemleri için kullanılır. Başka sekmelerin geçmişini, mesajları, konum, sağlık veya finans bilgilerini okumaz.
@@ -12,7 +12,8 @@ Takip edilen/takipçi listeleri ve takip işlemleri için Instagram'a istek gön
 ## Yerel saklama
 Ayarlar, dil, gizlenen hesap kimlikleri ve yarım kalan tarama (hesap kimliği, liste ve sayfalama bilgileri) chrome.storage.local içinde saklanır. Yarım kalan kayıtlar 24 saatten eskiyse devam etmek için kullanılmaz; bu süre otomatik fiziksel silme garantisi değildir. Tamamlanan taramanın kontrol noktası temizlenir. Diğer yerel kayıtlar eklenti kaldırılınca silinir.
 Çalışma alanı tamamlanan taramaları, hesap kimliklerini/kullanıcı adlarını, isteğe bağlı koruma/favori/etiket/notları, kayıtlı seçimleri, inceleme oturumlarını, görevleri ve yerel iş akışlarını cihazda saklar. Tarama saklama sayısı ayarlanabilir. Bu veriler Ayarlar ekranından yedeklenebilir veya hesap bazında temizlenebilir. İşlem geçmişi en fazla 300 kaydı cihazda saklar; belirsiz işlemler otomatik yeniden başlatılmaz. Görevler ve simülasyonlar Instagram işlemi göndermez.
-Tanı günlüğü, zaman, sekme numarası, olay, HTTP durumu, yanıt türü, süre ve ilerleme gibi en fazla 500 olayı Chrome oturumu boyunca saklar. Çerezler, şifreler, kullanıcı adları, istek başlıkları ve ham yanıt gövdeleri tanı günlüğüne dahil edilmez. Günlük ekrandan temizlenebilir ve Chrome oturumu sona erdiğinde silinir.
+Kurtarma sırasında bozuk ham kayıt tek bir yerel karantina kopyası olarak korunur. Ayarlar’dan indirilebilir veya açık onayla silinebilir; eklenti kaldırıldığında yerel kopya silinir. Kesinleşmiş işlem geçmişi temizlenebilir; belirsiz kayıtlar tekrar gönderim koruması için saklanır. Etkin işlem sırasında geçmiş temizleme reddedilir.
+Tanı günlüğü, zaman, sekme numarası, olay, HTTP durumu, yanıt türü, süre ve ilerleme gibi en fazla 500 olayı Chrome oturumu boyunca saklar. Çerezler, şifreler, token değerleri, kullanıcı adları ve ham yanıt gövdeleri tanı günlüğüne dahil edilmez. İstek/yanıt başlıklarının yalnızca izin listesindeki teknik değerleri kaydedilir; diğer değerler gizlenir. HTML için metin ve nitelik içermeyen sınırlı etiket yapısı ve sabit sayfa işaretleri saklanabilir. Günlük ekrandan temizlenebilir ve Chrome oturumu sona erdiğinde silinir.
 
 ## Dışa aktarma ve paylaşım
 Kullanıcı isterse tanı günlüğünü veya hesap adları/kimlikleri içeren işlem raporunu kendi cihazına indirir; kullanıcı adlarını panoya kopyalayabilir. Bu dosyalar eklenti kaldırılınca silinmez; kullanıcı tarafından silinir. Destek için bir dosyayı paylaşmak kullanıcının tercihidir.
