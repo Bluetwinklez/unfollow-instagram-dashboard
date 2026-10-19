@@ -28,7 +28,20 @@ const fs=require('fs'),path=require('path'),os=require('os'),assert=require('ass
   const worker=context.serviceWorkers()[0]||await context.waitForEvent('serviceworker');
   await worker.evaluate(async()=>{for(let n=0;n<60;n++){const tabs=await chrome.tabs.query({});const help=tabs.find(t=>t.url?.startsWith(chrome.runtime.getURL('help.html')));if(help){await chrome.tabs.remove(help.id);return;}await new Promise(r=>setTimeout(r,50));}});
   const cdp=await context.browser().newBrowserCDPSession();const id=new URL(worker.url()).host;
-  const trigger=async()=>{await page.bringToFront();const {targetInfos}=await cdp.send('Target.getTargets',{filter:[{type:'tab',exclude:false}]});await cdp.send('Extensions.triggerAction',{id,targetId:targetInfos.find(t=>t.url===page.url()).targetId});await page.locator('#iu-app').waitFor()};
+  const trigger=async()=>{
+   await page.bringToFront();
+   await worker.evaluate(async()=>{
+    const tabs=await chrome.tabs.query({});
+    const target=tabs.find(tab=>tab.url==='https://www.instagram.com/')||(await chrome.tabs.query({active:true,lastFocusedWindow:true}))[0];
+    if(!target)throw Error('Mock Instagram tab missing');
+    await chrome.tabs.update(target.id,{active:true});
+    await chrome.windows.update(target.windowId,{focused:true});
+   });
+   await page.waitForFunction(()=>document.visibilityState==='visible');
+   const {targetInfos}=await cdp.send('Target.getTargets',{filter:[{type:'tab',exclude:false}]});
+   const target=targetInfos.find(t=>t.url===page.url());assert.ok(target,'Action target must be the current mock page');
+   await cdp.send('Extensions.triggerAction',{id,targetId:target.targetId});await page.locator('#iu-app').waitFor();
+  };
   await trigger();
   await page.locator('[data-action="language"]').click();await page.locator('[data-action="scan"]').filter({hasText:'Scan now'}).waitFor();
   await page.reload();await trigger();await page.locator('[data-action="scan"]').filter({hasText:'Scan now'}).waitFor();
