@@ -49,14 +49,25 @@ const assert=require('assert/strict');
   // Some Chromium test distributions do not dispatch onInstalled for --load-extension.
  });
  worker.on('console',msg=>console.log('Worker:',msg.type(),msg.text()));
- const cdp=await context.newCDPSession(page);
  const browserCdp=await context.browser().newBrowserCDPSession();
- const {targetInfo}=await cdp.send('Target.getTargetInfo');
  const extensionId=new URL(worker.url()).hostname;
- const allTargets=await browserCdp.send('Target.getTargets',{filter:[{type:'tab',exclude:false}]});
- const tabTarget=allTargets.targetInfos.find(t=>t.url==='https://www.instagram.com/');
- console.log('Tab target:',tabTarget?.type,tabTarget?.targetId);
- const trigger=async()=>{await page.bringToFront();await browserCdp.send('Extensions.triggerAction',{id:extensionId,targetId:tabTarget?.targetId||targetInfo.targetId});};
+ const trigger=async()=>{
+  // The action grants activeTab to the active Chrome tab. Wait for activation,
+  // rather than racing an onInstalled help tab or using a cached target ID.
+  await page.bringToFront();
+  await worker.evaluate(async()=>{
+   const tabs=await chrome.tabs.query({});
+   const target=tabs.find(tab=>tab.url==='https://www.instagram.com/')||(await chrome.tabs.query({active:true,lastFocusedWindow:true}))[0];
+   if(!target)throw Error('Mock Instagram tab missing');
+   await chrome.tabs.update(target.id,{active:true});
+   await chrome.windows.update(target.windowId,{focused:true});
+  });
+  await page.waitForFunction(()=>document.visibilityState==='visible');
+  const {targetInfos}=await browserCdp.send('Target.getTargets',{filter:[{type:'tab',exclude:false}]});
+  const target=targetInfos.find(tab=>tab.url===page.url());
+  assert.ok(target,'Action target must be the current mock page');
+  await browserCdp.send('Extensions.triggerAction',{id:extensionId,targetId:target.targetId});
+ };
  await trigger();
  try{await page.locator('.iu-panel').waitFor({timeout:6000});}catch(error){console.log('Launch diagnostics:',await worker.evaluate(async()=>({tabs:(await chrome.tabs.query({})).map(t=>({id:t.id,url:t.url})),action:typeof openInstagramTool,logEvents:typeof LOG_EVENTS})));throw error;}
  assert.equal(requests.filter(r=>r.method==='POST').length,0,'Opening must not mutate account');
