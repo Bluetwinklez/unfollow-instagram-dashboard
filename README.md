@@ -16,6 +16,10 @@ Instagram takip listesini incelemek, korunan hesapları ayırmak ve yerel bir ç
 
 ## İndirme ve doğru klasör
 
+**[Chrome Web Store'da aç ve Chrome'a ekle](https://chromewebstore.google.com/detail/instagram-takip-y%C3%B6netimi/fiakfpibolpneohdkfejlggbklegiced)**
+
+Mağazadan kurulum için yukarıdaki bağlantıyı kullan. ZIP ile elle kurulum için:
+
 [2.10.0 ön sürümü](https://github.com/Bluetwinklez/unfollow-instagram-dashboard/releases/tag/v2.10.0) dosyalarını kullan:
 
 | Dosya | Ne işe yarar? |
