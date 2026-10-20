@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Instagram Takip Yönetimi",
-  "description": "Takip ettiklerini tam sayfa listele; seçtiğin hesapların takibini onaylayarak bırak.",
+  "name": "Instagram Following Manager",
+  "description": "Review following accounts in a local workspace and explicitly confirm selected unfollow actions.",
   "version": "2.10.0",
   "minimum_chrome_version": "106",
   "host_permissions": [
@@ -16,7 +16,7 @@
     "service_worker": "service-worker.js"
   },
   "action": {
-    "default_title": "Instagram takip listesini aç",
+    "default_title": "Open Instagram following workspace",
     "default_icon": {
       "16": "icons/icon-16.png",
       "32": "icons/icon-32.png",

@@ -4,6 +4,8 @@ const path = require('path');
 fs.cpSync('instagram-magaza-hazirlik/extension', 'extension', { recursive: true });
 console.log('Store extension updated in extension/');
 
+// Copying outside the repository is explicitly opt-in.
+if (process.env.IU_SYNC_PARENT !== '1') process.exit(0);
 const parentDir = path.resolve('..');
 const parentEklenti = path.join(parentDir, 'instagram-chrome-eklentisi');
 if (fs.existsSync(parentEklenti)) {

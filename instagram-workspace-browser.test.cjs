@@ -8,7 +8,8 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),os=
   const worker=context.serviceWorkers()[0]||await context.waitForEvent('serviceworker');
   const db=W.empty();W.capture(db,{viewerId:'99',scope:'nonfollowers',followingDone:true,followersDone:true,following:[{id:'1',username:'first',full_name:'First'},{id:'2',username:'mutual',full_name:'Mutual'},{id:'3',username:'third',full_name:'Third'}],followerIds:['2']});
   W.capture(db,{viewerId:'100',scope:'all',followingDone:true,following:[{id:'7',username:'other_account'}]});
-  await worker.evaluate(async data=>chrome.storage.local.set({iu_workspace_v1:JSON.stringify(data)}),db);
+  for (const account of Object.values(db.accounts)) account.preferences.language='tr';
+ await worker.evaluate(async data=>chrome.storage.local.set({iu_workspace_v1:JSON.stringify(data)}),db);
   workspaceURL=new URL('workspace.html',worker.url()).href;const page=await context.newPage();page.on('pageerror',error=>errors.push(error.message));await page.goto(new URL('workspace.html',worker.url()).href);
   await page.locator('#dialog[open]').waitFor();await page.locator('#dialog-confirm').click();await page.locator('#dialog[open]').waitFor({state:'hidden'});
   assert.match(await page.locator('#view').innerText(),/Yerel gözlem/);assert.ok(!await page.locator('#toast').isVisible() || !/another tab|başka sekmede/.test(await page.locator('#toast').innerText()),'Own writes must not appear as another tab change');await page.screenshot({path:'instagram-magaza-hazirlik/gorseller/06-workspace-overview.png'});

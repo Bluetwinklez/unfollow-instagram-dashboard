@@ -1,5 +1,5 @@
 const assert=require('assert/strict'),W=require('./instagram-chrome-eklentisi/workspace-core.js'),{performance}=require('perf_hooks');
-const db=W.empty();W.capture(db,{viewerId:'99',scope:'nonfollowers',followingDone:true,followersDone:true,following:[{id:'1',username:'=formula',full_name:'One'},{id:'2',username:'mutual',full_name:'Two'}],followerIds:['2']});const a=W.account(db,'99');
+const db=W.empty();W.capture(db,{viewerId:'99',scope:'nonfollowers',followingDone:true,followersDone:true,following:[{id:'1',username:'=formula',full_name:'One'},{id:'2',username:'mutual',full_name:'Two'}],followerIds:['2']});const a=W.account(db,'99');assert.equal(a.preferences.language,'en','New workspace accounts start in English');
 a.meta['1']={protected:true,notes:'Review',labels:['creator']};
 assert.equal(W.analytics(a).mutual,1);assert.equal(W.analytics(a).nonfollowers,1);assert.equal(W.filter(W.rows(a),{category:'protected'}).length,1);assert.equal(W.filter(W.rows(a),{query:'MUTU'}).length,1);
 const all=W.empty();W.capture(all,{viewerId:'7',scope:'all',followingDone:true,following:[{id:'1',username:'one'}]});assert.equal(W.analytics(W.account(all,'7')).followers,null);

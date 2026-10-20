@@ -8,6 +8,7 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),os=
  W.capture(db,{viewerId:'99',scope:'nonfollowers',followingDone:true,followersDone:true,following:[{id:'1',username:'alpha',full_name:'ALPHA Person'},{id:'2',username:'beta',full_name:'Beta Person'},{id:'3',username:'gamma'}],followerIds:['2']});
  W.capture(db,{viewerId:'100',scope:'all',followingDone:true,following:[{id:'8',username:'different'}]});
  for(const a of Object.values(db.accounts)){a.onboarded=true;a.lastVersion=JSON.parse(fs.readFileSync('extension/manifest.json')).version}
+ for (const account of Object.values(db.accounts)) account.preferences.language='tr';
  await worker.evaluate(async value=>chrome.storage.local.set({iu_workspace_v1:JSON.stringify(value)}),db);
  const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));await page.goto(new URL('workspace.html',worker.url()).href);
  await page.locator('#chart-metric').selectOption('followers');await page.locator('[data-action="chart-range"]').click();assert.match(await page.locator('circle title').textContent(),/1$/);
@@ -16,7 +17,7 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),os=
  await page.keyboard.press('/');await page.locator('#search').fill('ALP');await page.waitForTimeout(250);assert.equal(await page.locator('[data-select]').count(),1);assert.equal(await page.locator('mark').count(),2);
  await page.keyboard.press('ArrowDown');assert.equal(await page.evaluate(()=>document.activeElement.dataset.select),'1');await page.keyboard.press('Space');assert.equal(await page.locator('[data-select="1"]').isChecked(),true);
  await page.locator('[data-action="search-clear"]').click();await page.locator('#title').click();await page.keyboard.press('x');assert.equal(await page.locator('[data-select]:checked').count(),0);await page.keyboard.press('s');assert.equal(await page.locator('[data-select]:checked').count(),3);
- await page.keyboard.press('p');await page.locator('#dialog-confirm').click();assert.equal(await page.locator('[data-select]:disabled').count(),3);await page.locator('#undo').click();assert.equal(await page.locator('[data-select]:disabled').count(),0);
+ await page.keyboard.press('p');await page.locator('#dialog-confirm').click();assert.equal(await page.locator('[data-select]:disabled').count(),3);await page.locator('#undo').click();await page.waitForFunction(()=>document.querySelectorAll('[data-select]:disabled').length===0);assert.equal(await page.locator('[data-select]:disabled').count(),0);
  await page.locator('[data-action="filter"]').click();assert.equal(await page.locator('.rule-row').count(),2);await page.locator('#dialog-confirm').click();assert.equal(await page.locator('[data-select]').count(),2);
  await page.locator('[data-action="filter"]').click();await page.locator('#rule-clear').check();await page.locator('#dialog-confirm').click();
  await page.locator('[data-action="nav"][data-id="workflows"]').click();const count=await page.locator('[data-action="remove-edge"]').count();await page.locator('[data-action="remove-edge"]').first().click();

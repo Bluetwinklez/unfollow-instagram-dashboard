@@ -12,7 +12,7 @@ function parse(raw){
 }
 function account(db,viewer){
  if(!/^\d+$/.test(String(viewer)))throw Error('ACCOUNT_CONTEXT_CHANGED');
- return db.accounts[viewer]??(db.accounts[viewer]={snapshots:[],meta:{},selections:[],reviews:[],sessions:[],tasks:[],workflows:[],runs:[],preferences:{language:'tr',theme:'dark',compact:false,retention:5,notifications:false,flags:{advanced:false}},onboarded:false});
+ return db.accounts[viewer]??(db.accounts[viewer]={snapshots:[],meta:{},selections:[],reviews:[],sessions:[],tasks:[],workflows:[],runs:[],preferences:{language:'en',theme:'dark',compact:false,retention:5,notifications:false,flags:{advanced:false}},onboarded:false});
 }
 function capture(db,input){
  if(!input||!/^\d+$/.test(String(input.viewerId))||!Array.isArray(input.following)||!input.followingDone)throw Error('INCOMPLETE_SCAN');
