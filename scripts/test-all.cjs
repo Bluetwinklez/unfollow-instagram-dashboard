@@ -2,7 +2,7 @@ const fs=require('fs'),path=require('path'),{spawnSync}=require('child_process')
 const root=path.resolve('instagram-magaza-hazirlik');const results=[];
 const {snapshot}=require('./test-fingerprint.cjs');
 const testedFiles=snapshot();
-const nodeTests=['instagram-safety.test.cjs','instagram-unfollow-verification.test.cjs','instagram-polaris-unfollow.test.cjs','instagram-scan-compatibility.test.cjs','instagram-diagnostics.test.cjs','instagram-audit-regressions.test.cjs','instagram-timing.test.cjs','instagram-scope.test.cjs','instagram-extension.test.cjs','instagram-extension-lock.test.cjs','instagram-extension-platform.test.cjs','instagram-live-log.test.cjs','instagram-log-view.test.cjs','instagram-release-proof.test.cjs','instagram-oauth.test.cjs','instagram-repair-v5.test.cjs','instagram-workspace.test.cjs','instagram-workspace-storage.test.cjs'];
+const nodeTests=require('./test-cases.cjs');
 function run(name,bin,args,extra={}){
  const start=Date.now();const r=spawnSync(bin,args,{encoding:'utf8',timeout:120000,env:{...process.env,...extra}});
  const output=(r.stdout||'')+(r.stderr||'');const passed=r.status===0&&!r.error;
