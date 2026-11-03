@@ -52,3 +52,5 @@ npm test
 Build synchronization stays inside this repository by default. An existing parent workspace is synchronized only with the explicit `IU_SYNC_PARENT=1` development opt-in. Never commit OAuth credentials or private logging configuration. Redistribution rights for third-party source and store approval must be verified separately.
 
 [Detailed previous usage and architecture guide (Turkish)](README.tr.md).
+
+[Security policy](SECURITY.md) · [Repository security audit](SECURITY_AUDIT.md)
