@@ -277,6 +277,6 @@ Resmî kaynaklar: [Chrome yayınlama](https://developer.chrome.com/docs/webstore
 - Zamanlanmış görevler ve iş akışları yereldir; bilgisayar kapalıyken Instagram işlemi veya asistana yayın yapmaz.
 - Tarihçe saklanan taramalarla sınırlıdır. İlk görülme tarihi hesap açılış tarihi değildir.
 - Kaldırılan eklenti/veri için yedeksiz kurtarma garantisi yoktur.
-- Başlangıç projesinin kaynak atfı `CREDITS.md` ve [LICENSE-NOTICE.md](LICENSE-NOTICE.md) içinde korunur. Bunlar watermark değildir. Yeniden dağıtım izni doğrulanmadan yeni bir açık kaynak lisansı atanmaz; mağaza yayını hazır kabul edilmez.
+- Başlangıç projesinin kaynak atfı `CREDITS.md` ve [LICENSE-NOTICE.md](LICENSE-NOTICE.md) içinde korunur. Bunlar watermark değildir. Kaynak depoda 5 Kasım 2026 itibarıyla lisans yoktur; yeniden dağıtım izni doğrulanmış değildir. Depo herkese açıktır ve eklenti Chrome Web Mağazası'nda yayımlanmıştır, bu yüzden izin durumu açık bir sorundur. Yeni bir açık kaynak lisansı atanmaz. Çözüm seçenekleri (yazardan izin almak veya türetilen kısımları yeniden yazmak) LICENSE-NOTICE.md içindedir.
 
 Hata bildiriminde sürüm, beklenen davranış, alınan hata kodu ve temizlenmiş rapor paylaş: [Issues](https://github.com/Bluetwinklez/unfollow-instagram-dashboard/issues). Şifre, çerez veya anahtar gönderme.

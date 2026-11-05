@@ -36,7 +36,7 @@ Tarih ve metrik seçiminin tamamen eksik olduğu ifadesi doğru değildi: 2.9.0 
 - Yüklü kişisel Chrome üzerinde eklenti kurulumu: Windows kontrolü erişim hatası verdi; tarayıcı güvenlik politikası chrome://extensions adresini engelledi. Engel başka yüzeyle aşılmadı. Temiz test Chromium'undaki doğrulama bu kontrolün yerine geçtiği iddia edilmez.
 - Brave kurulu değil; Brave'e özgü canlı kabul testi yok.
 - Kesintisiz/asistan kapalıyken izleme: mağaza paketi otomatik dışarı aktarım içermez. Yerel okuyucunun çalışabilmesi için özel yardımcıdan gerçek veri gelmesi gerekir. Şu anda bu akış bağlı değil.
-- Başlangıç projesinin dağıtım izni: kaynak depo yeniden kontrol edildi; lisans izni uydurulmadı veya atıflar silinmedi. https://github.com/cobanov/instagram
+- Başlangıç projesinin dağıtım izni: kaynak depo 5 Kasım 2026'da yeniden kontrol edildi ve lisans bulunmadı; eklenti buna rağmen mağazada yayımlanmış olduğundan izin açık bir sorundur (bkz. LICENSE-NOTICE.md). Lisans izni uydurulmadı ve atıflar silinmedi. https://github.com/cobanov/instagram
 - Google'ın herkese açık mağaza yayını/inceleme kararı ve yayıncı hesabının kişisel doğrulama alanları.
 
 ## Testlerin sınırı
