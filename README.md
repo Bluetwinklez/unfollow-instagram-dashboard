@@ -25,6 +25,8 @@ The default interval is 4–4.8 seconds, with a five-minute break after every fi
 
 Saved scans support search/filtering, charts, account notes/tags, protection, review queues, sessions, tasks, workflow graphs, simulations and exports. Workspace workflows operate on local saved data and do not initiate background Instagram mutations. Account data is separated by numeric viewer ID.
 
+**Official data import** (workspace → *Official data*): select Instagram's own "Download your information" files (`followers_1.json`, `following.json`, or the HTML variants) to list accounts that do not follow back. Files are read in the browser, nothing is uploaded and no request is sent to Instagram. The export contains usernames only, so results are matched to your last live scan by username; matched accounts can be added to the review queue (protected accounts are excluded), and unfollowing still requires the normal live check and confirmation. A warning appears when the files overlap too little with your last scan, which usually means they belong to another account. ZIP archives must be extracted first.
+
 Exports include JSON, CSV and text. Imports validate schemas and account identity and require preview/confirmation. CSV formula injection is escaped. Undo applies to local edits only. Concurrent saves use revision checks. Corrupt storage is preserved for recovery instead of being silently reset.
 
 ## Privacy
