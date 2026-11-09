@@ -8,5 +8,10 @@ Uyarlamalar: tüm takip edilenleri listeleme, tam sayfa görünüm, filtrelerin 
 bağımsız takip durumu doğrulaması, liste sayısı kontrolü, hesap değişikliği koruması,
 iptal desteği ve Chrome Manifest V3 paketi.
 
-Kaynak projenin lisans dosyası bu oturumda doğrulanamadığından bu pakete yeni bir
-yeniden dağıtım lisansı atanmamıştır. Chrome Web Mağazası'nda yayımlama yapılmamıştır.
+Lisans durumu (5 Kasım 2026'da kontrol edildi): kaynak depoda LICENSE/COPYING
+dosyası, package.json lisans alanı veya README lisans beyanı yoktur; GitHub da
+depo için bir lisans tanımlamıyor. Yeniden dağıtım izni bu nedenle doğrulanmış
+değildir. Bu uyarlama herkese açık bir GitHub deposunda bulunur ve Chrome Web
+Mağazası'nda yayımlanmıştır. Bu proje kaynak koda yeni bir lisans vermez; kaynak
+atfı korunur. Ayrıntılar ve çözüm seçenekleri için depodaki LICENSE-NOTICE.md
+dosyasına bakın.

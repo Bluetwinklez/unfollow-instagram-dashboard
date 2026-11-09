@@ -35,6 +35,10 @@ The default scan retention is five per account, configurable from one to twenty.
 
 [Privacy policy](docs/privacy.html) · [Protocol evidence and limits](docs/repair/POLARIS-UNFOLLOW-EVIDENCE.md) · [Release checklist](RELEASE-CHECKLIST.md)
 
+## Source and license status
+
+The initial code was adapted from [cobanov/instagram](https://github.com/cobanov/instagram). As of 2026-11-05 that repository has no license file, no license field and no license statement, so redistribution permission is not established. This repository is public and the extension is published on the Chrome Web Store; this project does not grant a new license for the adapted code, and attribution is kept in `THIRD_PARTY_NOTICES.md` and the packaged `CREDITS.md`. The open item is to obtain written permission or a license from the original author, or to rewrite the derived parts. See [LICENSE-NOTICE.md](LICENSE-NOTICE.md) (Turkish).
+
 ## Development
 
 Use Node 24 and Python 3.12, matching CI:

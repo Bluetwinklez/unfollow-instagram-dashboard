@@ -28,4 +28,4 @@ GitHub Actions üzerinde **26/26 test paketi geçti**; test parmak izleri kaynak
 
 ## Açık sınırlar
 
-Özel Instagram sözleşmeleri değişebilir. Kullanıcı başarı bildirimi bütün hesaplar için garanti değildir. Kişisel Chrome/Brave kabulü, bağımsız canlı rapor, kaynak yeniden dağıtım hakkı ve mağaza beyanları/incelemesi ayrıca açıktır. Lisans ve atıflar korunmuştur. 429 için kesin bekleme süresi veya kısıtlanmama garantisi yoktur.
+Özel Instagram sözleşmeleri değişebilir. Kullanıcı başarı bildirimi bütün hesaplar için garanti değildir. Kişisel Chrome/Brave kabulü, bağımsız canlı rapor, kaynak yeniden dağıtım hakkı (kaynak depoda lisans yok; 5 Kasım 2026'da kontrol edildi, eklenti mağazada yayımlanmış durumda; bkz. LICENSE-NOTICE.md) ve mağaza beyanları ayrıca açıktır. Lisans ve atıflar korunmuştur. 429 için kesin bekleme süresi veya kısıtlanmama garantisi yoktur.
