@@ -1,3 +1,6 @@
 # Reviewed false positives only. See SECURITY_AUDIT.md for classification.
 eaca1bcac7798e3db9345ffcba83616a21d71443:docs/repair/TEST-RESULTS.json:generic-api-key:253
 eaca1bcac7798e3db9345ffcba83616a21d71443:docs/repair/TEST-RESULTS.json:generic-api-key:271
+# The same findings at their commit after the history rewrite.
+db1cbc6dd75e7aeeded153d04c340c5df0d32ccc:docs/repair/TEST-RESULTS.json:generic-api-key:253
+db1cbc6dd75e7aeeded153d04c340c5df0d32ccc:docs/repair/TEST-RESULTS.json:generic-api-key:271
