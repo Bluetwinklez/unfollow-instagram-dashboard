@@ -37,3 +37,7 @@ Main READMEs and new maintenance documents are English. Historical Turkish recor
 A Chrome extension and local workspace for reviewing Instagram relationships and managing confirmed actions.
 
 The current GitHub integration rejected repository metadata edits with HTTP 403. This prepared description can be applied when repository administration access is available; it has not been represented as an applied settings change.
+
+## 19 November 2026 — History-rewrite Gitleaks findings
+
+The current `--log-opts="--all"` scan raised two `generic-api-key` matches from commit `db1cbc6` in `docs/repair/TEST-RESULTS.json` (lines 253 and 271). The matching fields are the manifest's SHA-256 integrity digests for named tracked files, **not API tokens**. The earlier `.gitleaksignore` referred to different historical commit fingerprints, so it did not cover these exact matches. Added only the two reviewed fingerprint entries; the scanner, all-history coverage and all other secret rules remain enabled. Never blanket-ignore the file or the rule.
