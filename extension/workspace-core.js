@@ -116,6 +116,7 @@ function validateBackup(value){
  for(const [key,m] of Object.entries(input.meta))if(!/^\d+$/.test(key)||!m||typeof m!=='object'||m.notes!=null&&typeof m.notes!=='string'||m.labels!=null&&(!Array.isArray(m.labels)||m.labels.some(v=>typeof v!=='string')))throw Error('INVALID_METADATA');
  for(const m of Object.values(input.meta)){for(const field of ['protected','favorite','reviewed'])if(Object.hasOwn(m,field)&&typeof m[field]!=='boolean')throw Error('INVALID_METADATA');if(m.notes!=null&&m.notes.length>4000||m.labels!=null&&(m.labels.length>20||m.labels.some(v=>v.length>500)))throw Error('INVALID_METADATA')}
  for(const s of input.snapshots){if(s.accountId!==String(value.accountId)||!s.complete||!Array.isArray(s.users)||typeof s.id!=='string'||!Number.isFinite(Date.parse(s.at))||s.followerIds!=null&&(!Array.isArray(s.followerIds)||s.followerIds.some(id=>typeof id!=='string'||!/^\d+$/.test(id))))throw Error('INVALID_SNAPSHOT');for(const u of s.users)if(!u||typeof u.id!=='string'||!/^\d+$/.test(u.id)||typeof u.username!=='string')throw Error('INVALID_SNAPSHOT')}
+ validateOfficial(input.official);
  for(const w of input.workflows)validateWorkflow(w);
  for(const run of input.runs)if(!run||typeof run.id!=='string'||typeof run.name!=='string'||!Number.isFinite(Date.parse(run.at))||!Number.isSafeInteger(run.matched)||run.matched<0||!['simulation','local-apply'].includes(run.mode))throw Error('INVALID_RUN');
  for(const task of input.tasks)if(!task||typeof task.id!=='string'||typeof task.title!=='string'||task.due!=null&&!Number.isFinite(Date.parse(task.due)))throw Error('INVALID_TASK');
@@ -123,7 +124,7 @@ function validateBackup(value){
  for(const selection of input.selections)if(!selection||typeof selection.id!=='string'||typeof selection.name!=='string'||!Array.isArray(selection.ids)||selection.ids.some(id=>typeof id!=='string'||!/^\d+$/.test(id)))throw Error('INVALID_SELECTION');
  if(input.reviews.some(id=>!/^\d+$/.test(String(id))))throw Error('INVALID_REVIEW');
  if(input.snapshots.some(s=>new Set(s.users.map(u=>u.id)).size!==s.users.length||s.followerIds&&new Set(s.followerIds).size!==s.followerIds.length))throw Error('DUPLICATE_SNAPSHOT_RECORD');
- const output={};for(const key of ['snapshots','meta','selections','reviews','sessions','tasks','workflows','runs','preferences','onboarded','lastVersion'])if(input[key]!==undefined)output[key]=copy(input[key]);
+ const output={};for(const key of ['snapshots','meta','selections','reviews','sessions','tasks','workflows','runs','preferences','onboarded','lastVersion','official'])if(input[key]!==undefined)output[key]=copy(input[key]);
  return {schemaVersion:1,accountId:String(value.accountId),account:output};
 }
 function ruleConflicts(rule){validateRule(rule);if(rule.op!=='and')return [];const seen=new Map(),conflicts=[];for(const child of rule.rules){if(child.op==='eq'){if(seen.has(child.field)&&seen.get(child.field)!==child.value)conflicts.push(child.field);seen.set(child.field,child.value)}else conflicts.push(...ruleConflicts(child))}return [...new Set(conflicts)]}
@@ -157,6 +158,57 @@ function workspaceTemplate(kind){
  return workflow;
 }
 
-const api={KEY,SCHEMA,connect,recommendations,workspaceTemplate,id,copy,text,empty,parse,account,capture,rows,analytics,filter,validateRule,evaluate,compare,template,validateWorkflow,simulate,csv,validateBackup,ruleConflicts,decide};
+// Instagram's "Download your information" export (followers_N.json, following.json or the HTML variants).
+// It carries usernames only, never numeric ids, so it is stored beside the scans and cannot feed an unfollow request by itself.
+const OFFICIAL_MAX={following:20000,followers:40000},OFFICIAL_MAX_TEXT=5_000_000,OFFICIAL_RESERVED=new Set(['accounts','explore','p','reel','reels','stories','direct','about','legal','privacy','web','developer','tv','_u']);
+const officialName=v=>{const n=String(v??'').trim().replace(/^@/,'').toLowerCase();return /^[a-z0-9._]{1,30}$/.test(n)&&!OFFICIAL_RESERVED.has(n)?n:null};
+function officialLink(href){try{const u=new URL(href);if(!/(^|\.)instagram\.com$/.test(u.hostname))return null;const p=u.pathname.split('/').filter(Boolean);return officialName(p[0]==='_u'?p[1]:p[0])}catch{return null}}
+function officialKind(file,json){
+ const name=String(file||'').split(/[\/]/).pop();
+ if(/^followers(_\d+)?\.(json|html?)$/i.test(name))return 'followers';
+ if(/^following\.(json|html?)$/i.test(name))return 'following';
+ if(Array.isArray(json))return 'followers';
+ return Array.isArray(json?.relationships_following)?'following':null;
+}
+function parseOfficialExport(files){
+ if(!Array.isArray(files)||!files.length||files.length>200)throw Error('OFFICIAL_FILES');
+ const lists={followers:new Map(),following:new Map()},kinds=new Set(),names=[];let skipped=0;
+ for(const file of files){
+  const text=String(file?.text??'');
+  if(text.length>OFFICIAL_MAX_TEXT)throw Error('FILE_TOO_LARGE');
+  if(text.startsWith('PK'))throw Error('OFFICIAL_ZIP');
+  let json=null,entries;
+  if(/^\s*</.test(text))entries=[...text.matchAll(/href\s*=\s*["']([^"']+)["']/gi)].map(m=>[officialLink(m[1].replace(/&amp;/g,'&')),0]).filter(e=>e[0]);
+  else{
+   try{json=JSON.parse(text)}catch{throw Error('OFFICIAL_FORMAT')}
+   const list=Array.isArray(json)?json:json?.relationships_following;if(!Array.isArray(list))throw Error('OFFICIAL_FORMAT');
+   entries=list.map(item=>{const d=Array.isArray(item?.string_list_data)?item.string_list_data[0]||{}:{};return [officialName(d.value)||officialName(item?.title)||officialLink(d.href),Number.isSafeInteger(d.timestamp)&&d.timestamp>0?d.timestamp:0]});
+   skipped+=entries.filter(e=>!e[0]).length;entries=entries.filter(e=>e[0]);
+  }
+  const kind=officialKind(file.name,json);if(!kind)throw Error('OFFICIAL_FORMAT');
+  kinds.add(kind);names.push(String(file.name||'file').split(/[\/]/).pop().slice(0,200));
+  for(const [name,at] of entries)if(!lists[kind].get(name))lists[kind].set(name,at);
+ }
+ if(!kinds.has('followers'))throw Error('OFFICIAL_MISSING_FOLLOWERS');
+ if(!kinds.has('following'))throw Error('OFFICIAL_MISSING_FOLLOWING');
+ if(lists.following.size>OFFICIAL_MAX.following||lists.followers.size>OFFICIAL_MAX.followers)throw Error('OFFICIAL_TOO_LARGE');
+ const sorted=m=>[...m].sort((a,b)=>a[0]<b[0]?-1:a[0]>b[0]?1:0);
+ return {at:new Date().toISOString(),files:names,following:sorted(lists.following),followers:sorted(lists.followers),skipped};
+}
+function validateOfficial(o){
+ if(o==null)return;
+ if(typeof o!=='object'||Array.isArray(o)||!Number.isFinite(Date.parse(o.at))||!Array.isArray(o.files)||o.files.length>200||o.files.some(f=>typeof f!=='string'||f.length>200)||o.skipped!=null&&(!Number.isSafeInteger(o.skipped)||o.skipped<0))throw Error('INVALID_OFFICIAL');
+ for(const k of ['following','followers'])if(!Array.isArray(o[k])||o[k].length>OFFICIAL_MAX[k]||o[k].some(p=>!Array.isArray(p)||p.length!==2||officialName(p[0])!==p[0]||!Number.isSafeInteger(p[1])||p[1]<0))throw Error('INVALID_OFFICIAL');
+}
+function officialAnalysis(o,snapshot=null){
+ if(!o)return null;
+ const followingSet=new Set(o.following.map(p=>p[0])),followerSet=new Set(o.followers.map(p=>p[0]));
+ const live=snapshot?new Map(snapshot.users.map(u=>[String(u.username).toLowerCase(),u])):null;
+ const rows=o.following.map(([username,followedAt])=>({username,followedAt:followedAt||null,relationship:followerSet.has(username)?'mutual':'nonfollowers',liveId:live?.get(username)?.id??null}));
+ const nonfollowers=rows.filter(r=>r.relationship==='nonfollowers');
+ return {at:o.at,following:rows.length,followers:followerSet.size,mutual:rows.length-nonfollowers.length,nonfollowers:nonfollowers.length,fans:o.followers.map(p=>p[0]).filter(n=>!followingSet.has(n)),rows,matched:live?nonfollowers.filter(r=>r.liveId).length:null,overlap:live&&rows.length?rows.filter(r=>r.liveId).length/rows.length:null};
+}
+function officialCsv(rows){const esc=v=>'"'+String(v??'').replace(/^(?:\s*[=+@-]|[\t\r])/,"'$&").replace(/"/g,'""')+'"';return ['username,relationship,followed_at',...rows.map(r=>[r.username,r.relationship,r.followedAt?new Date(r.followedAt*1000).toISOString():''].map(esc).join(','))].join('\r\n')}
+const api={KEY,SCHEMA,connect,recommendations,workspaceTemplate,id,copy,text,empty,parse,account,capture,rows,analytics,filter,validateRule,evaluate,compare,template,validateWorkflow,simulate,csv,validateBackup,ruleConflicts,decide,parseOfficialExport,validateOfficial,officialAnalysis,officialCsv};
 if(typeof module==='object'&&module.exports)module.exports=api;root.IUWorkspace=api;
 })(globalThis);

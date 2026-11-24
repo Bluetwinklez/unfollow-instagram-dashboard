@@ -88,6 +88,15 @@ Dashboard, kaydedilmiş taramalar üzerinde çalışır. İş akışı ve görev
 
 Düğümler sürüklenerek yerleştirilir. Bağlantı eklemek için önce kaynak kartta Çıkış, sonra hedef kartta Giriş seç; bağlantı/adımları ayrı silebilirsin. Döngü reddedilir. Basit AND/OR koşulları formdan; iç içe gruplar, NOT ve öncelikli kural kümeleri gelişmiş JSON ile düzenlenir. Bilinmeyen profil niteliği kurallarda yanlışmış gibi değerlendirilmez. Deneysel öneriler yalnızca yerel veriyi kullanır; hesap riski veya takipçi niyeti tahmin etmez.
 
+### Resmî veri içe aktarma
+
+Çalışma alanındaki **Resmî veri** sekmesi, Instagram’ın kendi “Bilgilerini indir” dosyalarıyla (`followers_1.json`, `following.json` veya HTML sürümleri) geri takip etmeyenleri listeler. Dosyalar tarayıcıda okunur; hiçbir yere yüklenmez ve Instagram’a istek gönderilmez. ZIP’i önce klasöre çıkar; takipçi dosyalarının hepsini (`followers_2.json`…) `following.json` ile birlikte seç.
+
+- Dışa aktarma dosyalarında yalnızca kullanıcı adı bulunur; sonuçlar son canlı taramanla kullanıcı adına göre eşleştirilir.
+- Eşleşen hesaplar inceleme kuyruğuna eklenebilir (korumalı hesaplar hariç). Takip bırakma yine canlı kontrol ve ayrı onay gerektirir.
+- Dosyalar son taramayla çok az örtüşürse “hesap uyuşmuyor olabilir” uyarısı çıkar; genellikle başka hesabın dosyaları seçilmiştir.
+- Liste, Instagram’ın dosyayı hazırladığı andaki durumu gösterir; güncel olmayabilir. Sonuçlar CSV olarak indirilebilir, “İçe aktarılanı sil” ile kaldırılır.
+
 ### Yedekleme, dışa aktarma ve geri alma
 
 - Çalışma alanını JSON yedekle; hesap listelerini JSON/CSV/TXT olarak dışa aktar.
